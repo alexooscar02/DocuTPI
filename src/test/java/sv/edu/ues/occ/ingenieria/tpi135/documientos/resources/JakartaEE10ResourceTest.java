@@ -1,4 +1,3 @@
-
 package sv.edu.ues.occ.ingenieria.tpi135.documientos.resources;
 
 import jakarta.ws.rs.core.Response;
@@ -11,8 +10,6 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.mockito.Mockito;
 import sv.edu.ues.occ.ingenieria.tpi135.documientos.Control.Saludo;
 import sv.edu.ues.occ.ingenieria.tpi135.documientos.Control.SaludoBean;
-
-
 
 /**
  *
@@ -58,5 +55,18 @@ public class JakartaEE10ResourceTest {
         assertTrue(result.getStatus() == 200);
         //fail("The test case is a prototype.");
     }
+
+//    @Test
+//    public void testSaludarIngles() {
+//        String nombre = "jose ";
+//        String esperado = "hello jose ";
+//        String resultado = null;
+//        JakartaEE10Resource cut = new JakartaEE10Resource();
+//        resultado = cut.Saludaringles(nombre);
+//
+//        assertNull(resultado);
+//        assertEquals(esperado, resultado);
+//
+//    }
 
 }

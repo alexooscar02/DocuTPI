@@ -20,4 +20,11 @@ public class JakartaEE10Resource {
                 .ok("ping Jakarta EE")
                 .build();
     }
+     public String Saludaringles(String nombre) {
+        if (nombre !=null){
+            return "hello" +nombre; 
+        }
+        return "hello";
+    }
+    
 }
