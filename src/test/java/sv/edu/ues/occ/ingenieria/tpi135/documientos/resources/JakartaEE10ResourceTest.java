@@ -13,7 +13,7 @@ import sv.edu.ues.occ.ingenieria.tpi135.documientos.Control.SaludoBean;
 
 /**
  *
- * @author alexo
+ * @author home
  */
 public class JakartaEE10ResourceTest {
 

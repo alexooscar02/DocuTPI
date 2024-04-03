@@ -10,7 +10,9 @@ package sv.edu.ues.occ.ingenieria.tpi135.documientos.boundary.rest;
  */
 public class TipoAtributoResourceTest {
  
-    
-    
+    public void  testFindRange(){
+        System.out.println("FindRange");
+        
+    }
     
 }

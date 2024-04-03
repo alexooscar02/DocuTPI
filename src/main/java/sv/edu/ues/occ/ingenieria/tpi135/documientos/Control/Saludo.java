@@ -12,17 +12,22 @@ import java.io.Serializable;
  *
  * @author home
  */
-@LocalBean
 @Stateless
 public class Saludo implements Serializable {
 
     private String mensaje;
 
+    // Constructor sin argumentos requerido por CDI
+    public Saludo() {
+        // Puedes inicializar el mensaje con un valor predeterminado si es necesario
+        this.mensaje = "";
+    }
+
     public Saludo(String mensaje) {
         this.mensaje = mensaje;
     }
 
-    // Otros métodos y propiedades según sea necesario
+    // Getters y setters
     public String getMensaje() {
         return mensaje;
     }
