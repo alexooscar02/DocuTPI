@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/UnitTests/JUnit5TestClass.java to edit this template
- */
+
 package sv.edu.ues.occ.ingenieria.tpi135.documientos.resources;
 
 import jakarta.ws.rs.core.Response;
@@ -11,28 +8,33 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
+import org.mockito.Mockito;
+import sv.edu.ues.occ.ingenieria.tpi135.documientos.Control.Saludo;
+import sv.edu.ues.occ.ingenieria.tpi135.documientos.Control.SaludoBean;
+
+
 
 /**
  *
- * @author home
+ * @author alexo
  */
 public class JakartaEE10ResourceTest {
-    
+
     public JakartaEE10ResourceTest() {
     }
-    
+
     @BeforeAll
     public static void setUpClass() {
     }
-    
+
     @AfterAll
     public static void tearDownClass() {
     }
-    
+
     @BeforeEach
     public void setUp() {
     }
-    
+
     @AfterEach
     public void tearDown() {
     }
@@ -40,17 +42,21 @@ public class JakartaEE10ResourceTest {
     @Test
     public void testPing() {
         System.out.println("ping");
+        SaludoBean mockSaludoBean = Mockito.mock(SaludoBean.class);
+        Mockito.when(mockSaludoBean.saludar("ping")).thenReturn(new Saludo("chepe"));
+
         JakartaEE10Resource instance = new JakartaEE10Resource();
+        instance.sBean = mockSaludoBean;
         Response expResult = Response
                 .ok("ping Jakarta EE")
                 .build();
- 
+
         Response result = instance.ping();
-        
-        
-        
-        assertTrue(result.getStatus()==200);
-//        fail("The test case is a prototype.");
+        String resultado = (String) result.getEntity();
+        System.out.println("Resultado" + resultado);
+
+        assertTrue(result.getStatus() == 200);
+        //fail("The test case is a prototype.");
     }
-    
+
 }

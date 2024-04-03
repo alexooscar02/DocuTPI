@@ -12,14 +12,22 @@ import java.io.Serializable;
  *
  * @author home
  */
-
-@Stateless
 @LocalBean
-public class SaludoBean implements Serializable {
+@Stateless
+public class Saludo implements Serializable {
 
-   
-    public Saludo saludar(String mensaje)  {
-        // Lógica para generar un objeto Saludo basado en el mensaje
-        return new Saludo("chepe");
+    private String mensaje;
+
+    public Saludo(String mensaje) {
+        this.mensaje = mensaje;
+    }
+
+    // Otros métodos y propiedades según sea necesario
+    public String getMensaje() {
+        return mensaje;
+    }
+
+    public void setMensaje(String mensaje) {
+        this.mensaje = mensaje;
     }
 }
