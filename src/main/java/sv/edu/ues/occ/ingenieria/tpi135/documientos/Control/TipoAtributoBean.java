@@ -8,6 +8,7 @@ import jakarta.ejb.LocalBean;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.Query;
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
@@ -19,20 +20,23 @@ import sv.edu.ues.occ.ingenieria.tpi135.documientos.entity.TipoAtributo;
  */
 @Stateless
 @LocalBean
-
 public class TipoAtributoBean implements Serializable {
 
     @PersistenceContext(unitName = "Docu_PU")
     EntityManager em;
 
-      public List<TipoAtributo> findRange(int first, int pageSize) {
+    public List<TipoAtributo> findRange(int first, int pageSize) {
         if (first >= 0 && pageSize > 0) {
-            
+            if (em != null) {
+                Query q = em.createNamedQuery("TipoAtributo.findAll");
+                q.setFirstResult(first);
+                q.setMaxResults(pageSize);
+                return q.getResultList();
+            }
         }
-        
+
         return Collections.EMPTY_LIST;
     }
-    
     
     
 }
