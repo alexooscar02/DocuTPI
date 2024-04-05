@@ -21,7 +21,7 @@ import org.testcontainers.utility.MountableFile;
  * @author home
  */
 @Testcontainers
-public class JakartaEE10ResourceIT {
+public class JakartaEE10ResourceITback {
 
     MountableFile war = MountableFile.forHostPath(Paths.get("target/Documientos-1.0-SNAPSHOT.war").toAbsolutePath(), 0777);
 

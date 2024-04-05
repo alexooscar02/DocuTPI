@@ -10,6 +10,8 @@ import java.util.List;
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
@@ -20,10 +22,10 @@ import jakarta.persistence.TemporalType;
 
 /**
  *
- * @author home
+ * @author alexo
  */
 @Entity
-@Table(name = "documento", catalog = "documentosTPI135", schema = "public")
+@Table(name = "documento", catalog = "documentostpi135", schema = "public")
 @NamedQueries({
     @NamedQuery(name = "Documento.findAll", query = "SELECT d FROM Documento d"),
     @NamedQuery(name = "Documento.findByIdDocumento", query = "SELECT d FROM Documento d WHERE d.idDocumento = :idDocumento"),
@@ -38,6 +40,7 @@ public class Documento implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id_documento", nullable = false)
     private Long idDocumento;
@@ -170,7 +173,7 @@ public class Documento implements Serializable {
 
     @Override
     public String toString() {
-        return "sv.edu.ues.occ.ingenieria.tpi135.documientos.entity.Documento[ idDocumento=" + idDocumento + " ]";
+        return "entity.Documento[ idDocumento=" + idDocumento + " ]";
     }
     
 }

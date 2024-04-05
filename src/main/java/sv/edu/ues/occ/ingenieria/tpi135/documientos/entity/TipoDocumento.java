@@ -9,6 +9,8 @@ import java.util.List;
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
@@ -17,10 +19,10 @@ import jakarta.persistence.Table;
 
 /**
  *
- * @author home
+ * @author alexo
  */
 @Entity
-@Table(name = "tipo_documento", catalog = "documentosTPI135", schema = "public")
+@Table(name = "tipo_documento", catalog = "documentostpi135", schema = "public")
 @NamedQueries({
     @NamedQuery(name = "TipoDocumento.findAll", query = "SELECT t FROM TipoDocumento t"),
     @NamedQuery(name = "TipoDocumento.findByIdTipoDocumento", query = "SELECT t FROM TipoDocumento t WHERE t.idTipoDocumento = :idTipoDocumento"),
@@ -31,10 +33,11 @@ public class TipoDocumento implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id_tipo_documento", nullable = false)
     private Integer idTipoDocumento;
-    @Column(name = "nombre ", length = 2147483647)
+    @Column(name = "nombre", length = 2147483647)
     private String nombre;
     @Column(name = "activo")
     private Boolean activo;
@@ -122,7 +125,7 @@ public class TipoDocumento implements Serializable {
 
     @Override
     public String toString() {
-        return "sv.edu.ues.occ.ingenieria.tpi135.documientos.entity.TipoDocumento[ idTipoDocumento=" + idTipoDocumento + " ]";
+        return "entity.TipoDocumento[ idTipoDocumento=" + idTipoDocumento + " ]";
     }
     
 }

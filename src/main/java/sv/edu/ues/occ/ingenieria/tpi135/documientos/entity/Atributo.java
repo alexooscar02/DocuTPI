@@ -9,6 +9,8 @@ import java.util.List;
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -19,10 +21,10 @@ import jakarta.persistence.Table;
 
 /**
  *
- * @author home
+ * @author alexo
  */
 @Entity
-@Table(name = "atributo", catalog = "documentosTPI135", schema = "public")
+@Table(name = "atributo", catalog = "documentostpi135", schema = "public")
 @NamedQueries({
     @NamedQuery(name = "Atributo.findAll", query = "SELECT a FROM Atributo a"),
     @NamedQuery(name = "Atributo.findByIdAtributo", query = "SELECT a FROM Atributo a WHERE a.idAtributo = :idAtributo"),
@@ -34,10 +36,12 @@ public class Atributo implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id_atributo", nullable = false)
     private Long idAtributo;
-    @Column(name = "nombre", length = 155)
+    @Basic(optional = false)
+    @Column(name = "nombre", nullable = false, length = 155)
     private String nombre;
     @Column(name = "nombre_pantalla", length = 155)
     private String nombrePantalla;
@@ -59,6 +63,11 @@ public class Atributo implements Serializable {
 
     public Atributo(Long idAtributo) {
         this.idAtributo = idAtributo;
+    }
+
+    public Atributo(Long idAtributo, String nombre) {
+        this.idAtributo = idAtributo;
+        this.nombre = nombre;
     }
 
     public Long getIdAtributo() {
@@ -147,7 +156,7 @@ public class Atributo implements Serializable {
 
     @Override
     public String toString() {
-        return "sv.edu.ues.occ.ingenieria.tpi135.documientos.entity.Atributo[ idAtributo=" + idAtributo + " ]";
+        return "entity.Atributo[ idAtributo=" + idAtributo + " ]";
     }
     
 }

@@ -9,6 +9,8 @@ import java.util.List;
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.NamedQueries;
 import jakarta.persistence.NamedQuery;
@@ -17,10 +19,10 @@ import jakarta.persistence.Table;
 
 /**
  *
- * @author home
+ * @author alexo
  */
 @Entity
-@Table(name = "tipo_atributo", catalog = "documentosTPI135", schema = "public")
+@Table(name = "tipo_atributo", catalog = "documentostpi135", schema = "public")
 @NamedQueries({
     @NamedQuery(name = "TipoAtributo.findAll", query = "SELECT t FROM TipoAtributo t"),
     @NamedQuery(name = "TipoAtributo.findByIdTipoAtributo", query = "SELECT t FROM TipoAtributo t WHERE t.idTipoAtributo = :idTipoAtributo"),
@@ -33,6 +35,7 @@ public class TipoAtributo implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id_tipo_atributo", nullable = false)
     private Integer idTipoAtributo;
@@ -134,11 +137,7 @@ public class TipoAtributo implements Serializable {
 
     @Override
     public String toString() {
-        return "sv.edu.ues.occ.ingenieria.tpi135.documientos.entity.TipoAtributo[ idTipoAtributo=" + idTipoAtributo + " ]";
-    }
-
-    public List<TipoAtributo> findRange(int first, int pageSize) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return "entity.TipoAtributo[ idTipoAtributo=" + idTipoAtributo + " ]";
     }
     
 }

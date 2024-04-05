@@ -7,6 +7,7 @@ package sv.edu.ues.occ.ingenieria.tpi135.documientos.Control;
 import jakarta.ejb.LocalBean;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import java.io.Serializable;
 import sv.edu.ues.occ.ingenieria.tpi135.documientos.entity.TipoAtributo;
 
@@ -18,8 +19,8 @@ import sv.edu.ues.occ.ingenieria.tpi135.documientos.entity.TipoAtributo;
 @LocalBean
 public class TipoAtributoBean extends AbstractDataAccess<TipoAtributo> implements Serializable {
 
-//  @PersistenceContext(unitName = "Docu_PU")
-    EntityManager em;
+    @PersistenceContext(unitName = "documientos-PU")
+    public EntityManager em;
 
     @Override
     public EntityManager getEntityManager() {

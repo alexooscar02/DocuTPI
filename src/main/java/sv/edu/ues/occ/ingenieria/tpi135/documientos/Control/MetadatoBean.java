@@ -19,7 +19,7 @@ import sv.edu.ues.occ.ingenieria.tpi135.documientos.entity.Metadato;
 @LocalBean
 public class MetadatoBean extends AbstractDataAccess<Metadato> implements Serializable {
 
-    //@PersistenceContext(unitName = "Docu_PU")
+    @PersistenceContext(unitName = "documientos-PU")
     EntityManager em;
 
     public MetadatoBean() {

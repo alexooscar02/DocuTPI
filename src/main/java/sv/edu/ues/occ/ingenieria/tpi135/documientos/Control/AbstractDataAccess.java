@@ -149,7 +149,7 @@ public abstract class AbstractDataAccess<T> implements Serializable {
         throw new IllegalArgumentException();
     }
 
-    public int count() throws IllegalStateException {
+    public Long count() throws IllegalStateException {
         EntityManager em = null;
         try {
             em = getEntityManager();
@@ -162,7 +162,7 @@ public abstract class AbstractDataAccess<T> implements Serializable {
 
             cq.select(cb.count(cq.from(tipoDato)));
 
-            return em.createQuery(cq).getSingleResult().intValue();
+            return em.createQuery(cq).getSingleResult();
         }
         throw new IllegalStateException();
 

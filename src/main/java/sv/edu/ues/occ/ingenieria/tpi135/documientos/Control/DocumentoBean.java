@@ -19,7 +19,7 @@ import sv.edu.ues.occ.ingenieria.tpi135.documientos.entity.Documento;
 @LocalBean
 public class DocumentoBean extends AbstractDataAccess<Documento> implements Serializable {
 
-    //@PersistenceContext(unitName = "Docu_PU")
+    @PersistenceContext(unitName = "documientos-PU")
     EntityManager em;
 
     public DocumentoBean() {

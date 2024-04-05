@@ -9,6 +9,8 @@ import java.util.Date;
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -20,10 +22,10 @@ import jakarta.persistence.TemporalType;
 
 /**
  *
- * @author home
+ * @author alexo
  */
 @Entity
-@Table(name = "taxonomia", catalog = "documentosTPI135", schema = "public")
+@Table(name = "taxonomia", catalog = "documentostpi135", schema = "public")
 @NamedQueries({
     @NamedQuery(name = "Taxonomia.findAll", query = "SELECT t FROM Taxonomia t"),
     @NamedQuery(name = "Taxonomia.findByIdTaxonomia", query = "SELECT t FROM Taxonomia t WHERE t.idTaxonomia = :idTaxonomia"),
@@ -32,6 +34,7 @@ public class Taxonomia implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "id_taxonomia", nullable = false)
     private Long idTaxonomia;
@@ -106,7 +109,7 @@ public class Taxonomia implements Serializable {
 
     @Override
     public String toString() {
-        return "sv.edu.ues.occ.ingenieria.tpi135.documientos.entity.Taxonomia[ idTaxonomia=" + idTaxonomia + " ]";
+        return "entity.Taxonomia[ idTaxonomia=" + idTaxonomia + " ]";
     }
-    
+
 }

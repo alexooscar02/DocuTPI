@@ -15,7 +15,7 @@ import sv.edu.ues.occ.ingenieria.tpi135.documientos.entity.Taxonomia;
  */
 public class TaxonomiaBean extends AbstractDataAccess<Taxonomia> implements Serializable {
 
-    @PersistenceContext(unitName = "Docu_PU")
+    @PersistenceContext(unitName = "documientos-PU")
     EntityManager em;
 
     public TaxonomiaBean() {

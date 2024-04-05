@@ -9,6 +9,8 @@ import java.util.Date;
 import jakarta.persistence.Basic;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -20,13 +22,13 @@ import jakarta.persistence.TemporalType;
 
 /**
  *
- * @author home
+ * @author alexo
  */
 @Entity
-@Table(name = "metadato", catalog = "documentosTPI135", schema = "public")
+@Table(name = "metadato", catalog = "documentostpi135", schema = "public")
 @NamedQueries({
     @NamedQuery(name = "Metadato.findAll", query = "SELECT m FROM Metadato m"),
-    @NamedQuery(name = "Metadato.findByIdMetadato", query = "SELECT m FROM Metadato m WHERE m.idMetadato = :idMetadato"),
+    @NamedQuery(name = "Metadato.findByIdMetadata", query = "SELECT m FROM Metadato m WHERE m.idMetadata = :idMetadata"),
     @NamedQuery(name = "Metadato.findByValor", query = "SELECT m FROM Metadato m WHERE m.valor = :valor"),
     @NamedQuery(name = "Metadato.findByFechaCreacion", query = "SELECT m FROM Metadato m WHERE m.fechaCreacion = :fechaCreacion"),
     @NamedQuery(name = "Metadato.findByComentarios", query = "SELECT m FROM Metadato m WHERE m.comentarios = :comentarios")})
@@ -34,9 +36,10 @@ public class Metadato implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "id_metadato", nullable = false)
-    private Long idMetadato;
+    @Column(name = "id_metadata", nullable = false)
+    private Long idMetadata;
     @Column(name = "valor", length = 2147483647)
     private String valor;
     @Column(name = "fecha_creacion")
@@ -54,16 +57,16 @@ public class Metadato implements Serializable {
     public Metadato() {
     }
 
-    public Metadato(Long idMetadato) {
-        this.idMetadato = idMetadato;
+    public Metadato(Long idMetadata) {
+        this.idMetadata = idMetadata;
     }
 
-    public Long getIdMetadato() {
-        return idMetadato;
+    public Long getIdMetadata() {
+        return idMetadata;
     }
 
-    public void setIdMetadato(Long idMetadato) {
-        this.idMetadato = idMetadato;
+    public void setIdMetadata(Long idMetadata) {
+        this.idMetadata = idMetadata;
     }
 
     public String getValor() {
@@ -109,7 +112,7 @@ public class Metadato implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (idMetadato != null ? idMetadato.hashCode() : 0);
+        hash += (idMetadata != null ? idMetadata.hashCode() : 0);
         return hash;
     }
 
@@ -120,7 +123,7 @@ public class Metadato implements Serializable {
             return false;
         }
         Metadato other = (Metadato) object;
-        if ((this.idMetadato == null && other.idMetadato != null) || (this.idMetadato != null && !this.idMetadato.equals(other.idMetadato))) {
+        if ((this.idMetadata == null && other.idMetadata != null) || (this.idMetadata != null && !this.idMetadata.equals(other.idMetadata))) {
             return false;
         }
         return true;
@@ -128,7 +131,7 @@ public class Metadato implements Serializable {
 
     @Override
     public String toString() {
-        return "sv.edu.ues.occ.ingenieria.tpi135.documientos.entity.Metadato[ idMetadato=" + idMetadato + " ]";
+        return "entity.Metadato[ idMetadata=" + idMetadata + " ]";
     }
     
 }
