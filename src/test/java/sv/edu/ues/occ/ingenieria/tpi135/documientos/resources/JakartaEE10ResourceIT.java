@@ -28,6 +28,7 @@ public class JakartaEE10ResourceIT {
     @Container
     GenericContainer payara = new GenericContainer("payara/server-full:6.2024.1-jdk17")
             .withCopyFileToContainer(war, "/opt/payara/deployments/aplicacion.war")
+            .waitingFor(Wait.forLogMessage(".*deploy AdminCommandApplication deployed with name aplicacion.*", 1))
             .withExposedPorts(8080);
 
   @Test

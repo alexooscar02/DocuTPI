@@ -12,7 +12,7 @@
         <jakartaee>10.0.0</jakartaee>
     </properties>
     
-   <profiles>
+    <profiles>
         <profile>
             <id>integracion</id>
             <build>
@@ -81,7 +81,7 @@
             <version>10.0.0</version>
             <type>jar</type>
         </dependency>
-  <dependency>
+        <dependency>
             <groupId>org.testcontainers</groupId>
             <artifactId>testcontainers</artifactId>
             <version>1.17.6</version>
@@ -90,6 +90,12 @@
         <dependency>
             <groupId>org.testcontainers</groupId>
             <artifactId>junit-jupiter</artifactId>
+            <version>1.17.6</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>postgresql</artifactId>
             <version>1.17.6</version>
             <scope>test</scope>
         </dependency>
