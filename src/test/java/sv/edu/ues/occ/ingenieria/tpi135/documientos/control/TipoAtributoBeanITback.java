@@ -9,17 +9,23 @@ import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import junit.framework.Assert;
 import org.junit.jupiter.api.Assertions;
 import static org.junit.jupiter.api.Assertions.fail;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import sv.edu.ues.occ.ingenieria.tpi135.documientos.Control.TipoAtributoBean;
+import sv.edu.ues.occ.ingenieria.tpi135.documientos.entity.TipoAtributo;
 
 /**
  *
@@ -27,7 +33,8 @@ import sv.edu.ues.occ.ingenieria.tpi135.documientos.Control.TipoAtributoBean;
  */
 @Testcontainers
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-public class TipoAtributoBeanIT {
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+public class TipoAtributoBeanITback {
 
     protected EntityManagerFactory emf;
 
@@ -64,7 +71,30 @@ public class TipoAtributoBeanIT {
     @Test
     @Order(2)
     public void testInsertar() {
+        System.out.println("insertarIT");
+        EntityManager em = emf.createEntityManager();
+        TipoAtributoBean cut = new TipoAtributoBean();
+        cut.em = em;
 
+        TipoAtributo registro = new TipoAtributo();
+        registro.setNombre("NIT");
+        registro.setNombreScreen("NIT");
+        registro.setExpresionRegular(".");
+
+        try {
+            cut.em.getTransaction().begin();
+            cut.create(registro);
+            cut.em.getTransaction().commit();
+            Assertions.assertNotNull(registro.getIdTipoAtributo());
+            System.out.println("REgistro creado con id"+registro.getIdTipoAtributo());
+
+        } catch (Exception ex) {
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);
+            try {
+                cut.em.getTransaction().rollback();
+            } catch (Exception exl) {
+            }
+        }
     }
 
 }

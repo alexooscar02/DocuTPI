@@ -20,7 +20,7 @@ import sv.edu.ues.occ.ingenieria.tpi135.documientos.entity.TipoDocumento;
 public class TipoDocumentoBean extends AbstractDataAccess<TipoDocumento> implements Serializable {
 
     @PersistenceContext(unitName = "documientos-PU")
-    EntityManager em;
+    public EntityManager em;
 
     public TipoDocumentoBean() {
         super(TipoDocumento.class);

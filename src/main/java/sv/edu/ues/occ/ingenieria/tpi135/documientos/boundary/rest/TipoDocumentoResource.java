@@ -25,29 +25,30 @@ import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import sv.edu.ues.occ.ingenieria.tpi135.documientos.Control.TipoAtributoBean;
+import sv.edu.ues.occ.ingenieria.tpi135.documientos.Control.TipoDocumentoBean;
 import sv.edu.ues.occ.ingenieria.tpi135.documientos.entity.TipoAtributo;
+import sv.edu.ues.occ.ingenieria.tpi135.documientos.entity.TipoDocumento;
 
 /**
  *
- * @author home
+ * @author alexo
  */
-@Path("tipoatributo")
-public class TipoAtributoResource implements Serializable {
+@Path("tipodocumento")
+public class TipoDocumentoResource implements Serializable {
 
     @Inject
-    TipoAtributoBean taBean;
+    TipoDocumentoBean tdBean;
 
     @GET
     @Produces({MediaType.APPLICATION_JSON})
-    public List<TipoAtributo> findRange(
+    public List<TipoDocumento> findRange(
             @QueryParam(value = "first")
             @DefaultValue(value = "0") int first,
             @QueryParam(value = "pagesize")
             @DefaultValue(value = "50") int pageSize
     ) {
         if (first >= 0 && pageSize > 0) {
-            return taBean.findRange(first, pageSize);
+            return tdBean.findRange(first, pageSize);
         }
         return Collections.EMPTY_LIST;
     }
@@ -55,9 +56,9 @@ public class TipoAtributoResource implements Serializable {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/{id}")
-    public Response findById(@PathParam("id") final Integer idTipoAtributo) {
-        if (idTipoAtributo != null) {
-            TipoAtributo found = taBean.findById(idTipoAtributo);
+    public Response findById(@PathParam("id") final Integer idTipoDocumento) {
+        if (idTipoDocumento != null) {
+            TipoDocumento found = tdBean.findById(idTipoDocumento);
             if (found != null) {
                 return Response.status(Response.Status.OK)
                         .entity(found)
@@ -75,19 +76,19 @@ public class TipoAtributoResource implements Serializable {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response create(TipoAtributo tipoAtributo, @Context UriInfo info) {
-        if (tipoAtributo != null && tipoAtributo.getIdTipoAtributo() != null && tipoAtributo.getNombre() != null) {
+    public Response create(TipoDocumento tipoDocumento, @Context UriInfo info) {
+        if (tipoDocumento != null && tipoDocumento.getIdTipoDocumento() != null && tipoDocumento.getNombre() != null) {
             try {
-                taBean.create(tipoAtributo);
+                tdBean.create(tipoDocumento);
                 URI requestUri = info.getRequestUri();
                 return Response.status(Response.Status.CREATED)
-                        .header("location", requestUri.toString() + "/" + tipoAtributo.getIdTipoAtributo())
+                        .header("location", requestUri.toString() + "/" + tipoDocumento.getIdTipoDocumento())
                         .build();
             } catch (Exception ex) {
                 Logger.getLogger(getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);
             }
             return Response.status(500)
-                    .header("create-exception", tipoAtributo.toString())
+                    .header("create-exception", tipoDocumento.toString())
                     .build();
         }
         return Response.status(422)
@@ -99,21 +100,21 @@ public class TipoAtributoResource implements Serializable {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/{id}")
-    public Response update(@PathParam("id") Integer idTipoAtributo, TipoAtributo updatedTipoAtributo) {
-        if (idTipoAtributo != null && updatedTipoAtributo != null) {
-            TipoAtributo existingTipoAtributo = taBean.findById(idTipoAtributo);
-            if (existingTipoAtributo != null) {
+    public Response update(@PathParam("id") Integer idTipoDocumento, TipoDocumento updatedTipoDocumento) {
+        if (idTipoDocumento != null && updatedTipoDocumento != null) {
+            TipoDocumento existingTipoDocumento = tdBean.findById(idTipoDocumento);
+            if (existingTipoDocumento != null) {
                 try {
-                    existingTipoAtributo.setNombre(updatedTipoAtributo.getNombre());
+                    existingTipoDocumento.setNombre(updatedTipoDocumento.getNombre());
                     // Actualizar otros campos si es necesario
-                    TipoAtributo modifiedTipoAtributo = taBean.modify(existingTipoAtributo);
+                    TipoDocumento modifiedTipoDocumento = tdBean.modify(existingTipoDocumento);
                     return Response.status(Response.Status.OK)
-                            .entity(modifiedTipoAtributo)
+                            .entity(modifiedTipoDocumento)
                             .build();
                 } catch (Exception ex) {
                     Logger.getLogger(getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);
                     return Response.status(500)
-                            .header("update-exception", updatedTipoAtributo.toString())
+                            .header("update-exception", updatedTipoDocumento.toString())
                             .build();
                 }
             } else {
@@ -130,17 +131,17 @@ public class TipoAtributoResource implements Serializable {
     @DELETE
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response delete(@PathParam("id") Integer idTipoAtributo) {
-        if (idTipoAtributo != null) {
-            TipoAtributo tipoAtributoToDelete = taBean.findById(idTipoAtributo);
-            if (tipoAtributoToDelete != null) {
+    public Response delete(@PathParam("id") Integer idTipoDocumento) {
+        if (idTipoDocumento != null) {
+            TipoDocumento tipoDocumentoToDelete = tdBean.findById(idTipoDocumento);
+            if (tipoDocumentoToDelete != null) {
                 try {
-                    taBean.delete(tipoAtributoToDelete);
+                    tdBean.delete(tipoDocumentoToDelete);
                     return Response.status(Response.Status.NO_CONTENT).build();
                 } catch (Exception ex) {
                     Logger.getLogger(getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);
                     return Response.status(500)
-                            .header("delete-exception", tipoAtributoToDelete.toString())
+                            .header("delete-exception", tipoDocumentoToDelete.toString())
                             .build();
                 }
             } else {
@@ -159,7 +160,7 @@ public class TipoAtributoResource implements Serializable {
     @Produces(MediaType.APPLICATION_JSON)
     public Response count() {
         try {
-            Long total = taBean.count();
+            Long total = tdBean.count();
             return Response.status(Response.Status.OK)
                     .entity(total)
                     .build();
@@ -170,4 +171,5 @@ public class TipoAtributoResource implements Serializable {
                     .build();
         }
     }
+
 }
