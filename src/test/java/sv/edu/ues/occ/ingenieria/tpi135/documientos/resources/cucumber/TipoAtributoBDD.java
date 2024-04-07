@@ -40,8 +40,8 @@ public class TipoAtributoBDD {
             .withNetworkAliases("db");
 
     //payara/full_pg:6.2024.1
-    static GenericContainer payara = new GenericContainer("payara/full_pg:6.2024.1")
-            .waitingFor(Wait.forLogMessage(".*deploy AdminCommandApplication deployed with name aplicacion.*", 320))
+    static GenericContainer payara = new GenericContainer("payara_prueba/full:6.2024.1")
+            .waitingFor(Wait.forLogMessage(".*deploy AdminCommandApplication deployed with name aplicacion.*", 1))
             .withEnv("POSTGRES_USER", "postgres")
             .withEnv("POSTGRES_PASSWORD", "123")
             .withEnv("POSTGRES_PORT", "5432")
@@ -49,7 +49,7 @@ public class TipoAtributoBDD {
             .dependsOn(postgres)
             .withExposedPorts(8080)
             .withNetwork(red)
-            .withCopyToContainer(war, "/opt/payara/aplicacion.war");
+            .withCopyToContainer(war, "/opt/payara/deployments/aplicacion.war");
 
     Integer idTipoAtributo;
     Client cliente;

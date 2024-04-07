@@ -13,12 +13,14 @@ sv\edu\ues\occ\ingenieria\tpi135\documientos\Control\AbstractDataAccess.class
 sv\edu\ues\occ\ingenieria\tpi135\documientos\Control\MetadatoBean.class
 sv\edu\ues\occ\ingenieria\tpi135\documientos\entity\Taxonomia.class
 sv\edu\ues\occ\ingenieria\tpi135\documientos\entity\Metadato.class
+sv\edu\ues\occ\ingenieria\tpi135\documientos\boundary\rest\Constantes.class
 sv\edu\ues\occ\ingenieria\tpi135\documientos\boundary\rest\TipoDocumentoResource.class
 sv\edu\ues\occ\ingenieria\tpi135\documientos\Control\TaxonomiaBean.class
 sv\edu\ues\occ\ingenieria\tpi135\documientos\boundary\rest\RestResourceHeaderPattern.class
 sv\edu\ues\occ\ingenieria\tpi135\documientos\boundary\rest\AtributoResource.class
 sv\edu\ues\occ\ingenieria\tpi135\documientos\JakartaRestConfiguration.class
 sv\edu\ues\occ\ingenieria\tpi135\documientos\Control\TipoDocumentoBean.class
+sv\edu\ues\occ\ingenieria\tpi135\documientos\AppConfiguration.class
 sv\edu\ues\occ\ingenieria\tpi135\documientos\Control\DocumentoBean.class
 sv\edu\ues\occ\ingenieria\tpi135\documientos\resources\JakartaEE10Resource.class
 sv\edu\ues\occ\ingenieria\tpi135\documientos\Control\SaludoBean.class

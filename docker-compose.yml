@@ -1,0 +1,43 @@
+version: '3.7'
+
+services:
+  postgres:
+    image: postgres:13-alpine
+    container_name: db
+    environment:
+      POSTGRES_PASSWORD: 123
+      POSTGRES_USER: postgres
+      POSTGRES_DB: documentostpi135
+    ports:
+      - "5432:5432"
+    volumes:
+      - C:\TPI335\ProyectoParcial\Documientos\src\test\resources\documientos.sql:/docker-entrypoint-initdb.d/documientos.sql
+
+    networks:
+      - documientos_net
+
+  payara:
+    image: documientos_payara/full:6.2024.1-jdk17
+    ports:
+      - "4848:4848"
+      - "8080:8080"
+      - "8181:8181"
+    depends_on:
+      - postgres
+    networks:
+      - documientos_net
+  pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "g21009@ues.edu.sv"
+      PGADMIN_DEFAULT_PASSWORD: "123"
+    ports:
+      - "80:80"
+    networks:
+      - documientos_net
+volumes:
+  db_data:
+
+networks:
+  documientos_net:
+    external: true
