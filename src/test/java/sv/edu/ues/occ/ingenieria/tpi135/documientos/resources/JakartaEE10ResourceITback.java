@@ -1,4 +1,3 @@
-
 package sv.edu.ues.occ.ingenieria.tpi135.documientos.resources;
 
 import java.net.URI;
@@ -31,7 +30,7 @@ public class JakartaEE10ResourceITback {
             .waitingFor(Wait.forLogMessage(".*deploy AdminCommandApplication deployed with name aplicacion.*", 1))
             .withExposedPorts(8080);
 
-  @Test
+    @Test
     @Order(1)
     public void testPing() throws Exception {
         System.out.println("pingIntegracion");

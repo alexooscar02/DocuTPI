@@ -74,21 +74,17 @@ public class PrimerParcialIT {
             .waitingFor(Wait.forLogMessage(".*deploy AdminCommandApplication deployed with name aplicacion.*", 1));
 
     static Client cliente;
-//
     static WebTarget target;
 
     @BeforeAll
-    public static void lanzarPayaraTest() {
-        System.out.println("Documientos - lanzarPayara");
+    public static void inicializar() {
+        System.out.println("Documientos-lanzarPayara");
         payara1.start();
         postgres1.start();
         Assertions.assertTrue(payara1.isRunning());
         Assertions.assertTrue(postgres1.isRunning());
         cliente = ClientBuilder.newClient();
-
-        target = target = cliente.target(String.format("http://%s:%d/aplicacion/resources/",
-                payara1.getContainerIpAddress(), payara1.getMappedPort(8080)));
-
+        target = cliente.target(String.format("http://localhost:%d/aplicacion/resources/", payara1.getMappedPort(8080)));
     }
 
     @Test
