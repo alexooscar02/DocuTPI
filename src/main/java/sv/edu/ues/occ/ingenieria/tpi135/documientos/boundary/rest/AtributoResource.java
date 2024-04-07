@@ -25,6 +25,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import sv.edu.ues.occ.ingenieria.tpi135.documientos.Control.AtributoBean;
 import sv.edu.ues.occ.ingenieria.tpi135.documientos.entity.Atributo;
+import sv.edu.ues.occ.ingenieria.tpi135.documientos.entity.TipoDocumento;
 
 /**
  *
@@ -73,23 +74,38 @@ public class AtributoResource implements Serializable {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response create(Atributo atributo, @Context UriInfo info) {
-        if (atributo != null && atributo.getIdAtributo() != null && atributo.getNombre() != null) {
+    public Response createAtributo(Atributo atributo, @PathParam("idTipoDocumento") Long idTipoDocumento, @Context UriInfo info) {
+        if (atributo != null && atributo.getNombre() != null && idTipoDocumento != null) {
             try {
+                // Lógica para crear el atributo en la base de datos
+
+                // Asignar el idTipoDocumento al atributo
+                // Asignar el idTipoDocumento al atributo
+                TipoDocumento tipoDocumento = new TipoDocumento();
+                tipoDocumento.setIdTipoDocumento(idTipoDocumento.intValue()); // Convertir Long a int
+                atributo.setIdTipoDocumento(tipoDocumento);
+
+                // Guardar el atributo en la base de datos
                 aBean.create(atributo);
+
+                // Se construye la URI del recurso creado
                 URI requestUri = info.getRequestUri();
+                String location = requestUri.toString() + "/" + atributo.getIdAtributo();
+
+                // Se retorna una respuesta exitosa con el código 201 y la ubicación del recurso creado
                 return Response.status(Response.Status.CREATED)
-                        .header("location", requestUri.toString() + "/" + atributo.getIdAtributo())
+                        .header("Location", location)
                         .build();
             } catch (Exception ex) {
+                // En caso de que ocurra una excepción durante la creación del atributo
                 Logger.getLogger(getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);
+                return Response.serverError().build();
             }
-            return Response.status(500)
-                    .header("create-exception", atributo.toString())
+        } else {
+            // En caso de que falten parámetros en el payload
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity("El atributo enviado es nulo o no tiene nombre, o el idTipoDocumento no está presente.")
                     .build();
         }
-        return Response.status(422)
-                .header("missing-parameter", "id")
-                .build();
     }
 }

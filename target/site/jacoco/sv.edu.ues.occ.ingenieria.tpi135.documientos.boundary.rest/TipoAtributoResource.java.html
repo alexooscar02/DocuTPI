@@ -79,34 +79,42 @@ import sv.edu.ues.occ.ingenieria.tpi135.documientos.entity.TipoAtributo;
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response create(TipoAtributo tipoAtributo, @Context UriInfo info) {
-<span class="nc bnc" id="L83" title="All 4 branches missed.">        if (tipoAtributo != null &amp;&amp; tipoAtributo.getIdTipoAtributo() == null) {</span>
-<span class="nc" id="L84">            return Response.status(RestResourceHeaderPattern.STATUS_PARAMETRO_FALTANTE)</span>
-<span class="nc" id="L85">                    .header(RestResourceHeaderPattern.DETALLE_ERROR, RestResourceHeaderPattern.DETALLE_PARAMETRO_FALTANTE + &quot;: idTipoAtributo&quot;)</span>
-<span class="nc" id="L86">                    .build();</span>
-<span class="nc bnc" id="L87" title="All 4 branches missed.">        } else if (tipoAtributo != null &amp;&amp; tipoAtributo.getNombre() == null) {</span>
-<span class="nc" id="L88">            return Response.status(RestResourceHeaderPattern.STATUS_PARAMETRO_FALTANTE)</span>
-<span class="nc" id="L89">                    .header(RestResourceHeaderPattern.DETALLE_ERROR, RestResourceHeaderPattern.DETALLE_PARAMETRO_FALTANTE + &quot;: nombre&quot;)</span>
-<span class="nc" id="L90">                    .build();</span>
-<span class="nc bnc" id="L91" title="All 2 branches missed.">        } else if (tipoAtributo != null) {</span>
+    public Response createTipoAtributo(TipoAtributo tipoAtributo, @Context UriInfo info) {
+<span class="nc bnc" id="L83" title="All 4 branches missed.">        if (tipoAtributo != null &amp;&amp; tipoAtributo.getExpresionRegular() != null</span>
+<span class="nc bnc" id="L84" title="All 4 branches missed.">                &amp;&amp; tipoAtributo.getIndicacionesScreen() != null &amp;&amp; tipoAtributo.getNombre() != null</span>
+<span class="nc bnc" id="L85" title="All 4 branches missed.">                &amp;&amp; tipoAtributo.getNombreScreen() != null &amp;&amp; tipoAtributo.getObservaciones() != null) {</span>
             try {
-<span class="nc" id="L93">                taBean.create(tipoAtributo);</span>
-<span class="nc" id="L94">                URI requestUri = info.getRequestUri();</span>
-<span class="nc" id="L95">                return Response.status(Response.Status.CREATED)</span>
-<span class="nc" id="L96">                        .header(&quot;Location&quot;, requestUri.toString() + &quot;/&quot; + tipoAtributo.getIdTipoAtributo())</span>
-<span class="nc" id="L97">                        .build();</span>
-<span class="nc" id="L98">            } catch (Exception ex) {</span>
-<span class="nc" id="L99">                Logger.getLogger(getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);</span>
-<span class="nc" id="L100">                return Response.status(Response.Status.INTERNAL_SERVER_ERROR)</span>
-<span class="nc" id="L101">                        .header(&quot;create-exception&quot;, tipoAtributo.toString())</span>
-<span class="nc" id="L102">                        .build();</span>
+                // Lógica para crear el tipo de atributo en la base de datos
+                // Aquí deberías tener tu lógica para persistir el nuevo TipoAtributo
+                // Supondré que tienes un método create en algún EJB para persistirlo
+                // algo así como taBean.create(tipoAtributo);
+
+                // Supongamos que se ha creado correctamente y obtenemos el ID generado
+                // Aquí debes obtener el ID generado por la base de datos después de persistir el TipoAtributo
+                // Lo simularé aquí para completar el ejemplo
+<span class="nc" id="L95">                Integer idGenerado = 1;</span>
+
+                // Se construye la URI del recurso creado
+<span class="nc" id="L98">                URI requestUri = info.getRequestUri();</span>
+<span class="nc" id="L99">                String location = requestUri.toString() + &quot;/&quot; + idGenerado;</span>
+
+                // Se retorna una respuesta exitosa con el código 201 y la ubicación del recurso creado
+<span class="nc" id="L102">                return Response.status(Response.Status.CREATED)</span>
+<span class="nc" id="L103">                        .header(&quot;Location&quot;, location)</span>
+<span class="nc" id="L104">                        .build();</span>
+<span class="nc" id="L105">            } catch (Exception ex) {</span>
+                // En caso de que ocurra una excepción durante la creación del tipo de atributo
+<span class="nc" id="L107">                Logger.getLogger(getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);</span>
+<span class="nc" id="L108">                return Response.serverError().build();</span>
             }
         } else {
-<span class="nc" id="L105">            return Response.status(RestResourceHeaderPattern.STATUS_PARAMETRO_EQUIVOCADO)</span>
-<span class="nc" id="L106">                    .header(RestResourceHeaderPattern.DETALLE_ERROR, &quot;Payload vacío&quot;)</span>
-<span class="nc" id="L107">                    .build();</span>
+            // En caso de que falten parámetros en el payload
+<span class="nc" id="L112">            return Response.status(RestResourceHeaderPattern.STATUS_PARAMETRO_EQUIVOCADO)</span>
+<span class="nc" id="L113">                    .header(RestResourceHeaderPattern.DETALLE_PARAMETRO_EQUIVOCADO, &quot;Parámetros incorrectos&quot;)</span>
+<span class="nc" id="L114">                    .build();</span>
         }
     }
+}
 
 //    @PUT
 //    @Produces(MediaType.APPLICATION_JSON)
@@ -183,5 +191,5 @@ import sv.edu.ues.occ.ingenieria.tpi135.documientos.entity.TipoAtributo;
 //                    .build();
 //        }
 //    }
-}
+
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

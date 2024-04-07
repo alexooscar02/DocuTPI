@@ -74,31 +74,30 @@ import sv.edu.ues.occ.ingenieria.tpi135.documientos.entity.Documento;
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response create(Documento documento, @Context UriInfo info) {
-<span class="nc bnc" id="L78" title="All 6 branches missed.">        if (documento != null &amp;&amp; documento.getNombre() != null &amp;&amp; documento.getUbicacionFisica() != null) {</span>
+    public Response createDocumento(Documento documento, @Context UriInfo info) {
+<span class="nc bnc" id="L78" title="All 6 branches missed.">        if (documento != null &amp;&amp; documento.getNombre() != null &amp;&amp; documento.getCreadoPor() != null) {</span>
             try {
                 // Lógica para crear el documento en la base de datos
-                // Supongamos que hay un servicio de persistencia llamado documentoService
-<span class="nc" id="L82">                dBean.create(documento);</span>
+<span class="nc" id="L81">                dBean.create(documento);</span>
 
                 // Se construye la URI del recurso creado
-<span class="nc" id="L85">                URI requestUri = info.getRequestUri();</span>
-<span class="nc" id="L86">                String location = requestUri.toString() + &quot;/&quot; + documento.getIdDocumento();</span>
+<span class="nc" id="L84">                URI requestUri = info.getRequestUri();</span>
+<span class="nc" id="L85">                String location = requestUri.toString() + &quot;/&quot; + documento.getIdDocumento();</span>
 
                 // Se retorna una respuesta exitosa con el código 201 y la ubicación del recurso creado
-<span class="nc" id="L89">                return Response.status(Response.Status.CREATED)</span>
-<span class="nc" id="L90">                        .header(&quot;Location&quot;, location)</span>
-<span class="nc" id="L91">                        .build();</span>
-<span class="nc" id="L92">            } catch (Exception ex) {</span>
+<span class="nc" id="L88">                return Response.status(Response.Status.CREATED)</span>
+<span class="nc" id="L89">                        .header(&quot;Location&quot;, location)</span>
+<span class="nc" id="L90">                        .build();</span>
+<span class="nc" id="L91">            } catch (Exception ex) {</span>
                 // En caso de que ocurra una excepción durante la creación del documento
-<span class="nc" id="L94">                Logger.getLogger(getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);</span>
-<span class="nc" id="L95">                return Response.serverError().build();</span>
+<span class="nc" id="L93">                Logger.getLogger(getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);</span>
+<span class="nc" id="L94">                return Response.serverError().build();</span>
             }
         } else {
             // En caso de que falten parámetros en el payload
-<span class="nc" id="L99">            return Response.status(RestResourceHeaderPattern.STATUS_PARAMETRO_EQUIVOCADO)</span>
-<span class="nc" id="L100">                    .header(RestResourceHeaderPattern.DETALLE_PARAMETRO_EQUIVOCADO, &quot;Parámetros incorrectos&quot;)</span>
-<span class="nc" id="L101">                    .build();</span>
+<span class="nc" id="L98">            return Response.status(RestResourceHeaderPattern.STATUS_PARAMETRO_EQUIVOCADO)</span>
+<span class="nc" id="L99">                    .header(RestResourceHeaderPattern.DETALLE_PARAMETRO_EQUIVOCADO, &quot;Parámetros incorrectos&quot;)</span>
+<span class="nc" id="L100">                    .build();</span>
         }
     }
 

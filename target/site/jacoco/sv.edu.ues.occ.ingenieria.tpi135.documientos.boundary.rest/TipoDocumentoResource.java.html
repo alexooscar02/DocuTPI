@@ -76,34 +76,34 @@ import sv.edu.ues.occ.ingenieria.tpi135.documientos.entity.TipoDocumento;
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response create(TipoDocumento tipoDocumento, @Context UriInfo info) {
-<span class="nc bnc" id="L80" title="All 4 branches missed.">        if (tipoDocumento != null &amp;&amp; tipoDocumento.getIdTipoDocumento() != null) {</span>
-<span class="nc" id="L81">            return Response.status(Response.Status.BAD_REQUEST)</span>
-<span class="nc" id="L82">                    .header(RestResourceHeaderPattern.DETALLE_ERROR, RestResourceHeaderPattern.DETALLE_PARAMETRO_FALTANTE + &quot;: idTipoDocumento&quot;)</span>
-<span class="nc" id="L83">                    .build();</span>
-<span class="nc bnc" id="L84" title="All 4 branches missed.">        } else if (tipoDocumento != null &amp;&amp; tipoDocumento.getNombre() == null) {</span>
-<span class="nc" id="L85">            return Response.status(Response.Status.BAD_REQUEST)</span>
-<span class="nc" id="L86">                    .header(RestResourceHeaderPattern.DETALLE_ERROR, RestResourceHeaderPattern.DETALLE_PARAMETRO_FALTANTE + &quot;: nombre&quot;)</span>
-<span class="nc" id="L87">                    .build();</span>
-<span class="nc bnc" id="L88" title="All 2 branches missed.">        } else if (tipoDocumento != null) {</span>
+    public Response createTipoDocumento(TipoDocumento tipoDocumento, @Context UriInfo info) {
+<span class="nc bnc" id="L80" title="All 6 branches missed.">        if (tipoDocumento != null &amp;&amp; tipoDocumento.getNombre() != null &amp;&amp; tipoDocumento.getActivo() != null) {</span>
             try {
-<span class="nc" id="L90">                tdBean.create(tipoDocumento);</span>
-<span class="nc" id="L91">                URI requestUri = info.getRequestUri();</span>
-<span class="nc" id="L92">                return Response.status(Response.Status.CREATED)</span>
-<span class="nc" id="L93">                        .header(&quot;Location&quot;, requestUri.toString() + &quot;/&quot; + tipoDocumento.getIdTipoDocumento())</span>
-<span class="nc" id="L94">                        .build();</span>
-<span class="nc" id="L95">            } catch (Exception ex) {</span>
+                // Lógica para crear el tipo de documento en la base de datos
+                // Supongamos que hay un servicio de persistencia llamado tipoDocumentoService
+<span class="nc" id="L84">                tdBean.create(tipoDocumento);</span>
+
+                // Se construye la URI del recurso creado
+<span class="nc" id="L87">                URI requestUri = info.getRequestUri();</span>
+<span class="nc" id="L88">                String location = requestUri.toString() + &quot;/&quot; + tipoDocumento.getIdTipoDocumento();</span>
+
+                // Se retorna una respuesta exitosa con el código 201 y la ubicación del recurso creado
+<span class="nc" id="L91">                return Response.status(Response.Status.CREATED)</span>
+<span class="nc" id="L92">                        .header(&quot;Location&quot;, location)</span>
+<span class="nc" id="L93">                        .build();</span>
+<span class="nc" id="L94">            } catch (Exception ex) {</span>
+                // En caso de que ocurra una excepción durante la creación del tipo de documento
 <span class="nc" id="L96">                Logger.getLogger(getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);</span>
-<span class="nc" id="L97">                return Response.status(Response.Status.INTERNAL_SERVER_ERROR)</span>
-<span class="nc" id="L98">                        .header(&quot;create-exception&quot;, tipoDocumento.toString())</span>
-<span class="nc" id="L99">                        .build();</span>
+<span class="nc" id="L97">                return Response.serverError().build();</span>
             }
         } else {
-<span class="nc" id="L102">            return Response.status(Response.Status.BAD_REQUEST)</span>
-<span class="nc" id="L103">                    .header(RestResourceHeaderPattern.DETALLE_ERROR, &quot;Payload vacío&quot;)</span>
-<span class="nc" id="L104">                    .build();</span>
+            // En caso de que falten parámetros en el payload
+<span class="nc" id="L101">            return Response.status(RestResourceHeaderPattern.STATUS_PARAMETRO_EQUIVOCADO)</span>
+<span class="nc" id="L102">                    .header(RestResourceHeaderPattern.DETALLE_PARAMETRO_EQUIVOCADO, &quot;Parámetros incorrectos&quot;)</span>
+<span class="nc" id="L103">                    .build();</span>
         }
     }
+
 }
 
 //    @PUT

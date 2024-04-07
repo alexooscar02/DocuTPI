@@ -76,7 +76,7 @@ public class TipoDocumentoResource implements Serializable {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response create(TipoDocumento tipoDocumento, @Context UriInfo info) {
+    public Response createTipoDocumento(TipoDocumento tipoDocumento, @Context UriInfo info) {
         if (tipoDocumento != null && tipoDocumento.getNombre() != null && tipoDocumento.getActivo() != null) {
             try {
                 // Lógica para crear el tipo de documento en la base de datos

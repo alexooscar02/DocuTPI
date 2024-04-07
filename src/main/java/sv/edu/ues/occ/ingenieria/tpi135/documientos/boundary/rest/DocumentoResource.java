@@ -74,11 +74,10 @@ public class DocumentoResource implements Serializable {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response create(Documento documento, @Context UriInfo info) {
-        if (documento != null && documento.getNombre() != null && documento.getUbicacionFisica() != null) {
+    public Response createDocumento(Documento documento, @Context UriInfo info) {
+        if (documento != null && documento.getNombre() != null && documento.getCreadoPor() != null) {
             try {
                 // Lógica para crear el documento en la base de datos
-                // Supongamos que hay un servicio de persistencia llamado documentoService
                 dBean.create(documento);
 
                 // Se construye la URI del recurso creado

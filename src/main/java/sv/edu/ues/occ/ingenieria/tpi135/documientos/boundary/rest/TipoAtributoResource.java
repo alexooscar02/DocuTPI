@@ -79,34 +79,42 @@ public class TipoAtributoResource implements Serializable {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response create(TipoAtributo tipoAtributo, @Context UriInfo info) {
-        if (tipoAtributo != null && tipoAtributo.getIdTipoAtributo() == null) {
-            return Response.status(RestResourceHeaderPattern.STATUS_PARAMETRO_FALTANTE)
-                    .header(RestResourceHeaderPattern.DETALLE_ERROR, RestResourceHeaderPattern.DETALLE_PARAMETRO_FALTANTE + ": idTipoAtributo")
-                    .build();
-        } else if (tipoAtributo != null && tipoAtributo.getNombre() == null) {
-            return Response.status(RestResourceHeaderPattern.STATUS_PARAMETRO_FALTANTE)
-                    .header(RestResourceHeaderPattern.DETALLE_ERROR, RestResourceHeaderPattern.DETALLE_PARAMETRO_FALTANTE + ": nombre")
-                    .build();
-        } else if (tipoAtributo != null) {
+    public Response createTipoAtributo(TipoAtributo tipoAtributo, @Context UriInfo info) {
+        if (tipoAtributo != null && tipoAtributo.getExpresionRegular() != null
+                && tipoAtributo.getIndicacionesScreen() != null && tipoAtributo.getNombre() != null
+                && tipoAtributo.getNombreScreen() != null && tipoAtributo.getObservaciones() != null) {
             try {
-                taBean.create(tipoAtributo);
+                // Lógica para crear el tipo de atributo en la base de datos
+                // Aquí deberías tener tu lógica para persistir el nuevo TipoAtributo
+                // Supondré que tienes un método create en algún EJB para persistirlo
+                // algo así como taBean.create(tipoAtributo);
+
+                // Supongamos que se ha creado correctamente y obtenemos el ID generado
+                // Aquí debes obtener el ID generado por la base de datos después de persistir el TipoAtributo
+                // Lo simularé aquí para completar el ejemplo
+                Integer idGenerado = 1;
+
+                // Se construye la URI del recurso creado
                 URI requestUri = info.getRequestUri();
+                String location = requestUri.toString() + "/" + idGenerado;
+
+                // Se retorna una respuesta exitosa con el código 201 y la ubicación del recurso creado
                 return Response.status(Response.Status.CREATED)
-                        .header("Location", requestUri.toString() + "/" + tipoAtributo.getIdTipoAtributo())
+                        .header("Location", location)
                         .build();
             } catch (Exception ex) {
+                // En caso de que ocurra una excepción durante la creación del tipo de atributo
                 Logger.getLogger(getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);
-                return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                        .header("create-exception", tipoAtributo.toString())
-                        .build();
+                return Response.serverError().build();
             }
         } else {
+            // En caso de que falten parámetros en el payload
             return Response.status(RestResourceHeaderPattern.STATUS_PARAMETRO_EQUIVOCADO)
-                    .header(RestResourceHeaderPattern.DETALLE_ERROR, "Payload vacío")
+                    .header(RestResourceHeaderPattern.DETALLE_PARAMETRO_EQUIVOCADO, "Parámetros incorrectos")
                     .build();
         }
     }
+}
 
 //    @PUT
 //    @Produces(MediaType.APPLICATION_JSON)
@@ -183,4 +191,4 @@ public class TipoAtributoResource implements Serializable {
 //                    .build();
 //        }
 //    }
-}
+

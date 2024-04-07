@@ -73,25 +73,31 @@ import sv.edu.ues.occ.ingenieria.tpi135.documientos.entity.Taxonomia;
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response create(Taxonomia taxonomia, @Context UriInfo info) {
-<span class="nc bnc" id="L77" title="All 6 branches missed.">        if (taxonomia != null &amp;&amp; taxonomia.getIdTaxonomia() != null &amp;&amp; taxonomia.getFechaCreacion() != null) {</span>
+    public Response createTaxonomia(Taxonomia taxonomia, @PathParam(&quot;idDocumento&quot;) Long idDocumento, @Context UriInfo info) {
+<span class="nc bnc" id="L77" title="All 6 branches missed.">        if (taxonomia != null &amp;&amp; taxonomia.getIdDocumento() != null &amp;&amp; taxonomia.getIdTipoDocumento() != null) {</span>
             try {
-<span class="nc" id="L79">                tBean.create(taxonomia);</span>
-<span class="nc" id="L80">                URI requestUri = info.getRequestUri();</span>
-<span class="nc" id="L81">                return Response.status(Response.Status.CREATED)</span>
-<span class="nc" id="L82">                        .header(&quot;location&quot;, requestUri.toString() + &quot;/&quot; + taxonomia.getIdTaxonomia())</span>
-<span class="nc" id="L83">                        .build();</span>
-<span class="nc" id="L84">            } catch (Exception ex) {</span>
-<span class="nc" id="L85">                Logger.getLogger(getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);</span>
-            }
-<span class="nc" id="L87">            return Response.status(500)</span>
-<span class="nc" id="L88">                    .header(&quot;create-exception&quot;, taxonomia.toString())</span>
-<span class="nc" id="L89">                    .build();</span>
-        }
-<span class="nc" id="L91">        return Response.status(422)</span>
-<span class="nc" id="L92">                .header(&quot;missing-parameter&quot;, &quot;id&quot;)</span>
-<span class="nc" id="L93">                .build();</span>
-    }
+                // Lógica para crear la taxonomía en la base de datos
+<span class="nc" id="L80">                tBean.create(taxonomia);</span>
 
+                // Se construye la URI del recurso creado
+<span class="nc" id="L83">                URI requestUri = info.getRequestUri();</span>
+<span class="nc" id="L84">                String location = requestUri.toString() + &quot;/&quot; + taxonomia.getIdTaxonomia();</span>
+
+                // Se retorna una respuesta exitosa con el código 201 y la ubicación del recurso creado
+<span class="nc" id="L87">                return Response.status(Response.Status.CREATED)</span>
+<span class="nc" id="L88">                        .header(&quot;Location&quot;, location)</span>
+<span class="nc" id="L89">                        .build();</span>
+<span class="nc" id="L90">            } catch (Exception ex) {</span>
+                // En caso de que ocurra una excepción durante la creación de la taxonomía
+<span class="nc" id="L92">                Logger.getLogger(getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);</span>
+<span class="nc" id="L93">                return Response.serverError().build();</span>
+            }
+        } else {
+            // En caso de que falten parámetros en el payload
+<span class="nc" id="L97">            return Response.status(RestResourceHeaderPattern.STATUS_PARAMETRO_EQUIVOCADO)</span>
+<span class="nc" id="L98">                    .header(RestResourceHeaderPattern.DETALLE_PARAMETRO_EQUIVOCADO, &quot;Parámetros incorrectos&quot;)</span>
+<span class="nc" id="L99">                    .build();</span>
+        }
+    }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

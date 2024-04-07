@@ -73,24 +73,31 @@ public class MetadatoResource implements Serializable {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response create(Metadato metadato, @Context UriInfo info) {
-        if (metadato != null && metadato.getIdMetadata() != null && metadato.getFechaCreacion() != null) {
+    public Response createMetadato(Metadato metadato, @PathParam("idDocumento") Long idDocumento, @Context UriInfo info) {
+        if (metadato != null && metadato.getIdAtributo() != null && metadato.getIdDocumento() != null) {
             try {
+                // Lógica para crear el metadato en la base de datos
                 mBean.create(metadato);
+
+                // Se construye la URI del recurso creado
                 URI requestUri = info.getRequestUri();
+                String location = requestUri.toString() + "/" + metadato.getIdMetadata();
+
+                // Se retorna una respuesta exitosa con el código 201 y la ubicación del recurso creado
                 return Response.status(Response.Status.CREATED)
-                        .header("location", requestUri.toString() + "/" + metadato.getIdMetadata())
+                        .header("Location", location)
                         .build();
             } catch (Exception ex) {
+                // En caso de que ocurra una excepción durante la creación del metadato
                 Logger.getLogger(getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);
+                return Response.serverError().build();
             }
-            return Response.status(500)
-                    .header("create-exception", metadato.toString())
+        } else {
+            // En caso de que falten parámetros en el payload
+            return Response.status(RestResourceHeaderPattern.STATUS_PARAMETRO_EQUIVOCADO)
+                    .header(RestResourceHeaderPattern.DETALLE_PARAMETRO_EQUIVOCADO, "Parámetros incorrectos")
                     .build();
         }
-        return Response.status(422)
-                .header("missing-parameter", "id")
-                .build();
     }
 
 }
