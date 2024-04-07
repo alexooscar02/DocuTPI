@@ -48,21 +48,22 @@ public class PrimerParcialIT {
     static Long ID_TAXONOMIA_CREADO;
     static Long ID_METADATO_CREADO;
 
-    static MountableFile war1 = MountableFile.forHostPath(Paths.get(PATH_WAR).toAbsolutePath(), 0777);
     static Network red1 = Network.newNetwork();
+    static MountableFile war1 = MountableFile.
+            forHostPath(Paths.get(PATH_WAR).toAbsolutePath(), 0777);
 
-    @Container
     static PostgreSQLContainer postgres1 = new PostgreSQLContainer<>(IMAGE_POSTGRES)
             .withDatabaseName(DB_NAME)
             .withPassword(DB_PASSWORD)
             .withUsername(DB_USER)
             .withInitScript(SCRIT_INIT_DB)
             .withNetwork(red1)
-            .withNetworkAliases("db")
-            .withExposedPorts(5432);
+            .withNetworkAliases("db");
+    // .withExposedPorts(5432);
 
     @Container
     static GenericContainer payara1 = new GenericContainer(IMAGE_DOCUMIENTOS_SERVER)
+            .waitingFor(Wait.forLogMessage(".*deploy AdminCommandApplication deployed with name aplicacion.*", 1))
             .withEnv("POSTGRES_USER", "postgres")
             .withEnv("POSTGRES_PASSWORD", "123")
             .withEnv("POSTGRES_PORT", "5432")
@@ -70,8 +71,7 @@ public class PrimerParcialIT {
             .dependsOn(postgres1)
             .withNetwork(red1)
             .withExposedPorts(8080)
-            .withCopyFileToContainer(war1, PATH_TO_PAYARA_SERVER_WAR)
-            .waitingFor(Wait.forLogMessage(".*deploy AdminCommandApplication deployed with name aplicacion.*", 1));
+            .withCopyFileToContainer(war1, PATH_TO_PAYARA_SERVER_WAR);
 
     static Client cliente;
     static WebTarget target;

@@ -4,6 +4,7 @@
  */
 package sv.edu.ues.occ.ingenieria.tpi135.documientos.boundary.rest;
 
+import jakarta.ejb.Stateless;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
@@ -33,6 +34,9 @@ import sv.edu.ues.occ.ingenieria.tpi135.documientos.entity.TipoAtributo;
  * @author home
  */
 @Path("tipoatributo")
+@Produces(MediaType.APPLICATION_JSON)
+@Consumes(MediaType.APPLICATION_JSON)
+@Stateless
 public class TipoAtributoResource implements Serializable {
 
     @Inject
@@ -76,98 +80,107 @@ public class TipoAtributoResource implements Serializable {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public Response create(TipoAtributo tipoAtributo, @Context UriInfo info) {
-        if (tipoAtributo != null && tipoAtributo.getIdTipoAtributo() != null && tipoAtributo.getNombre() != null) {
+        if (tipoAtributo != null && tipoAtributo.getIdTipoAtributo() == null) {
+            return Response.status(RestResourceHeaderPattern.STATUS_PARAMETRO_FALTANTE)
+                    .header(RestResourceHeaderPattern.DETALLE_ERROR, RestResourceHeaderPattern.DETALLE_PARAMETRO_FALTANTE + ": idTipoAtributo")
+                    .build();
+        } else if (tipoAtributo != null && tipoAtributo.getNombre() == null) {
+            return Response.status(RestResourceHeaderPattern.STATUS_PARAMETRO_FALTANTE)
+                    .header(RestResourceHeaderPattern.DETALLE_ERROR, RestResourceHeaderPattern.DETALLE_PARAMETRO_FALTANTE + ": nombre")
+                    .build();
+        } else if (tipoAtributo != null) {
             try {
                 taBean.create(tipoAtributo);
                 URI requestUri = info.getRequestUri();
                 return Response.status(Response.Status.CREATED)
-                        .header("location", requestUri.toString() + "/" + tipoAtributo.getIdTipoAtributo())
+                        .header("Location", requestUri.toString() + "/" + tipoAtributo.getIdTipoAtributo())
                         .build();
             } catch (Exception ex) {
                 Logger.getLogger(getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);
-            }
-            return Response.status(500)
-                    .header("create-exception", tipoAtributo.toString())
-                    .build();
-        }
-        return Response.status(422)
-                .header("missing-parameter", "id")
-                .build();
-    }
-
-    @PUT
-    @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Path("/{id}")
-    public Response update(@PathParam("id") Integer idTipoAtributo, TipoAtributo updatedTipoAtributo) {
-        if (idTipoAtributo != null && updatedTipoAtributo != null) {
-            TipoAtributo existingTipoAtributo = taBean.findById(idTipoAtributo);
-            if (existingTipoAtributo != null) {
-                try {
-                    existingTipoAtributo.setNombre(updatedTipoAtributo.getNombre());
-                    // Actualizar otros campos si es necesario
-                    TipoAtributo modifiedTipoAtributo = taBean.modify(existingTipoAtributo);
-                    return Response.status(Response.Status.OK)
-                            .entity(modifiedTipoAtributo)
-                            .build();
-                } catch (Exception ex) {
-                    Logger.getLogger(getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);
-                    return Response.status(500)
-                            .header("update-exception", updatedTipoAtributo.toString())
-                            .build();
-                }
-            } else {
-                return Response.status(Response.Status.NOT_FOUND)
-                        .header("not-found", "id")
+                return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                        .header("create-exception", tipoAtributo.toString())
                         .build();
             }
-        }
-        return Response.status(422)
-                .header("missing-parameter", "id or updated data")
-                .build();
-    }
-
-    @DELETE
-    @Path("/{id}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response delete(@PathParam("id") Integer idTipoAtributo) {
-        if (idTipoAtributo != null) {
-            TipoAtributo tipoAtributoToDelete = taBean.findById(idTipoAtributo);
-            if (tipoAtributoToDelete != null) {
-                try {
-                    taBean.delete(tipoAtributoToDelete);
-                    return Response.status(Response.Status.NO_CONTENT).build();
-                } catch (Exception ex) {
-                    Logger.getLogger(getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);
-                    return Response.status(500)
-                            .header("delete-exception", tipoAtributoToDelete.toString())
-                            .build();
-                }
-            } else {
-                return Response.status(Response.Status.NOT_FOUND)
-                        .header("not-found", "id")
-                        .build();
-            }
-        }
-        return Response.status(422)
-                .header("missing-parameter", "id")
-                .build();
-    }
-
-    @GET
-    @Path("/count")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response count() {
-        try {
-            Long total = taBean.count();
-            return Response.status(Response.Status.OK)
-                    .entity(total)
-                    .build();
-        } catch (Exception ex) {
-            Logger.getLogger(getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);
-            return Response.status(500)
-                    .header("count-exception", ex.getMessage())
+        } else {
+            return Response.status(RestResourceHeaderPattern.STATUS_PARAMETRO_EQUIVOCADO)
+                    .header(RestResourceHeaderPattern.DETALLE_ERROR, "Payload vacío")
                     .build();
         }
     }
+
+//    @PUT
+//    @Produces(MediaType.APPLICATION_JSON)
+//    @Consumes(MediaType.APPLICATION_JSON)
+//    @Path("/{id}")
+//    public Response update(@PathParam("id") Integer idTipoAtributo, TipoAtributo updatedTipoAtributo) {
+//        if (idTipoAtributo != null && updatedTipoAtributo != null) {
+//            TipoAtributo existingTipoAtributo = taBean.findById(idTipoAtributo);
+//            if (existingTipoAtributo != null) {
+//                try {
+//                    existingTipoAtributo.setNombre(updatedTipoAtributo.getNombre());
+//                    // Actualizar otros campos si es necesario
+//                    TipoAtributo modifiedTipoAtributo = taBean.modify(existingTipoAtributo);
+//                    return Response.status(Response.Status.OK)
+//                            .entity(modifiedTipoAtributo)
+//                            .build();
+//                } catch (Exception ex) {
+//                    Logger.getLogger(getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);
+//                    return Response.status(500)
+//                            .header("update-exception", updatedTipoAtributo.toString())
+//                            .build();
+//                }
+//            } else {
+//                return Response.status(Response.Status.NOT_FOUND)
+//                        .header("not-found", "id")
+//                        .build();
+//            }
+//        }
+//        return Response.status(422)
+//                .header("missing-parameter", "id or updated data")
+//                .build();
+//    }
+//
+//    @DELETE
+//    @Path("/{id}")
+//    @Produces(MediaType.APPLICATION_JSON)
+//    public Response delete(@PathParam("id") Integer idTipoAtributo) {
+//        if (idTipoAtributo != null) {
+//            TipoAtributo tipoAtributoToDelete = taBean.findById(idTipoAtributo);
+//            if (tipoAtributoToDelete != null) {
+//                try {
+//                    taBean.delete(tipoAtributoToDelete);
+//                    return Response.status(Response.Status.NO_CONTENT).build();
+//                } catch (Exception ex) {
+//                    Logger.getLogger(getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);
+//                    return Response.status(500)
+//                            .header("delete-exception", tipoAtributoToDelete.toString())
+//                            .build();
+//                }
+//            } else {
+//                return Response.status(Response.Status.NOT_FOUND)
+//                        .header("not-found", "id")
+//                        .build();
+//            }
+//        }
+//        return Response.status(422)
+//                .header("missing-parameter", "id")
+//                .build();
+//    }
+//
+//    @GET
+//    @Path("/count")
+//    @Produces(MediaType.APPLICATION_JSON)
+//    public Response count() {
+//        try {
+//            Long total = taBean.count();
+//            return Response.status(Response.Status.OK)
+//                    .entity(total)
+//                    .build();
+//        } catch (Exception ex) {
+//            Logger.getLogger(getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);
+//            return Response.status(500)
+//                    .header("count-exception", ex.getMessage())
+//                    .build();
+//        }
+//    }
 }

@@ -17,7 +17,7 @@ public class Constantes {
     public static final String PATH_WAR = "target/Documientos-1.0-SNAPSHOT.war";
     public static final String SCRIT_INIT_DB = "documientos.sql";
     public static final String IMAGE_POSTGRES = "postgres:13-alpine";
-    public static final String PATH_TO_PAYARA_SERVER_WAR = "target/Documientos-1.0-SNAPSHOT.war";
+    public static final String PATH_TO_PAYARA_SERVER_WAR = "/opt/payara/deployments/aplicacion.war";
     public static final String IMAGE_DOCUMIENTOS_SERVER = "payara/full_pru5:6.2024.1";
 
 }

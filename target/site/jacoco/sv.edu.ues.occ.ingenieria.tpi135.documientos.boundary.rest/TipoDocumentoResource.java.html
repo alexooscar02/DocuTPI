@@ -77,100 +77,109 @@ import sv.edu.ues.occ.ingenieria.tpi135.documientos.entity.TipoDocumento;
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public Response create(TipoDocumento tipoDocumento, @Context UriInfo info) {
-<span class="nc bnc" id="L80" title="All 6 branches missed.">        if (tipoDocumento != null &amp;&amp; tipoDocumento.getIdTipoDocumento() != null &amp;&amp; tipoDocumento.getNombre() != null) {</span>
+<span class="nc bnc" id="L80" title="All 4 branches missed.">        if (tipoDocumento != null &amp;&amp; tipoDocumento.getIdTipoDocumento() != null) {</span>
+<span class="nc" id="L81">            return Response.status(Response.Status.BAD_REQUEST)</span>
+<span class="nc" id="L82">                    .header(RestResourceHeaderPattern.DETALLE_ERROR, RestResourceHeaderPattern.DETALLE_PARAMETRO_FALTANTE + &quot;: idTipoDocumento&quot;)</span>
+<span class="nc" id="L83">                    .build();</span>
+<span class="nc bnc" id="L84" title="All 4 branches missed.">        } else if (tipoDocumento != null &amp;&amp; tipoDocumento.getNombre() == null) {</span>
+<span class="nc" id="L85">            return Response.status(Response.Status.BAD_REQUEST)</span>
+<span class="nc" id="L86">                    .header(RestResourceHeaderPattern.DETALLE_ERROR, RestResourceHeaderPattern.DETALLE_PARAMETRO_FALTANTE + &quot;: nombre&quot;)</span>
+<span class="nc" id="L87">                    .build();</span>
+<span class="nc bnc" id="L88" title="All 2 branches missed.">        } else if (tipoDocumento != null) {</span>
             try {
-<span class="nc" id="L82">                tdBean.create(tipoDocumento);</span>
-<span class="nc" id="L83">                URI requestUri = info.getRequestUri();</span>
-<span class="nc" id="L84">                return Response.status(Response.Status.CREATED)</span>
-<span class="nc" id="L85">                        .header(&quot;location&quot;, requestUri.toString() + &quot;/&quot; + tipoDocumento.getIdTipoDocumento())</span>
-<span class="nc" id="L86">                        .build();</span>
-<span class="nc" id="L87">            } catch (Exception ex) {</span>
-<span class="nc" id="L88">                Logger.getLogger(getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);</span>
+<span class="nc" id="L90">                tdBean.create(tipoDocumento);</span>
+<span class="nc" id="L91">                URI requestUri = info.getRequestUri();</span>
+<span class="nc" id="L92">                return Response.status(Response.Status.CREATED)</span>
+<span class="nc" id="L93">                        .header(&quot;Location&quot;, requestUri.toString() + &quot;/&quot; + tipoDocumento.getIdTipoDocumento())</span>
+<span class="nc" id="L94">                        .build();</span>
+<span class="nc" id="L95">            } catch (Exception ex) {</span>
+<span class="nc" id="L96">                Logger.getLogger(getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);</span>
+<span class="nc" id="L97">                return Response.status(Response.Status.INTERNAL_SERVER_ERROR)</span>
+<span class="nc" id="L98">                        .header(&quot;create-exception&quot;, tipoDocumento.toString())</span>
+<span class="nc" id="L99">                        .build();</span>
             }
-<span class="nc" id="L90">            return Response.status(500)</span>
-<span class="nc" id="L91">                    .header(&quot;create-exception&quot;, tipoDocumento.toString())</span>
-<span class="nc" id="L92">                    .build();</span>
-        }
-<span class="nc" id="L94">        return Response.status(422)</span>
-<span class="nc" id="L95">                .header(&quot;missing-parameter&quot;, &quot;id&quot;)</span>
-<span class="nc" id="L96">                .build();</span>
-    }
-
-    @PUT
-    @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Path(&quot;/{id}&quot;)
-    public Response update(@PathParam(&quot;id&quot;) Integer idTipoDocumento, TipoDocumento updatedTipoDocumento) {
-<span class="nc bnc" id="L104" title="All 4 branches missed.">        if (idTipoDocumento != null &amp;&amp; updatedTipoDocumento != null) {</span>
-<span class="nc" id="L105">            TipoDocumento existingTipoDocumento = tdBean.findById(idTipoDocumento);</span>
-<span class="nc bnc" id="L106" title="All 2 branches missed.">            if (existingTipoDocumento != null) {</span>
-                try {
-<span class="nc" id="L108">                    existingTipoDocumento.setNombre(updatedTipoDocumento.getNombre());</span>
-                    // Actualizar otros campos si es necesario
-<span class="nc" id="L110">                    TipoDocumento modifiedTipoDocumento = tdBean.modify(existingTipoDocumento);</span>
-<span class="nc" id="L111">                    return Response.status(Response.Status.OK)</span>
-<span class="nc" id="L112">                            .entity(modifiedTipoDocumento)</span>
-<span class="nc" id="L113">                            .build();</span>
-<span class="nc" id="L114">                } catch (Exception ex) {</span>
-<span class="nc" id="L115">                    Logger.getLogger(getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);</span>
-<span class="nc" id="L116">                    return Response.status(500)</span>
-<span class="nc" id="L117">                            .header(&quot;update-exception&quot;, updatedTipoDocumento.toString())</span>
-<span class="nc" id="L118">                            .build();</span>
-                }
-            } else {
-<span class="nc" id="L121">                return Response.status(Response.Status.NOT_FOUND)</span>
-<span class="nc" id="L122">                        .header(&quot;not-found&quot;, &quot;id&quot;)</span>
-<span class="nc" id="L123">                        .build();</span>
-            }
-        }
-<span class="nc" id="L126">        return Response.status(422)</span>
-<span class="nc" id="L127">                .header(&quot;missing-parameter&quot;, &quot;id or updated data&quot;)</span>
-<span class="nc" id="L128">                .build();</span>
-    }
-
-    @DELETE
-    @Path(&quot;/{id}&quot;)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response delete(@PathParam(&quot;id&quot;) Integer idTipoDocumento) {
-<span class="nc bnc" id="L135" title="All 2 branches missed.">        if (idTipoDocumento != null) {</span>
-<span class="nc" id="L136">            TipoDocumento tipoDocumentoToDelete = tdBean.findById(idTipoDocumento);</span>
-<span class="nc bnc" id="L137" title="All 2 branches missed.">            if (tipoDocumentoToDelete != null) {</span>
-                try {
-<span class="nc" id="L139">                    tdBean.delete(tipoDocumentoToDelete);</span>
-<span class="nc" id="L140">                    return Response.status(Response.Status.NO_CONTENT).build();</span>
-<span class="nc" id="L141">                } catch (Exception ex) {</span>
-<span class="nc" id="L142">                    Logger.getLogger(getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);</span>
-<span class="nc" id="L143">                    return Response.status(500)</span>
-<span class="nc" id="L144">                            .header(&quot;delete-exception&quot;, tipoDocumentoToDelete.toString())</span>
-<span class="nc" id="L145">                            .build();</span>
-                }
-            } else {
-<span class="nc" id="L148">                return Response.status(Response.Status.NOT_FOUND)</span>
-<span class="nc" id="L149">                        .header(&quot;not-found&quot;, &quot;id&quot;)</span>
-<span class="nc" id="L150">                        .build();</span>
-            }
-        }
-<span class="nc" id="L153">        return Response.status(422)</span>
-<span class="nc" id="L154">                .header(&quot;missing-parameter&quot;, &quot;id&quot;)</span>
-<span class="nc" id="L155">                .build();</span>
-    }
-
-    @GET
-    @Path(&quot;/count&quot;)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response count() {
-        try {
-<span class="nc" id="L163">            Long total = tdBean.count();</span>
-<span class="nc" id="L164">            return Response.status(Response.Status.OK)</span>
-<span class="nc" id="L165">                    .entity(total)</span>
-<span class="nc" id="L166">                    .build();</span>
-<span class="nc" id="L167">        } catch (Exception ex) {</span>
-<span class="nc" id="L168">            Logger.getLogger(getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);</span>
-<span class="nc" id="L169">            return Response.status(500)</span>
-<span class="nc" id="L170">                    .header(&quot;count-exception&quot;, ex.getMessage())</span>
-<span class="nc" id="L171">                    .build();</span>
+        } else {
+<span class="nc" id="L102">            return Response.status(Response.Status.BAD_REQUEST)</span>
+<span class="nc" id="L103">                    .header(RestResourceHeaderPattern.DETALLE_ERROR, &quot;Payload vacío&quot;)</span>
+<span class="nc" id="L104">                    .build();</span>
         }
     }
-
 }
+
+//    @PUT
+//    @Produces(MediaType.APPLICATION_JSON)
+//    @Consumes(MediaType.APPLICATION_JSON)
+//    @Path(&quot;/{id}&quot;)
+//    public Response update(@PathParam(&quot;id&quot;) Integer idTipoDocumento, TipoDocumento updatedTipoDocumento) {
+//        if (idTipoDocumento != null &amp;&amp; updatedTipoDocumento != null) {
+//            TipoDocumento existingTipoDocumento = tdBean.findById(idTipoDocumento);
+//            if (existingTipoDocumento != null) {
+//                try {
+//                    existingTipoDocumento.setNombre(updatedTipoDocumento.getNombre());
+//                    // Actualizar otros campos si es necesario
+//                    TipoDocumento modifiedTipoDocumento = tdBean.modify(existingTipoDocumento);
+//                    return Response.status(Response.Status.OK)
+//                            .entity(modifiedTipoDocumento)
+//                            .build();
+//                } catch (Exception ex) {
+//                    Logger.getLogger(getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);
+//                    return Response.status(500)
+//                            .header(&quot;update-exception&quot;, updatedTipoDocumento.toString())
+//                            .build();
+//                }
+//            } else {
+//                return Response.status(Response.Status.NOT_FOUND)
+//                        .header(&quot;not-found&quot;, &quot;id&quot;)
+//                        .build();
+//            }
+//        }
+//        return Response.status(422)
+//                .header(&quot;missing-parameter&quot;, &quot;id or updated data&quot;)
+//                .build();
+//    }
+//
+//    @DELETE
+//    @Path(&quot;/{id}&quot;)
+//    @Produces(MediaType.APPLICATION_JSON)
+//    public Response delete(@PathParam(&quot;id&quot;) Integer idTipoDocumento) {
+//        if (idTipoDocumento != null) {
+//            TipoDocumento tipoDocumentoToDelete = tdBean.findById(idTipoDocumento);
+//            if (tipoDocumentoToDelete != null) {
+//                try {
+//                    tdBean.delete(tipoDocumentoToDelete);
+//                    return Response.status(Response.Status.NO_CONTENT).build();
+//                } catch (Exception ex) {
+//                    Logger.getLogger(getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);
+//                    return Response.status(500)
+//                            .header(&quot;delete-exception&quot;, tipoDocumentoToDelete.toString())
+//                            .build();
+//                }
+//            } else {
+//                return Response.status(Response.Status.NOT_FOUND)
+//                        .header(&quot;not-found&quot;, &quot;id&quot;)
+//                        .build();
+//            }
+//        }
+//        return Response.status(422)
+//                .header(&quot;missing-parameter&quot;, &quot;id&quot;)
+//                .build();
+//    }
+//
+//    @GET
+//    @Path(&quot;/count&quot;)
+//    @Produces(MediaType.APPLICATION_JSON)
+//    public Response count() {
+//        try {
+//            Long total = tdBean.count();
+//            return Response.status(Response.Status.OK)
+//                    .entity(total)
+//                    .build();
+//        } catch (Exception ex) {
+//            Logger.getLogger(getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);
+//            return Response.status(500)
+//                    .header(&quot;count-exception&quot;, ex.getMessage())
+//                    .build();
+//        }
+//    }
+
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>
