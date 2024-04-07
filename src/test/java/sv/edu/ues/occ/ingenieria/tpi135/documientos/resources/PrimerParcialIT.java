@@ -63,11 +63,15 @@ public class PrimerParcialIT {
 
     @Container
     static GenericContainer payara1 = new GenericContainer(IMAGE_DOCUMIENTOS_SERVER)
+            .withEnv("POSTGRES_USER", "postgres")
+            .withEnv("POSTGRES_PASSWORD", "123")
+            .withEnv("POSTGRES_PORT", "5432")
+            .withEnv("POSTGRES_DBNAME", "documentostpi135")
             .dependsOn(postgres1)
             .withNetwork(red1)
             .withExposedPorts(8080)
             .withCopyFileToContainer(war1, PATH_TO_PAYARA_SERVER_WAR)
-            .waitingFor(Wait.forLogMessage(PAYARA_SERVER_FULL_LOG, 1));
+            .waitingFor(Wait.forLogMessage(".*deploy AdminCommandApplication deployed with name aplicacion.*", 1));
 
     static Client cliente;
 //
@@ -81,9 +85,10 @@ public class PrimerParcialIT {
         Assertions.assertTrue(payara1.isRunning());
         Assertions.assertTrue(postgres1.isRunning());
         cliente = ClientBuilder.newClient();
-        URI baseUri = URI.create(String.format("http://localhost:%d/aplicacion/resources/",
-                payara1.getMappedPort(8080)));
-        target = cliente.target(baseUri);
+
+        target = target = cliente.target(String.format("http://%s:%d/aplicacion/resources/",
+                payara1.getContainerIpAddress(), payara1.getMappedPort(8080)));
+
     }
 
     @Test

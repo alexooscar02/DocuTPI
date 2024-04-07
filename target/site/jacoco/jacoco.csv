@@ -9,10 +9,10 @@ Documientos-1.0-SNAPSHOT,sv.edu.ues.occ.ingenieria.tpi135.documientos.boundary.r
 Documientos-1.0-SNAPSHOT,sv.edu.ues.occ.ingenieria.tpi135.documientos.boundary.rest,TipoAtributoResource,234,0,24,0,74,0,19,0,7,0
 Documientos-1.0-SNAPSHOT,sv.edu.ues.occ.ingenieria.tpi135.documientos.boundary.rest,AtributoResource,96,0,14,0,30,0,11,0,4,0
 Documientos-1.0-SNAPSHOT,sv.edu.ues.occ.ingenieria.tpi135.documientos.entity,Metadato,90,7,12,0,29,4,21,2,15,2
-Documientos-1.0-SNAPSHOT,sv.edu.ues.occ.ingenieria.tpi135.documientos.entity,TipoDocumento,90,7,12,0,29,4,21,2,15,2
-Documientos-1.0-SNAPSHOT,sv.edu.ues.occ.ingenieria.tpi135.documientos.entity,TipoAtributo,97,7,12,0,32,4,23,2,17,2
+Documientos-1.0-SNAPSHOT,sv.edu.ues.occ.ingenieria.tpi135.documientos.entity,TipoDocumento,72,25,12,0,23,10,15,8,9,8
+Documientos-1.0-SNAPSHOT,sv.edu.ues.occ.ingenieria.tpi135.documientos.entity,TipoAtributo,76,28,12,0,25,11,16,9,10,9
 Documientos-1.0-SNAPSHOT,sv.edu.ues.occ.ingenieria.tpi135.documientos.entity,Taxonomia,76,7,12,0,23,4,17,2,11,2
-Documientos-1.0-SNAPSHOT,sv.edu.ues.occ.ingenieria.tpi135.documientos.entity,Documento,118,7,12,0,41,4,29,2,23,2
+Documientos-1.0-SNAPSHOT,sv.edu.ues.occ.ingenieria.tpi135.documientos.entity,Documento,88,37,12,0,31,14,19,12,13,12
 Documientos-1.0-SNAPSHOT,sv.edu.ues.occ.ingenieria.tpi135.documientos.entity,Atributo,113,7,12,0,39,4,26,2,20,2
 Documientos-1.0-SNAPSHOT,sv.edu.ues.occ.ingenieria.tpi135.documientos,AppConfiguration,3,0,0,0,1,0,1,0,1,0
 Documientos-1.0-SNAPSHOT,sv.edu.ues.occ.ingenieria.tpi135.documientos,JakartaRestConfiguration,3,0,0,0,1,0,1,0,1,0
