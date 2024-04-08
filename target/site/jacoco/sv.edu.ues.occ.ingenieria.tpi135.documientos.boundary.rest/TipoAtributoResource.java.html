@@ -82,38 +82,30 @@ import sv.edu.ues.occ.ingenieria.tpi135.documientos.entity.TipoAtributo;
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createTipoAtributo(TipoAtributo tipoAtributo, @Context UriInfo info) {
-<span class="nc bnc" id="L85" title="All 4 branches missed.">        if (tipoAtributo != null &amp;&amp; tipoAtributo.getExpresionRegular() != null</span>
-<span class="nc bnc" id="L86" title="All 4 branches missed.">                &amp;&amp; tipoAtributo.getIndicacionesScreen() != null &amp;&amp; tipoAtributo.getNombre() != null</span>
-<span class="nc bnc" id="L87" title="All 4 branches missed.">                &amp;&amp; tipoAtributo.getNombreScreen() != null &amp;&amp; tipoAtributo.getObservaciones() != null) {</span>
-            try {
-                // Si el id llega como null, asignamos uno nuevo
-<span class="nc bnc" id="L90" title="All 2 branches missed.">                if (tipoAtributo.getIdTipoAtributo() == null) {</span>
-                    // Aquí debes implementar la lógica para obtener un id único, por ejemplo, consultando la base de datos
-<span class="nc" id="L92">                    Integer nuevoId = taBean.obtenerNuevoId(); // Método que devuelve un nuevo id único</span>
-<span class="nc" id="L93">                    tipoAtributo.setIdTipoAtributo(nuevoId);</span>
-                }
+<span class="nc bnc" id="L85" title="All 6 branches missed.">        if (tipoAtributo == null || tipoAtributo.getExpresionRegular() == null || tipoAtributo.getIndicacionesScreen() == null</span>
+<span class="nc bnc" id="L86" title="All 6 branches missed.">                || tipoAtributo.getNombre() == null || tipoAtributo.getNombreScreen() == null || tipoAtributo.getObservaciones() == null) {</span>
+            // Caso: Payload nulo o parámetros faltantes
+<span class="nc" id="L88">            return Response.status(RestResourceHeaderPattern.STATUS_PARAMETRO_EQUIVOCADO)</span>
+<span class="nc" id="L89">                    .header(RestResourceHeaderPattern.DETALLE_PARAMETRO_EQUIVOCADO, &quot;Parámetros incorrectos&quot;)</span>
+<span class="nc" id="L90">                    .build();</span>
+        }
 
-                // Lógica para crear el tipo de atributo en la base de datos
-<span class="nc" id="L97">                taBean.create(tipoAtributo);</span>
+        try {
+            // Lógica para crear el tipo de atributo en la base de datos
+<span class="nc" id="L95">            taBean.create(tipoAtributo);</span>
 
-                // Construimos la URI del recurso creado
-<span class="nc" id="L100">                URI requestUri = info.getRequestUri();</span>
-<span class="nc" id="L101">                String location = requestUri.toString() + &quot;/&quot; + tipoAtributo.getIdTipoAtributo();</span>
+            // Construimos la URI del recurso creado
+<span class="nc" id="L98">            URI requestUri = info.getRequestUri();</span>
+<span class="nc" id="L99">            String location = requestUri.toString() + &quot;/&quot; + tipoAtributo.getIdTipoAtributo();</span>
 
-                // Retornamos una respuesta exitosa con el código 201 y la ubicación del recurso creado
-<span class="nc" id="L104">                return Response.status(Response.Status.CREATED)</span>
-<span class="nc" id="L105">                        .header(&quot;Location&quot;, location)</span>
-<span class="nc" id="L106">                        .build();</span>
-<span class="nc" id="L107">            } catch (Exception ex) {</span>
-                // En caso de que ocurra una excepción durante la creación del tipo de atributo
-<span class="nc" id="L109">                Logger.getLogger(getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);</span>
-<span class="nc" id="L110">                return Response.serverError().build();</span>
-            }
-        } else {
-            // En caso de que falten parámetros en el payload
-<span class="nc" id="L114">            return Response.status(RestResourceHeaderPattern.STATUS_PARAMETRO_EQUIVOCADO)</span>
-<span class="nc" id="L115">                    .header(RestResourceHeaderPattern.DETALLE_PARAMETRO_EQUIVOCADO, &quot;Parámetros incorrectos&quot;)</span>
-<span class="nc" id="L116">                    .build();</span>
+            // Retornamos una respuesta exitosa con el código 201 y la ubicación del recurso creado
+<span class="nc" id="L102">            return Response.status(Response.Status.CREATED)</span>
+<span class="nc" id="L103">                    .header(&quot;Location&quot;, location)</span>
+<span class="nc" id="L104">                    .build();</span>
+<span class="nc" id="L105">        } catch (Exception ex) {</span>
+            // En caso de que ocurra una excepción durante la creación del tipo de atributo
+<span class="nc" id="L107">            Logger.getLogger(getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);</span>
+<span class="nc" id="L108">            return Response.serverError().build();</span>
         }
     }
 

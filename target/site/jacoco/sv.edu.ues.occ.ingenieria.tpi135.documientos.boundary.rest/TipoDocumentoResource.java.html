@@ -78,36 +78,29 @@ import sv.edu.ues.occ.ingenieria.tpi135.documientos.entity.TipoDocumento;
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createTipoDocumento(TipoDocumento tipoDocumento, @Context UriInfo info) {
-<span class="nc bnc" id="L81" title="All 6 branches missed.">        if (tipoDocumento != null &amp;&amp; tipoDocumento.getNombre() != null &amp;&amp; tipoDocumento.getActivo() != null) {</span>
-            try {
-                // Si el id llega como null, asignamos uno nuevo
-<span class="nc bnc" id="L84" title="All 2 branches missed.">                if (tipoDocumento.getIdTipoDocumento() == null) {</span>
-                    // Aquí debes implementar la lógica para obtener un id único, por ejemplo, consultando la base de datos
-<span class="nc" id="L86">                    Integer nuevoId = tdBean.obtenerNuevoId(); // Método que devuelve un nuevo id único</span>
-<span class="nc" id="L87">                    tipoDocumento.setIdTipoDocumento(nuevoId);</span>
-                }
+<span class="nc bnc" id="L81" title="All 6 branches missed.">        if (tipoDocumento == null || tipoDocumento.getNombre() == null || tipoDocumento.getActivo() == null) {</span>
+            // Caso: Payload nulo o parámetros faltantes
+<span class="nc" id="L83">            return Response.status(RestResourceHeaderPattern.STATUS_PARAMETRO_EQUIVOCADO)</span>
+<span class="nc" id="L84">                    .header(RestResourceHeaderPattern.DETALLE_PARAMETRO_EQUIVOCADO, &quot;Parámetros incorrectos&quot;)</span>
+<span class="nc" id="L85">                    .build();</span>
+        }
 
-                // Lógica para crear el tipo de atributo en la base de datos
-<span class="nc" id="L91">                tdBean.create(tipoDocumento);</span>
+        try {
+            // Lógica para crear el tipo de documento en la base de datos
+<span class="nc" id="L90">            tdBean.create(tipoDocumento);</span>
 
-                // Construimos la URI del recurso creado
-<span class="nc" id="L94">                URI requestUri = info.getRequestUri();</span>
-<span class="nc" id="L95">                String location = requestUri.toString() + &quot;/&quot; + tipoDocumento.getIdTipoDocumento();</span>
+            // Construimos la URI del recurso creado
+<span class="nc" id="L93">            URI requestUri = info.getRequestUri();</span>
+<span class="nc" id="L94">            String location = requestUri.toString() + &quot;/&quot; + tipoDocumento.getIdTipoDocumento();</span>
 
-                // Retornamos una respuesta exitosa con el código 201 y la ubicación del recurso creado
-<span class="nc" id="L98">                return Response.status(Response.Status.CREATED)</span>
-<span class="nc" id="L99">                        .header(&quot;Location&quot;, location)</span>
-<span class="nc" id="L100">                        .build();</span>
-<span class="nc" id="L101">            } catch (Exception ex) {</span>
-                // En caso de que ocurra una excepción durante la creación del tipo de atributo
-<span class="nc" id="L103">                Logger.getLogger(getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);</span>
-<span class="nc" id="L104">                return Response.serverError().build();</span>
-            }
-        } else {
-            // En caso de que falten parámetros en el payload
-<span class="nc" id="L108">            return Response.status(RestResourceHeaderPattern.STATUS_PARAMETRO_EQUIVOCADO)</span>
-<span class="nc" id="L109">                    .header(RestResourceHeaderPattern.DETALLE_PARAMETRO_EQUIVOCADO, &quot;Parámetros incorrectos&quot;)</span>
-<span class="nc" id="L110">                    .build();</span>
+            // Retornamos una respuesta exitosa con el código 201 y la ubicación del recurso creado
+<span class="nc" id="L97">            return Response.status(Response.Status.CREATED)</span>
+<span class="nc" id="L98">                    .header(&quot;Location&quot;, location)</span>
+<span class="nc" id="L99">                    .build();</span>
+<span class="nc" id="L100">        } catch (Exception ex) {</span>
+            // En caso de que ocurra una excepción durante la creación del tipo de documento
+<span class="nc" id="L102">            Logger.getLogger(getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);</span>
+<span class="nc" id="L103">            return Response.serverError().build();</span>
         }
     }
 

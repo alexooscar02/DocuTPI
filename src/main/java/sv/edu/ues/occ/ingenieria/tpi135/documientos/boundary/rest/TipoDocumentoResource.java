@@ -78,36 +78,29 @@ public class TipoDocumentoResource implements Serializable {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createTipoDocumento(TipoDocumento tipoDocumento, @Context UriInfo info) {
-        if (tipoDocumento != null && tipoDocumento.getNombre() != null && tipoDocumento.getActivo() != null) {
-            try {
-                // Si el id llega como null, asignamos uno nuevo
-                if (tipoDocumento.getIdTipoDocumento() == null) {
-                    // Aquí debes implementar la lógica para obtener un id único, por ejemplo, consultando la base de datos
-                    Integer nuevoId = tdBean.obtenerNuevoId(); // Método que devuelve un nuevo id único
-                    tipoDocumento.setIdTipoDocumento(nuevoId);
-                }
-
-                // Lógica para crear el tipo de atributo en la base de datos
-                tdBean.create(tipoDocumento);
-
-                // Construimos la URI del recurso creado
-                URI requestUri = info.getRequestUri();
-                String location = requestUri.toString() + "/" + tipoDocumento.getIdTipoDocumento();
-
-                // Retornamos una respuesta exitosa con el código 201 y la ubicación del recurso creado
-                return Response.status(Response.Status.CREATED)
-                        .header("Location", location)
-                        .build();
-            } catch (Exception ex) {
-                // En caso de que ocurra una excepción durante la creación del tipo de atributo
-                Logger.getLogger(getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);
-                return Response.serverError().build();
-            }
-        } else {
-            // En caso de que falten parámetros en el payload
+        if (tipoDocumento == null || tipoDocumento.getNombre() == null || tipoDocumento.getActivo() == null) {
+            // Caso: Payload nulo o parámetros faltantes
             return Response.status(RestResourceHeaderPattern.STATUS_PARAMETRO_EQUIVOCADO)
                     .header(RestResourceHeaderPattern.DETALLE_PARAMETRO_EQUIVOCADO, "Parámetros incorrectos")
                     .build();
+        }
+
+        try {
+            // Lógica para crear el tipo de documento en la base de datos
+            tdBean.create(tipoDocumento);
+
+            // Construimos la URI del recurso creado
+            URI requestUri = info.getRequestUri();
+            String location = requestUri.toString() + "/" + tipoDocumento.getIdTipoDocumento();
+
+            // Retornamos una respuesta exitosa con el código 201 y la ubicación del recurso creado
+            return Response.status(Response.Status.CREATED)
+                    .header("Location", location)
+                    .build();
+        } catch (Exception ex) {
+            // En caso de que ocurra una excepción durante la creación del tipo de documento
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);
+            return Response.serverError().build();
         }
     }
 
