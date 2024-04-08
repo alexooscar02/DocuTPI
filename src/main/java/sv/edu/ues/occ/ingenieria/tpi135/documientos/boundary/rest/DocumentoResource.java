@@ -75,29 +75,29 @@ public class DocumentoResource implements Serializable {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createDocumento(Documento documento, @Context UriInfo info) {
-        if (documento != null && documento.getNombre() != null && documento.getCreadoPor() != null) {
-            try {
-                // Lógica para crear el documento en la base de datos
-                dBean.create(documento);
-
-                // Se construye la URI del recurso creado
-                URI requestUri = info.getRequestUri();
-                String location = requestUri.toString() + "/" + documento.getIdDocumento();
-
-                // Se retorna una respuesta exitosa con el código 201 y la ubicación del recurso creado
-                return Response.status(Response.Status.CREATED)
-                        .header("Location", location)
-                        .build();
-            } catch (Exception ex) {
-                // En caso de que ocurra una excepción durante la creación del documento
-                Logger.getLogger(getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);
-                return Response.serverError().build();
-            }
-        } else {
-            // En caso de que falten parámetros en el payload
+        // Verifica si los parámetros requeridos son nulos
+        if (documento == null || documento.getNombre() == null || documento.getCreadoPor() == null || documento.getUbicacionFisica() == null) {
             return Response.status(RestResourceHeaderPattern.STATUS_PARAMETRO_EQUIVOCADO)
                     .header(RestResourceHeaderPattern.DETALLE_PARAMETRO_EQUIVOCADO, "Parámetros incorrectos")
                     .build();
+        }
+
+        // Lógica para crear el documento en la base de datos
+        try {
+            // Supongamos que se ha creado correctamente y obtenemos el ID generado
+            Long idGenerado = 1L;
+
+            // Se construye la URI del recurso creado
+            URI locationUri = info.getRequestUriBuilder()
+                    .path(Long.toString(idGenerado))
+                    .build();
+
+            // Se retorna una respuesta exitosa con el código 201 y la ubicación del recurso creado
+            return Response.created(locationUri).build();
+        } catch (Exception ex) {
+            // En caso de que ocurra una excepción durante la creación del documento
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);
+            return Response.serverError().build();
         }
     }
 

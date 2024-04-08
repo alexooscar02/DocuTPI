@@ -23,6 +23,7 @@ import java.io.Serializable;
 import java.net.URI;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import sv.edu.ues.occ.ingenieria.tpi135.documientos.Control.TipoDocumentoBean;
@@ -80,28 +81,34 @@ public class TipoDocumentoResource implements Serializable {
         if (tipoDocumento != null && tipoDocumento.getNombre() != null && tipoDocumento.getActivo() != null) {
             try {
                 // Lógica para crear el tipo de documento en la base de datos
-                // Supongamos que hay un servicio de persistencia llamado tipoDocumentoService
                 tdBean.create(tipoDocumento);
 
-                // Se construye la URI del recurso creado
-                URI requestUri = info.getRequestUri();
-                String location = requestUri.toString() + "/" + tipoDocumento.getIdTipoDocumento();
+                // Generar un nuevo ID para el tipo de documento
+                Integer nuevoId = obtenerNuevoId();
 
-                // Se retorna una respuesta exitosa con el código 201 y la ubicación del recurso creado
+                // Construir la URI del recurso creado
+                URI requestUri = info.getRequestUri();
+                String location = requestUri.toString() + "/" + nuevoId;
+
+                // Retornar una respuesta exitosa con el código 201 y la ubicación del recurso creado
                 return Response.status(Response.Status.CREATED)
                         .header("Location", location)
                         .build();
             } catch (Exception ex) {
-                // En caso de que ocurra una excepción durante la creación del tipo de documento
                 Logger.getLogger(getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);
                 return Response.serverError().build();
             }
         } else {
-            // En caso de que falten parámetros en el payload
             return Response.status(RestResourceHeaderPattern.STATUS_PARAMETRO_EQUIVOCADO)
                     .header(RestResourceHeaderPattern.DETALLE_PARAMETRO_EQUIVOCADO, "Parámetros incorrectos")
                     .build();
         }
+    }
+
+    public Integer obtenerNuevoId() {
+        Random random = new Random();
+        // Generar un entero aleatorio en el rango de Integer.MIN_VALUE a Integer.MAX_VALUE
+        return random.nextInt();
     }
 
 }

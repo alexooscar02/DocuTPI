@@ -19,11 +19,13 @@ import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.core.UriBuilder;
 import jakarta.ws.rs.core.UriInfo;
 import java.io.Serializable;
 import java.net.URI;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import sv.edu.ues.occ.ingenieria.tpi135.documientos.Control.TipoAtributoBean;
@@ -37,7 +39,7 @@ import sv.edu.ues.occ.ingenieria.tpi135.documientos.entity.TipoAtributo;
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 @Stateless
-<span class="nc" id="L40">public class TipoAtributoResource implements Serializable {</span>
+<span class="nc" id="L42">public class TipoAtributoResource implements Serializable {</span>
 
     @Inject
     TipoAtributoBean taBean;
@@ -50,70 +52,77 @@ import sv.edu.ues.occ.ingenieria.tpi135.documientos.entity.TipoAtributo;
             @QueryParam(value = &quot;pagesize&quot;)
             @DefaultValue(value = &quot;50&quot;) int pageSize
     ) {
-<span class="nc bnc" id="L53" title="All 4 branches missed.">        if (first &gt;= 0 &amp;&amp; pageSize &gt; 0) {</span>
-<span class="nc" id="L54">            return taBean.findRange(first, pageSize);</span>
+<span class="nc bnc" id="L55" title="All 4 branches missed.">        if (first &gt;= 0 &amp;&amp; pageSize &gt; 0) {</span>
+<span class="nc" id="L56">            return taBean.findRange(first, pageSize);</span>
         }
-<span class="nc" id="L56">        return Collections.EMPTY_LIST;</span>
+<span class="nc" id="L58">        return Collections.EMPTY_LIST;</span>
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path(&quot;/{id}&quot;)
     public Response findById(@PathParam(&quot;id&quot;) final Integer idTipoAtributo) {
-<span class="nc bnc" id="L63" title="All 2 branches missed.">        if (idTipoAtributo != null) {</span>
-<span class="nc" id="L64">            TipoAtributo found = taBean.findById(idTipoAtributo);</span>
-<span class="nc bnc" id="L65" title="All 2 branches missed.">            if (found != null) {</span>
-<span class="nc" id="L66">                return Response.status(Response.Status.OK)</span>
-<span class="nc" id="L67">                        .entity(found)</span>
-<span class="nc" id="L68">                        .build();</span>
+<span class="nc bnc" id="L65" title="All 2 branches missed.">        if (idTipoAtributo != null) {</span>
+<span class="nc" id="L66">            TipoAtributo found = taBean.findById(idTipoAtributo);</span>
+<span class="nc bnc" id="L67" title="All 2 branches missed.">            if (found != null) {</span>
+<span class="nc" id="L68">                return Response.status(Response.Status.OK)</span>
+<span class="nc" id="L69">                        .entity(found)</span>
+<span class="nc" id="L70">                        .build();</span>
             }
-<span class="nc" id="L70">            return Response.status(Response.Status.NOT_FOUND)</span>
-<span class="nc" id="L71">                    .header(&quot;not-found&quot;, &quot;id&quot;)</span>
-<span class="nc" id="L72">                    .build();</span>
+<span class="nc" id="L72">            return Response.status(Response.Status.NOT_FOUND)</span>
+<span class="nc" id="L73">                    .header(&quot;not-found&quot;, &quot;id&quot;)</span>
+<span class="nc" id="L74">                    .build();</span>
         }
-<span class="nc" id="L74">        return Response.status(422)</span>
-<span class="nc" id="L75">                .header(&quot;missing-parameter&quot;, &quot;id&quot;)</span>
-<span class="nc" id="L76">                .build();</span>
+<span class="nc" id="L76">        return Response.status(422)</span>
+<span class="nc" id="L77">                .header(&quot;missing-parameter&quot;, &quot;id&quot;)</span>
+<span class="nc" id="L78">                .build();</span>
     }
 
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createTipoAtributo(TipoAtributo tipoAtributo, @Context UriInfo info) {
-<span class="nc bnc" id="L83" title="All 4 branches missed.">        if (tipoAtributo != null &amp;&amp; tipoAtributo.getExpresionRegular() != null</span>
-<span class="nc bnc" id="L84" title="All 4 branches missed.">                &amp;&amp; tipoAtributo.getIndicacionesScreen() != null &amp;&amp; tipoAtributo.getNombre() != null</span>
-<span class="nc bnc" id="L85" title="All 4 branches missed.">                &amp;&amp; tipoAtributo.getNombreScreen() != null &amp;&amp; tipoAtributo.getObservaciones() != null) {</span>
+<span class="nc bnc" id="L85" title="All 4 branches missed.">        if (tipoAtributo != null &amp;&amp; tipoAtributo.getExpresionRegular() != null</span>
+<span class="nc bnc" id="L86" title="All 4 branches missed.">                &amp;&amp; tipoAtributo.getIndicacionesScreen() != null &amp;&amp; tipoAtributo.getNombre() != null</span>
+<span class="nc bnc" id="L87" title="All 4 branches missed.">                &amp;&amp; tipoAtributo.getNombreScreen() != null &amp;&amp; tipoAtributo.getObservaciones() != null) {</span>
             try {
+                // Si el id llega como null, asignamos uno nuevo
+<span class="nc bnc" id="L90" title="All 2 branches missed.">                if (tipoAtributo.getIdTipoAtributo() == null) {</span>
+                    // Aquí debes implementar la lógica para obtener un id único, por ejemplo, consultando la base de datos
+<span class="nc" id="L92">                    Integer nuevoId = obtenerNuevoId(); // Método que devuelve un nuevo id único</span>
+<span class="nc" id="L93">                    tipoAtributo.setIdTipoAtributo(nuevoId);</span>
+                }
+
                 // Lógica para crear el tipo de atributo en la base de datos
-                // Aquí deberías tener tu lógica para persistir el nuevo TipoAtributo
-                // Supondré que tienes un método create en algún EJB para persistirlo
-                // algo así como taBean.create(tipoAtributo);
+<span class="nc" id="L97">                taBean.create(tipoAtributo);</span>
 
-                // Supongamos que se ha creado correctamente y obtenemos el ID generado
-                // Aquí debes obtener el ID generado por la base de datos después de persistir el TipoAtributo
-                // Lo simularé aquí para completar el ejemplo
-<span class="nc" id="L95">                Integer idGenerado = 1;</span>
+                // Construimos la URI del recurso creado
+<span class="nc" id="L100">                URI requestUri = info.getRequestUri();</span>
+<span class="nc" id="L101">                String location = requestUri.toString() + &quot;/&quot; + tipoAtributo.getIdTipoAtributo();</span>
 
-                // Se construye la URI del recurso creado
-<span class="nc" id="L98">                URI requestUri = info.getRequestUri();</span>
-<span class="nc" id="L99">                String location = requestUri.toString() + &quot;/&quot; + idGenerado;</span>
-
-                // Se retorna una respuesta exitosa con el código 201 y la ubicación del recurso creado
-<span class="nc" id="L102">                return Response.status(Response.Status.CREATED)</span>
-<span class="nc" id="L103">                        .header(&quot;Location&quot;, location)</span>
-<span class="nc" id="L104">                        .build();</span>
-<span class="nc" id="L105">            } catch (Exception ex) {</span>
+                // Retornamos una respuesta exitosa con el código 201 y la ubicación del recurso creado
+<span class="nc" id="L104">                return Response.status(Response.Status.CREATED)</span>
+<span class="nc" id="L105">                        .header(&quot;Location&quot;, location)</span>
+<span class="nc" id="L106">                        .build();</span>
+<span class="nc" id="L107">            } catch (Exception ex) {</span>
                 // En caso de que ocurra una excepción durante la creación del tipo de atributo
-<span class="nc" id="L107">                Logger.getLogger(getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);</span>
-<span class="nc" id="L108">                return Response.serverError().build();</span>
+<span class="nc" id="L109">                Logger.getLogger(getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);</span>
+<span class="nc" id="L110">                return Response.serverError().build();</span>
             }
         } else {
             // En caso de que falten parámetros en el payload
-<span class="nc" id="L112">            return Response.status(RestResourceHeaderPattern.STATUS_PARAMETRO_EQUIVOCADO)</span>
-<span class="nc" id="L113">                    .header(RestResourceHeaderPattern.DETALLE_PARAMETRO_EQUIVOCADO, &quot;Parámetros incorrectos&quot;)</span>
-<span class="nc" id="L114">                    .build();</span>
+<span class="nc" id="L114">            return Response.status(RestResourceHeaderPattern.STATUS_PARAMETRO_EQUIVOCADO)</span>
+<span class="nc" id="L115">                    .header(RestResourceHeaderPattern.DETALLE_PARAMETRO_EQUIVOCADO, &quot;Parámetros incorrectos&quot;)</span>
+<span class="nc" id="L116">                    .build();</span>
         }
     }
+
+    public Integer obtenerNuevoId() {
+<span class="nc" id="L121">        Random random = new Random();</span>
+        // Generar un entero aleatorio en el rango de Integer.MIN_VALUE a Integer.MAX_VALUE
+<span class="nc" id="L123">        return random.nextInt();</span>
+    }
+
 }
 
 //    @PUT

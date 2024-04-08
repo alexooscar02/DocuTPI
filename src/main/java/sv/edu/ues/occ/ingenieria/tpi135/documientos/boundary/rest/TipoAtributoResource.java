@@ -19,11 +19,13 @@ import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.core.UriBuilder;
 import jakarta.ws.rs.core.UriInfo;
 import java.io.Serializable;
 import java.net.URI;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import sv.edu.ues.occ.ingenieria.tpi135.documientos.Control.TipoAtributoBean;
@@ -84,21 +86,21 @@ public class TipoAtributoResource implements Serializable {
                 && tipoAtributo.getIndicacionesScreen() != null && tipoAtributo.getNombre() != null
                 && tipoAtributo.getNombreScreen() != null && tipoAtributo.getObservaciones() != null) {
             try {
+                // Si el id llega como null, asignamos uno nuevo
+                if (tipoAtributo.getIdTipoAtributo() == null) {
+                    // Aquí debes implementar la lógica para obtener un id único, por ejemplo, consultando la base de datos
+                    Integer nuevoId = obtenerNuevoId(); // Método que devuelve un nuevo id único
+                    tipoAtributo.setIdTipoAtributo(nuevoId);
+                }
+
                 // Lógica para crear el tipo de atributo en la base de datos
-                // Aquí deberías tener tu lógica para persistir el nuevo TipoAtributo
-                // Supondré que tienes un método create en algún EJB para persistirlo
-                // algo así como taBean.create(tipoAtributo);
+                taBean.create(tipoAtributo);
 
-                // Supongamos que se ha creado correctamente y obtenemos el ID generado
-                // Aquí debes obtener el ID generado por la base de datos después de persistir el TipoAtributo
-                // Lo simularé aquí para completar el ejemplo
-                Integer idGenerado = 1;
-
-                // Se construye la URI del recurso creado
+                // Construimos la URI del recurso creado
                 URI requestUri = info.getRequestUri();
-                String location = requestUri.toString() + "/" + idGenerado;
+                String location = requestUri.toString() + "/" + tipoAtributo.getIdTipoAtributo();
 
-                // Se retorna una respuesta exitosa con el código 201 y la ubicación del recurso creado
+                // Retornamos una respuesta exitosa con el código 201 y la ubicación del recurso creado
                 return Response.status(Response.Status.CREATED)
                         .header("Location", location)
                         .build();
@@ -114,6 +116,13 @@ public class TipoAtributoResource implements Serializable {
                     .build();
         }
     }
+
+    public Integer obtenerNuevoId() {
+        Random random = new Random();
+        // Generar un entero aleatorio en el rango de Integer.MIN_VALUE a Integer.MAX_VALUE
+        return random.nextInt();
+    }
+
 }
 
 //    @PUT

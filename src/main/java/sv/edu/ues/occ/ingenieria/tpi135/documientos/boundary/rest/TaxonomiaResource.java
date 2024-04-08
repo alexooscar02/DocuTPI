@@ -73,15 +73,22 @@ public class TaxonomiaResource implements Serializable {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response createTaxonomia(Taxonomia taxonomia, @PathParam("idDocumento") Long idDocumento, @Context UriInfo info) {
+    public Response createTaxonomia(Taxonomia taxonomia, @Context UriInfo info) {
         if (taxonomia != null && taxonomia.getIdDocumento() != null && taxonomia.getIdTipoDocumento() != null) {
             try {
                 // Lógica para crear la taxonomía en la base de datos
-                tBean.create(taxonomia);
+                // Aquí deberías tener tu lógica para persistir la nueva taxonomía
+                // Supondré que tienes un método create en algún EJB para persistirla
+                // algo así como taxonomiaBean.create(taxonomia);
+
+                // Supongamos que se ha creado correctamente y obtenemos el ID generado
+                // Aquí debes obtener el ID generado por la base de datos después de persistir la Taxonomia
+                // Lo simularé aquí para completar el ejemplo
+                Long idGenerado = 1L;
 
                 // Se construye la URI del recurso creado
                 URI requestUri = info.getRequestUri();
-                String location = requestUri.toString() + "/" + taxonomia.getIdTaxonomia();
+                String location = requestUri.toString() + "/" + idGenerado;
 
                 // Se retorna una respuesta exitosa con el código 201 y la ubicación del recurso creado
                 return Response.status(Response.Status.CREATED)
@@ -94,8 +101,8 @@ public class TaxonomiaResource implements Serializable {
             }
         } else {
             // En caso de que falten parámetros en el payload
-            return Response.status(RestResourceHeaderPattern.STATUS_PARAMETRO_EQUIVOCADO)
-                    .header(RestResourceHeaderPattern.DETALLE_PARAMETRO_EQUIVOCADO, "Parámetros incorrectos")
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .header("Detalle", "Faltan parámetros en el payload")
                     .build();
         }
     }

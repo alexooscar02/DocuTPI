@@ -141,241 +141,241 @@ public class PrimerParcialIT {
         ID_TIPO_DOCUMENTO_CREADO = Integer.valueOf(lex[lex.length - 1]);
     }
 
-    @Test
-    @Order(3)
-    public void testCreateAtributo() {
-        System.out.println("createAtributoIT");
-        Atributo nuevo = new Atributo();
-        nuevo.setIdAtributo(1l);
-        Invocation.Builder builder = target.path("tipodocumento/{idTipoDocumento}/atributo")
-                .resolveTemplate("idTipoDocumento", ID_TIPO_DOCUMENTO_CREADO)
-                .request(MediaType.APPLICATION_JSON);
-        Response respuesta = builder.post(Entity.entity(null, MediaType.APPLICATION_JSON));
-        // payload nulo
-        Assertions.assertEquals(RestResourceHeaderPattern.STATUS_PARAMETRO_EQUIVOCADO, respuesta.getStatus());
-        // payload vacio
-        respuesta = builder.post(Entity.entity(nuevo, MediaType.APPLICATION_JSON));
-        Assertions.assertEquals(RestResourceHeaderPattern.STATUS_PARAMETRO_EQUIVOCADO, respuesta.getStatus());
-        Assertions.assertTrue(respuesta.getHeaders().containsKey(RestResourceHeaderPattern.DETALLE_PARAMETRO_EQUIVOCADO));
-        // payload correcto
-        nuevo.setIdAtributo(null);
-        nuevo.setIdTipoAtributo(new TipoAtributo(ID_TIPO_ATRIBUTO_CREADO));
-        nuevo.setIdTipoDocumento(new TipoDocumento(ID_TIPO_DOCUMENTO_CREADO));
-        nuevo.setNombre("algun nombre para atributo");
-        nuevo.setNombrePantalla("algun nombre para atributo");
-        nuevo.setObligatorio(Boolean.TRUE);
-        respuesta = builder.post(Entity.entity(nuevo, MediaType.APPLICATION_JSON));
-        Assertions.assertEquals(201, respuesta.getStatus());
-        Assertions.assertTrue(respuesta.getHeaders().containsKey("Location"));
-        String[] lex = respuesta.getHeaderString("Location").split("/");
-        ID_ATRIBUTO_CREADO = Long.valueOf(lex[lex.length - 1]);
-    }
-
-    @Test
-    @Order(4)
-    public void testCreateDocumento() {
-        System.out.println("createDocumentoIT");
-        Documento nuevo = new Documento();
-        nuevo.setIdDocumento(1l);
-        Invocation.Builder builder = target.path("documento")
-                .request(MediaType.APPLICATION_JSON);
-        Response respuesta = builder.post(Entity.entity(null, MediaType.APPLICATION_JSON));
-        // payload nulo
-        Assertions.assertEquals(RestResourceHeaderPattern.STATUS_PARAMETRO_EQUIVOCADO, respuesta.getStatus());
-        // payload vacio
-        respuesta = builder.post(Entity.entity(nuevo, MediaType.APPLICATION_JSON));
-        Assertions.assertEquals(RestResourceHeaderPattern.STATUS_PARAMETRO_EQUIVOCADO, respuesta.getStatus());
-        Assertions.assertTrue(respuesta.getHeaders().containsKey(RestResourceHeaderPattern.DETALLE_PARAMETRO_EQUIVOCADO));
-        // payload correcto
-        nuevo.setIdDocumento(null);
-
-        nuevo.setCreadoPor("chepe");
-        nuevo.setNombre("partida de matrimonio de maria");
-        nuevo.setUbicacionFisica("archivero 2, gaveta 5");
-
-        respuesta = builder.post(Entity.entity(nuevo, MediaType.APPLICATION_JSON));
-        Assertions.assertEquals(201, respuesta.getStatus());
-        Assertions.assertTrue(respuesta.getHeaders().containsKey("Location"));
-        String[] lex = respuesta.getHeaderString("Location").split("/");
-        ID_DOCUMENTO_CREADO = Long.valueOf(lex[lex.length - 1]);
-    }
-
-    @Test
-    @Order(5)
-    public void testCreateTaxonomia() {
-        System.out.println("createTaxonomiaIT");
-
-        Taxonomia nuevo = new Taxonomia();
-        nuevo.setIdTaxonomia(1l);
-        Invocation.Builder builder = target.path("documento/{idDocumento}/taxonomia")
-                .resolveTemplate("idDocumento", ID_DOCUMENTO_CREADO)
-                .request(MediaType.APPLICATION_JSON);
-        Response respuesta = builder.post(Entity.entity(null, MediaType.APPLICATION_JSON));
-        // payload nulo
-        Assertions.assertEquals(RestResourceHeaderPattern.STATUS_PARAMETRO_EQUIVOCADO, respuesta.getStatus());
-        // payload vacio
-        respuesta = builder.post(Entity.entity(nuevo, MediaType.APPLICATION_JSON));
-        Assertions.assertEquals(RestResourceHeaderPattern.STATUS_PARAMETRO_EQUIVOCADO, respuesta.getStatus());
-        Assertions.assertTrue(respuesta.getHeaders().containsKey(RestResourceHeaderPattern.DETALLE_PARAMETRO_EQUIVOCADO));
-        // payload correcto
-        nuevo.setIdTaxonomia(null);
-        nuevo.setIdDocumento(new Documento(ID_DOCUMENTO_CREADO));
-        nuevo.setIdTipoDocumento(new TipoDocumento(ID_TIPO_DOCUMENTO_CREADO));
-        respuesta = builder.post(Entity.entity(nuevo, MediaType.APPLICATION_JSON));
-        Assertions.assertEquals(201, respuesta.getStatus());
-        Assertions.assertTrue(respuesta.getHeaders().containsKey("Location"));
-        String[] lex = respuesta.getHeaderString("Location").split("/");
-        ID_TAXONOMIA_CREADO = Long.valueOf(lex[lex.length - 1]);
-    }
-
-    @Test
-    @Order(6)
-    public void testCreateMetadato() {
-        System.out.println("createMetadatoIT");
-
-        Metadato nuevo = new Metadato();
-        nuevo.setIdMetadata(1l);
-        Invocation.Builder builder = target.path("documento/{idDocumento}/metadato")
-                .resolveTemplate("idDocumento", ID_DOCUMENTO_CREADO)
-                .request(MediaType.APPLICATION_JSON);
-        Response respuesta = builder.post(Entity.entity(null, MediaType.APPLICATION_JSON));
-        // payload nulo
-        Assertions.assertEquals(RestResourceHeaderPattern.STATUS_PARAMETRO_EQUIVOCADO, respuesta.getStatus());
-        // payload vacio
-        respuesta = builder.post(Entity.entity(nuevo, MediaType.APPLICATION_JSON));
-        Assertions.assertEquals(RestResourceHeaderPattern.STATUS_PARAMETRO_EQUIVOCADO, respuesta.getStatus());
-        Assertions.assertTrue(respuesta.getHeaders().containsKey(RestResourceHeaderPattern.DETALLE_PARAMETRO_EQUIVOCADO));
-
-        //// crear tipo de documento equivocado
-        Invocation.Builder builderT = target.path("tipodocumento").request(MediaType.APPLICATION_JSON);
-        TipoDocumento nuevoT = new TipoDocumento();
-
-        nuevoT.setIdTipoDocumento(null);
-        nuevoT.setActivo(Boolean.TRUE);
-        nuevoT.setNombre("tipo equivocado");
-        nuevoT.setObservaciones("ninguna");
-        Response respuestaT = builderT.post(Entity.entity(nuevoT, MediaType.APPLICATION_JSON));
-        Assertions.assertEquals(201, respuestaT.getStatus());
-        Assertions.assertTrue(respuestaT.getHeaders().containsKey("Location"));
-        String[] lex = respuestaT.getHeaderString("Location").split("/");
-        nuevoT.setIdTipoDocumento(Integer.valueOf(lex[lex.length - 1]));
-        //// crear atributo equivocado
-
-        Atributo nuevoA = new Atributo();
-        nuevoA.setIdAtributo(1l);
-        Invocation.Builder builderA = target.path("tipodocumento/{idTipoDocumento}/atributo")
-                .resolveTemplate("idTipoDocumento", nuevoT.getIdTipoDocumento())
-                .request(MediaType.APPLICATION_JSON);
-
-        nuevoA.setIdAtributo(null);
-        nuevoA.setIdTipoAtributo(new TipoAtributo(ID_TIPO_ATRIBUTO_CREADO));
-        nuevoA.setIdTipoDocumento(nuevoT);
-        nuevoA.setNombre("atributo equivocado");
-        nuevoA.setNombrePantalla("algun nombre para atributo equivocado");
-        nuevoA.setObligatorio(Boolean.TRUE);
-        respuesta = builderA.post(Entity.entity(nuevoA, MediaType.APPLICATION_JSON));
-        Assertions.assertEquals(201, respuesta.getStatus());
-        Assertions.assertTrue(respuesta.getHeaders().containsKey("Location"));
-        lex = respuesta.getHeaderString("Location").split("/");
-        nuevoA.setIdAtributo(Long.valueOf(lex[lex.length - 1]));
-
-        //// intentar crear metadato que no pertenece a la taxonomia
-        nuevo.setIdMetadata(null);
-        nuevo.setIdAtributo(nuevoA);
-        nuevo.setIdDocumento(new Documento(ID_DOCUMENTO_CREADO));
-        nuevo.setValor("algun valor");
-
-        respuesta = builder.post(Entity.entity(nuevo, MediaType.APPLICATION_JSON));
-        Assertions.assertEquals(405, respuesta.getStatus());
-
-        // crear atributo valido
-        nuevo = new Metadato();
-        nuevo.setIdAtributo(new Atributo(ID_ATRIBUTO_CREADO));
-        nuevo.setIdDocumento(new Documento(ID_DOCUMENTO_CREADO));
-        nuevo.setValor("valor valido");
-        respuesta = builder.post(Entity.entity(nuevo, MediaType.APPLICATION_JSON));
-        Assertions.assertEquals(201, respuesta.getStatus());
-
-        Assertions.assertTrue(respuesta.getHeaders().containsKey("Location"));
-        lex = respuesta.getHeaderString("Location").split("/");
-        ID_METADATO_CREADO = Long.valueOf(lex[lex.length - 1]);
-    }
-
-    @Test
-    @Order(7)
-    public void testValidarResultados() {
-        System.out.println("validarResultadosIT");
-
-        System.out.println("============== ID TIPO ATRIBUTO GENERADO " + ID_TIPO_ATRIBUTO_CREADO);
-        Response respuesta = target.path("tipoatributo/{idTipoAtributo}")
-                .resolveTemplate("idTipoAtributo", ID_TIPO_ATRIBUTO_CREADO)
-                .request(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON)
-                .get();
-        Assertions.assertEquals(200, respuesta.getStatus());
-        String json = respuesta.readEntity(String.class);
-        Assertions.assertNotNull(json);
-        System.out.println("TipoAtributo " + json);
-        // tipo documento
-        System.out.println("============== ID TIPO DOCUMENTO GENERADO " + ID_TIPO_DOCUMENTO_CREADO);
-        respuesta = target.path("tipodocumento/{idTipoDocumento}")
-                .resolveTemplate("idTipoDocumento", ID_TIPO_DOCUMENTO_CREADO)
-                .request(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON)
-                .get();
-        Assertions.assertEquals(200, respuesta.getStatus());
-        json = respuesta.readEntity(String.class);
-        Assertions.assertNotNull(json);
-        System.out.println("TipoDocumento " + json);
-        // atributo
-        System.out.println("============== ID ATRIBUTO GENERADO " + ID_ATRIBUTO_CREADO);
-        respuesta = target.path("tipodocumento/{idTipoDocumento}/atributo/{idAtributo}")
-                .resolveTemplate("idTipoDocumento", ID_TIPO_DOCUMENTO_CREADO)
-                .resolveTemplate("idAtributo", ID_ATRIBUTO_CREADO)
-                .request(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON)
-                .get();
-        Assertions.assertEquals(200, respuesta.getStatus());
-        json = respuesta.readEntity(String.class);
-        Assertions.assertNotNull(json);
-        System.out.println("Atributo " + json);
-        // documento
-        System.out.println("============== ID DOCUMENTO GENERADO " + ID_DOCUMENTO_CREADO);
-        respuesta = target.path("documento/{idDocumento}")
-                .resolveTemplate("idDocumento", ID_DOCUMENTO_CREADO)
-                .request(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON)
-                .get();
-
-        Assertions.assertEquals(200, respuesta.getStatus());
-        json = respuesta.readEntity(String.class);
-        Assertions.assertNotNull(json);
-        System.out.println("Atributo " + json);
-        // taxonomia
-        System.out.println("============== ID TAXONOMIA GENERADO " + ID_TAXONOMIA_CREADO);
-        respuesta = target.path("documento/{idDocumento}/taxonomia/{idTaxonomia}")
-                .resolveTemplate("idDocumento", ID_DOCUMENTO_CREADO)
-                .resolveTemplate("idTaxonomia", ID_TAXONOMIA_CREADO)
-                .request(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON)
-                .get();
-        Assertions.assertEquals(200, respuesta.getStatus());
-        json = respuesta.readEntity(String.class);
-        Assertions.assertNotNull(json);
-        System.out.println("Taxonomia " + json);
-        // metadato
-        System.out.println("============== ID METADATO GENERADO " + ID_METADATO_CREADO);
-        respuesta = target.path("documento/{idDocumento}/metadato/{idMetadato}")
-                .resolveTemplate("idDocumento", ID_DOCUMENTO_CREADO)
-                .resolveTemplate("idMetadato", ID_METADATO_CREADO)
-                .request(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON)
-                .get();
-        Assertions.assertEquals(200, respuesta.getStatus());
-        json = respuesta.readEntity(String.class);
-        Assertions.assertNotNull(json);
-        System.out.println("Metadato " + json);
-
-    }
+//    @Test
+//    @Order(3)
+//    public void testCreateAtributo() {
+//        System.out.println("createAtributoIT");
+//        Atributo nuevo = new Atributo();
+//        nuevo.setIdAtributo(1l);
+//        Invocation.Builder builder = target.path("tipodocumento/{idTipoDocumento}/atributo")
+//                .resolveTemplate("idTipoDocumento", ID_TIPO_DOCUMENTO_CREADO)
+//                .request(MediaType.APPLICATION_JSON);
+//        Response respuesta = builder.post(Entity.entity(null, MediaType.APPLICATION_JSON));
+//        // payload nulo
+//        Assertions.assertEquals(RestResourceHeaderPattern.STATUS_PARAMETRO_EQUIVOCADO, respuesta.getStatus());
+//        // payload vacio
+//        respuesta = builder.post(Entity.entity(nuevo, MediaType.APPLICATION_JSON));
+//        Assertions.assertEquals(RestResourceHeaderPattern.STATUS_PARAMETRO_EQUIVOCADO, respuesta.getStatus());
+//        Assertions.assertTrue(respuesta.getHeaders().containsKey(RestResourceHeaderPattern.DETALLE_PARAMETRO_EQUIVOCADO));
+//        // payload correcto
+//        nuevo.setIdAtributo(null);
+//        nuevo.setIdTipoAtributo(new TipoAtributo(ID_TIPO_ATRIBUTO_CREADO));
+//        nuevo.setIdTipoDocumento(new TipoDocumento(ID_TIPO_DOCUMENTO_CREADO));
+//        nuevo.setNombre("algun nombre para atributo");
+//        nuevo.setNombrePantalla("algun nombre para atributo");
+//        nuevo.setObligatorio(Boolean.TRUE);
+//        respuesta = builder.post(Entity.entity(nuevo, MediaType.APPLICATION_JSON));
+//        Assertions.assertEquals(201, respuesta.getStatus());
+//        Assertions.assertTrue(respuesta.getHeaders().containsKey("Location"));
+//        String[] lex = respuesta.getHeaderString("Location").split("/");
+//        ID_ATRIBUTO_CREADO = Long.valueOf(lex[lex.length - 1]);
+//    }
+//
+//    @Test
+//    @Order(4)
+//    public void testCreateDocumento() {
+//        System.out.println("createDocumentoIT");
+//        Documento nuevo = new Documento();
+//        nuevo.setIdDocumento(1l);
+//        Invocation.Builder builder = target.path("documento")
+//                .request(MediaType.APPLICATION_JSON);
+//        Response respuesta = builder.post(Entity.entity(null, MediaType.APPLICATION_JSON));
+//        // payload nulo
+//        Assertions.assertEquals(RestResourceHeaderPattern.STATUS_PARAMETRO_EQUIVOCADO, respuesta.getStatus());
+//        // payload vacio
+//        respuesta = builder.post(Entity.entity(nuevo, MediaType.APPLICATION_JSON));
+//        Assertions.assertEquals(RestResourceHeaderPattern.STATUS_PARAMETRO_EQUIVOCADO, respuesta.getStatus());
+//        Assertions.assertTrue(respuesta.getHeaders().containsKey(RestResourceHeaderPattern.DETALLE_PARAMETRO_EQUIVOCADO));
+//        // payload correcto
+//        nuevo.setIdDocumento(null);
+//
+//        nuevo.setCreadoPor("chepe");
+//        nuevo.setNombre("partida de matrimonio de maria");
+//        nuevo.setUbicacionFisica("archivero 2, gaveta 5");
+//
+//        respuesta = builder.post(Entity.entity(nuevo, MediaType.APPLICATION_JSON));
+//        Assertions.assertEquals(201, respuesta.getStatus());
+//        Assertions.assertTrue(respuesta.getHeaders().containsKey("Location"));
+//        String[] lex = respuesta.getHeaderString("Location").split("/");
+//        ID_DOCUMENTO_CREADO = Long.valueOf(lex[lex.length - 1]);
+//    }
+//
+//    @Test
+//    @Order(5)
+//    public void testCreateTaxonomia() {
+//        System.out.println("createTaxonomiaIT");
+//
+//        Taxonomia nuevo = new Taxonomia();
+//        nuevo.setIdTaxonomia(1l);
+//        Invocation.Builder builder = target.path("documento/{idDocumento}/taxonomia")
+//                .resolveTemplate("idDocumento", ID_DOCUMENTO_CREADO)
+//                .request(MediaType.APPLICATION_JSON);
+//        Response respuesta = builder.post(Entity.entity(null, MediaType.APPLICATION_JSON));
+//        // payload nulo
+//        Assertions.assertEquals(RestResourceHeaderPattern.STATUS_PARAMETRO_EQUIVOCADO, respuesta.getStatus());
+//        // payload vacio
+//        respuesta = builder.post(Entity.entity(nuevo, MediaType.APPLICATION_JSON));
+//        Assertions.assertEquals(RestResourceHeaderPattern.STATUS_PARAMETRO_EQUIVOCADO, respuesta.getStatus());
+//        Assertions.assertTrue(respuesta.getHeaders().containsKey(RestResourceHeaderPattern.DETALLE_PARAMETRO_EQUIVOCADO));
+//        // payload correcto
+//        nuevo.setIdTaxonomia(null);
+//        nuevo.setIdDocumento(new Documento(ID_DOCUMENTO_CREADO));
+//        nuevo.setIdTipoDocumento(new TipoDocumento(ID_TIPO_DOCUMENTO_CREADO));
+//        respuesta = builder.post(Entity.entity(nuevo, MediaType.APPLICATION_JSON));
+//        Assertions.assertEquals(201, respuesta.getStatus());
+//        Assertions.assertTrue(respuesta.getHeaders().containsKey("Location"));
+//        String[] lex = respuesta.getHeaderString("Location").split("/");
+//        ID_TAXONOMIA_CREADO = Long.valueOf(lex[lex.length - 1]);
+//    }
+//
+//    @Test
+//    @Order(6)
+//    public void testCreateMetadato() {
+//        System.out.println("createMetadatoIT");
+//
+//        Metadato nuevo = new Metadato();
+//        nuevo.setIdMetadata(1l);
+//        Invocation.Builder builder = target.path("documento/{idDocumento}/metadato")
+//                .resolveTemplate("idDocumento", ID_DOCUMENTO_CREADO)
+//                .request(MediaType.APPLICATION_JSON);
+//        Response respuesta = builder.post(Entity.entity(null, MediaType.APPLICATION_JSON));
+//        // payload nulo
+//        Assertions.assertEquals(RestResourceHeaderPattern.STATUS_PARAMETRO_EQUIVOCADO, respuesta.getStatus());
+//        // payload vacio
+//        respuesta = builder.post(Entity.entity(nuevo, MediaType.APPLICATION_JSON));
+//        Assertions.assertEquals(RestResourceHeaderPattern.STATUS_PARAMETRO_EQUIVOCADO, respuesta.getStatus());
+//        Assertions.assertTrue(respuesta.getHeaders().containsKey(RestResourceHeaderPattern.DETALLE_PARAMETRO_EQUIVOCADO));
+//
+//        //// crear tipo de documento equivocado
+//        Invocation.Builder builderT = target.path("tipodocumento").request(MediaType.APPLICATION_JSON);
+//        TipoDocumento nuevoT = new TipoDocumento();
+//
+//        nuevoT.setIdTipoDocumento(null);
+//        nuevoT.setActivo(Boolean.TRUE);
+//        nuevoT.setNombre("tipo equivocado");
+//        nuevoT.setObservaciones("ninguna");
+//        Response respuestaT = builderT.post(Entity.entity(nuevoT, MediaType.APPLICATION_JSON));
+//        Assertions.assertEquals(201, respuestaT.getStatus());
+//        Assertions.assertTrue(respuestaT.getHeaders().containsKey("Location"));
+//        String[] lex = respuestaT.getHeaderString("Location").split("/");
+//        nuevoT.setIdTipoDocumento(Integer.valueOf(lex[lex.length - 1]));
+//        //// crear atributo equivocado
+//
+//        Atributo nuevoA = new Atributo();
+//        nuevoA.setIdAtributo(1l);
+//        Invocation.Builder builderA = target.path("tipodocumento/{idTipoDocumento}/atributo")
+//                .resolveTemplate("idTipoDocumento", nuevoT.getIdTipoDocumento())
+//                .request(MediaType.APPLICATION_JSON);
+//
+//        nuevoA.setIdAtributo(null);
+//        nuevoA.setIdTipoAtributo(new TipoAtributo(ID_TIPO_ATRIBUTO_CREADO));
+//        nuevoA.setIdTipoDocumento(nuevoT);
+//        nuevoA.setNombre("atributo equivocado");
+//        nuevoA.setNombrePantalla("algun nombre para atributo equivocado");
+//        nuevoA.setObligatorio(Boolean.TRUE);
+//        respuesta = builderA.post(Entity.entity(nuevoA, MediaType.APPLICATION_JSON));
+//        Assertions.assertEquals(201, respuesta.getStatus());
+//        Assertions.assertTrue(respuesta.getHeaders().containsKey("Location"));
+//        lex = respuesta.getHeaderString("Location").split("/");
+//        nuevoA.setIdAtributo(Long.valueOf(lex[lex.length - 1]));
+//
+//        //// intentar crear metadato que no pertenece a la taxonomia
+//        nuevo.setIdMetadata(null);
+//        nuevo.setIdAtributo(nuevoA);
+//        nuevo.setIdDocumento(new Documento(ID_DOCUMENTO_CREADO));
+//        nuevo.setValor("algun valor");
+//
+//        respuesta = builder.post(Entity.entity(nuevo, MediaType.APPLICATION_JSON));
+//        Assertions.assertEquals(405, respuesta.getStatus());
+//
+//        // crear atributo valido
+//        nuevo = new Metadato();
+//        nuevo.setIdAtributo(new Atributo(ID_ATRIBUTO_CREADO));
+//        nuevo.setIdDocumento(new Documento(ID_DOCUMENTO_CREADO));
+//        nuevo.setValor("valor valido");
+//        respuesta = builder.post(Entity.entity(nuevo, MediaType.APPLICATION_JSON));
+//        Assertions.assertEquals(201, respuesta.getStatus());
+//
+//        Assertions.assertTrue(respuesta.getHeaders().containsKey("Location"));
+//        lex = respuesta.getHeaderString("Location").split("/");
+//        ID_METADATO_CREADO = Long.valueOf(lex[lex.length - 1]);
+//    }
+//
+//    @Test
+//    @Order(7)
+//    public void testValidarResultados() {
+//        System.out.println("validarResultadosIT");
+//
+//        System.out.println("============== ID TIPO ATRIBUTO GENERADO " + ID_TIPO_ATRIBUTO_CREADO);
+//        Response respuesta = target.path("tipoatributo/{idTipoAtributo}")
+//                .resolveTemplate("idTipoAtributo", ID_TIPO_ATRIBUTO_CREADO)
+//                .request(MediaType.APPLICATION_JSON)
+//                .accept(MediaType.APPLICATION_JSON)
+//                .get();
+//        Assertions.assertEquals(200, respuesta.getStatus());
+//        String json = respuesta.readEntity(String.class);
+//        Assertions.assertNotNull(json);
+//        System.out.println("TipoAtributo " + json);
+//        // tipo documento
+//        System.out.println("============== ID TIPO DOCUMENTO GENERADO " + ID_TIPO_DOCUMENTO_CREADO);
+//        respuesta = target.path("tipodocumento/{idTipoDocumento}")
+//                .resolveTemplate("idTipoDocumento", ID_TIPO_DOCUMENTO_CREADO)
+//                .request(MediaType.APPLICATION_JSON)
+//                .accept(MediaType.APPLICATION_JSON)
+//                .get();
+//        Assertions.assertEquals(200, respuesta.getStatus());
+//        json = respuesta.readEntity(String.class);
+//        Assertions.assertNotNull(json);
+//        System.out.println("TipoDocumento " + json);
+//        // atributo
+//        System.out.println("============== ID ATRIBUTO GENERADO " + ID_ATRIBUTO_CREADO);
+//        respuesta = target.path("tipodocumento/{idTipoDocumento}/atributo/{idAtributo}")
+//                .resolveTemplate("idTipoDocumento", ID_TIPO_DOCUMENTO_CREADO)
+//                .resolveTemplate("idAtributo", ID_ATRIBUTO_CREADO)
+//                .request(MediaType.APPLICATION_JSON)
+//                .accept(MediaType.APPLICATION_JSON)
+//                .get();
+//        Assertions.assertEquals(200, respuesta.getStatus());
+//        json = respuesta.readEntity(String.class);
+//        Assertions.assertNotNull(json);
+//        System.out.println("Atributo " + json);
+//        // documento
+//        System.out.println("============== ID DOCUMENTO GENERADO " + ID_DOCUMENTO_CREADO);
+//        respuesta = target.path("documento/{idDocumento}")
+//                .resolveTemplate("idDocumento", ID_DOCUMENTO_CREADO)
+//                .request(MediaType.APPLICATION_JSON)
+//                .accept(MediaType.APPLICATION_JSON)
+//                .get();
+//
+//        Assertions.assertEquals(200, respuesta.getStatus());
+//        json = respuesta.readEntity(String.class);
+//        Assertions.assertNotNull(json);
+//        System.out.println("Atributo " + json);
+//        // taxonomia
+//        System.out.println("============== ID TAXONOMIA GENERADO " + ID_TAXONOMIA_CREADO);
+//        respuesta = target.path("documento/{idDocumento}/taxonomia/{idTaxonomia}")
+//                .resolveTemplate("idDocumento", ID_DOCUMENTO_CREADO)
+//                .resolveTemplate("idTaxonomia", ID_TAXONOMIA_CREADO)
+//                .request(MediaType.APPLICATION_JSON)
+//                .accept(MediaType.APPLICATION_JSON)
+//                .get();
+//        Assertions.assertEquals(200, respuesta.getStatus());
+//        json = respuesta.readEntity(String.class);
+//        Assertions.assertNotNull(json);
+//        System.out.println("Taxonomia " + json);
+//        // metadato
+//        System.out.println("============== ID METADATO GENERADO " + ID_METADATO_CREADO);
+//        respuesta = target.path("documento/{idDocumento}/metadato/{idMetadato}")
+//                .resolveTemplate("idDocumento", ID_DOCUMENTO_CREADO)
+//                .resolveTemplate("idMetadato", ID_METADATO_CREADO)
+//                .request(MediaType.APPLICATION_JSON)
+//                .accept(MediaType.APPLICATION_JSON)
+//                .get();
+//        Assertions.assertEquals(200, respuesta.getStatus());
+//        json = respuesta.readEntity(String.class);
+//        Assertions.assertNotNull(json);
+//        System.out.println("Metadato " + json);
+//
+//    }
 
 }

@@ -9,6 +9,8 @@ import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import java.io.Serializable;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import sv.edu.ues.occ.ingenieria.tpi135.documientos.entity.TipoAtributo;
 
 /**
@@ -24,12 +26,26 @@ public class TipoAtributoBean extends AbstractDataAccess&lt;TipoAtributo&gt; imp
 
     @Override
     public EntityManager getEntityManager() {
-<span class="nc" id="L27">        return em;</span>
+<span class="nc" id="L29">        return em;</span>
     }
 
     public TipoAtributoBean() {
-<span class="nc" id="L31">        super(TipoAtributo.class);</span>
-<span class="nc" id="L32">    }</span>
+<span class="nc" id="L33">        super(TipoAtributo.class);</span>
+<span class="nc" id="L34">    }</span>
+
+    public void crear(TipoAtributo registro) throws IllegalStateException, IllegalArgumentException {
+
+        try {
+<span class="nc bnc" id="L39" title="All 2 branches missed.">            if (em != null) {</span>
+<span class="nc" id="L40">                em.persist(registro);</span>
+<span class="nc" id="L41">                return;</span>
+            }
+<span class="nc" id="L43">        } catch (Exception ex) {</span>
+<span class="nc" id="L44">            Logger.getLogger(getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);</span>
+<span class="nc" id="L45">        }</span>
+<span class="nc" id="L46">        throw new IllegalStateException();</span>
+
+    }
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

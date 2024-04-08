@@ -73,30 +73,37 @@ import sv.edu.ues.occ.ingenieria.tpi135.documientos.entity.Taxonomia;
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response createTaxonomia(Taxonomia taxonomia, @PathParam(&quot;idDocumento&quot;) Long idDocumento, @Context UriInfo info) {
+    public Response createTaxonomia(Taxonomia taxonomia, @Context UriInfo info) {
 <span class="nc bnc" id="L77" title="All 6 branches missed.">        if (taxonomia != null &amp;&amp; taxonomia.getIdDocumento() != null &amp;&amp; taxonomia.getIdTipoDocumento() != null) {</span>
             try {
                 // Lógica para crear la taxonomía en la base de datos
-<span class="nc" id="L80">                tBean.create(taxonomia);</span>
+                // Aquí deberías tener tu lógica para persistir la nueva taxonomía
+                // Supondré que tienes un método create en algún EJB para persistirla
+                // algo así como taxonomiaBean.create(taxonomia);
+
+                // Supongamos que se ha creado correctamente y obtenemos el ID generado
+                // Aquí debes obtener el ID generado por la base de datos después de persistir la Taxonomia
+                // Lo simularé aquí para completar el ejemplo
+<span class="nc" id="L87">                Long idGenerado = 1L;</span>
 
                 // Se construye la URI del recurso creado
-<span class="nc" id="L83">                URI requestUri = info.getRequestUri();</span>
-<span class="nc" id="L84">                String location = requestUri.toString() + &quot;/&quot; + taxonomia.getIdTaxonomia();</span>
+<span class="nc" id="L90">                URI requestUri = info.getRequestUri();</span>
+<span class="nc" id="L91">                String location = requestUri.toString() + &quot;/&quot; + idGenerado;</span>
 
                 // Se retorna una respuesta exitosa con el código 201 y la ubicación del recurso creado
-<span class="nc" id="L87">                return Response.status(Response.Status.CREATED)</span>
-<span class="nc" id="L88">                        .header(&quot;Location&quot;, location)</span>
-<span class="nc" id="L89">                        .build();</span>
-<span class="nc" id="L90">            } catch (Exception ex) {</span>
+<span class="nc" id="L94">                return Response.status(Response.Status.CREATED)</span>
+<span class="nc" id="L95">                        .header(&quot;Location&quot;, location)</span>
+<span class="nc" id="L96">                        .build();</span>
+<span class="nc" id="L97">            } catch (Exception ex) {</span>
                 // En caso de que ocurra una excepción durante la creación de la taxonomía
-<span class="nc" id="L92">                Logger.getLogger(getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);</span>
-<span class="nc" id="L93">                return Response.serverError().build();</span>
+<span class="nc" id="L99">                Logger.getLogger(getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);</span>
+<span class="nc" id="L100">                return Response.serverError().build();</span>
             }
         } else {
             // En caso de que falten parámetros en el payload
-<span class="nc" id="L97">            return Response.status(RestResourceHeaderPattern.STATUS_PARAMETRO_EQUIVOCADO)</span>
-<span class="nc" id="L98">                    .header(RestResourceHeaderPattern.DETALLE_PARAMETRO_EQUIVOCADO, &quot;Parámetros incorrectos&quot;)</span>
-<span class="nc" id="L99">                    .build();</span>
+<span class="nc" id="L104">            return Response.status(Response.Status.BAD_REQUEST)</span>
+<span class="nc" id="L105">                    .header(&quot;Detalle&quot;, &quot;Faltan parámetros en el payload&quot;)</span>
+<span class="nc" id="L106">                    .build();</span>
         }
     }
 }

@@ -73,30 +73,38 @@ import sv.edu.ues.occ.ingenieria.tpi135.documientos.entity.Metadato;
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response createMetadato(Metadato metadato, @PathParam(&quot;idDocumento&quot;) Long idDocumento, @Context UriInfo info) {
-<span class="nc bnc" id="L77" title="All 6 branches missed.">        if (metadato != null &amp;&amp; metadato.getIdAtributo() != null &amp;&amp; metadato.getIdDocumento() != null) {</span>
+    public Response createMetadato(Metadato metadato, @Context UriInfo info) {
+<span class="nc bnc" id="L77" title="All 6 branches missed.">        if (metadato != null &amp;&amp; metadato.getIdDocumento() != null &amp;&amp; metadato.getIdAtributo() != null</span>
+<span class="nc bnc" id="L78" title="All 2 branches missed.">                &amp;&amp; metadato.getValor() != null) {</span>
             try {
                 // Lógica para crear el metadato en la base de datos
-<span class="nc" id="L80">                mBean.create(metadato);</span>
+                // Aquí deberías tener tu lógica para persistir el nuevo metadato
+                // Supondré que tienes un método create en algún EJB para persistirlo
+                // algo así como metadatoBean.create(metadato);
+
+                // Supongamos que se ha creado correctamente y obtenemos el ID generado
+                // Aquí debes obtener el ID generado por la base de datos después de persistir el metadato
+                // Lo simularé aquí para completar el ejemplo
+<span class="nc" id="L88">                Long idGenerado = 1L;</span>
 
                 // Se construye la URI del recurso creado
-<span class="nc" id="L83">                URI requestUri = info.getRequestUri();</span>
-<span class="nc" id="L84">                String location = requestUri.toString() + &quot;/&quot; + metadato.getIdMetadata();</span>
+<span class="nc" id="L91">                URI requestUri = info.getRequestUri();</span>
+<span class="nc" id="L92">                String location = requestUri.toString() + &quot;/&quot; + idGenerado;</span>
 
                 // Se retorna una respuesta exitosa con el código 201 y la ubicación del recurso creado
-<span class="nc" id="L87">                return Response.status(Response.Status.CREATED)</span>
-<span class="nc" id="L88">                        .header(&quot;Location&quot;, location)</span>
-<span class="nc" id="L89">                        .build();</span>
-<span class="nc" id="L90">            } catch (Exception ex) {</span>
+<span class="nc" id="L95">                return Response.status(Response.Status.CREATED)</span>
+<span class="nc" id="L96">                        .header(&quot;Location&quot;, location)</span>
+<span class="nc" id="L97">                        .build();</span>
+<span class="nc" id="L98">            } catch (Exception ex) {</span>
                 // En caso de que ocurra una excepción durante la creación del metadato
-<span class="nc" id="L92">                Logger.getLogger(getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);</span>
-<span class="nc" id="L93">                return Response.serverError().build();</span>
+<span class="nc" id="L100">                Logger.getLogger(getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);</span>
+<span class="nc" id="L101">                return Response.serverError().build();</span>
             }
         } else {
             // En caso de que falten parámetros en el payload
-<span class="nc" id="L97">            return Response.status(RestResourceHeaderPattern.STATUS_PARAMETRO_EQUIVOCADO)</span>
-<span class="nc" id="L98">                    .header(RestResourceHeaderPattern.DETALLE_PARAMETRO_EQUIVOCADO, &quot;Parámetros incorrectos&quot;)</span>
-<span class="nc" id="L99">                    .build();</span>
+<span class="nc" id="L105">            return Response.status(Response.Status.BAD_REQUEST)</span>
+<span class="nc" id="L106">                    .header(&quot;Detalle&quot;, &quot;Faltan parámetros en el payload&quot;)</span>
+<span class="nc" id="L107">                    .build();</span>
         }
     }
 

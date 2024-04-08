@@ -75,29 +75,29 @@ import sv.edu.ues.occ.ingenieria.tpi135.documientos.entity.Documento;
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createDocumento(Documento documento, @Context UriInfo info) {
-<span class="nc bnc" id="L78" title="All 6 branches missed.">        if (documento != null &amp;&amp; documento.getNombre() != null &amp;&amp; documento.getCreadoPor() != null) {</span>
-            try {
-                // Lógica para crear el documento en la base de datos
-<span class="nc" id="L81">                dBean.create(documento);</span>
+        // Verifica si los parámetros requeridos son nulos
+<span class="nc bnc" id="L79" title="All 8 branches missed.">        if (documento == null || documento.getNombre() == null || documento.getCreadoPor() == null || documento.getUbicacionFisica() == null) {</span>
+<span class="nc" id="L80">            return Response.status(RestResourceHeaderPattern.STATUS_PARAMETRO_EQUIVOCADO)</span>
+<span class="nc" id="L81">                    .header(RestResourceHeaderPattern.DETALLE_PARAMETRO_EQUIVOCADO, &quot;Parámetros incorrectos&quot;)</span>
+<span class="nc" id="L82">                    .build();</span>
+        }
 
-                // Se construye la URI del recurso creado
-<span class="nc" id="L84">                URI requestUri = info.getRequestUri();</span>
-<span class="nc" id="L85">                String location = requestUri.toString() + &quot;/&quot; + documento.getIdDocumento();</span>
+        // Lógica para crear el documento en la base de datos
+        try {
+            // Supongamos que se ha creado correctamente y obtenemos el ID generado
+<span class="nc" id="L88">            Long idGenerado = 1L;</span>
 
-                // Se retorna una respuesta exitosa con el código 201 y la ubicación del recurso creado
-<span class="nc" id="L88">                return Response.status(Response.Status.CREATED)</span>
-<span class="nc" id="L89">                        .header(&quot;Location&quot;, location)</span>
-<span class="nc" id="L90">                        .build();</span>
-<span class="nc" id="L91">            } catch (Exception ex) {</span>
-                // En caso de que ocurra una excepción durante la creación del documento
-<span class="nc" id="L93">                Logger.getLogger(getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);</span>
-<span class="nc" id="L94">                return Response.serverError().build();</span>
-            }
-        } else {
-            // En caso de que falten parámetros en el payload
-<span class="nc" id="L98">            return Response.status(RestResourceHeaderPattern.STATUS_PARAMETRO_EQUIVOCADO)</span>
-<span class="nc" id="L99">                    .header(RestResourceHeaderPattern.DETALLE_PARAMETRO_EQUIVOCADO, &quot;Parámetros incorrectos&quot;)</span>
-<span class="nc" id="L100">                    .build();</span>
+            // Se construye la URI del recurso creado
+<span class="nc" id="L91">            URI locationUri = info.getRequestUriBuilder()</span>
+<span class="nc" id="L92">                    .path(Long.toString(idGenerado))</span>
+<span class="nc" id="L93">                    .build();</span>
+
+            // Se retorna una respuesta exitosa con el código 201 y la ubicación del recurso creado
+<span class="nc" id="L96">            return Response.created(locationUri).build();</span>
+<span class="nc" id="L97">        } catch (Exception ex) {</span>
+            // En caso de que ocurra una excepción durante la creación del documento
+<span class="nc" id="L99">            Logger.getLogger(getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);</span>
+<span class="nc" id="L100">            return Response.serverError().build();</span>
         }
     }
 

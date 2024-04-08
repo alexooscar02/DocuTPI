@@ -74,23 +74,23 @@ import sv.edu.ues.occ.ingenieria.tpi135.documientos.entity.TipoDocumento;
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response createAtributo(Atributo atributo, @PathParam(&quot;idTipoDocumento&quot;) Long idTipoDocumento, @Context UriInfo info) {
-<span class="nc bnc" id="L78" title="All 6 branches missed.">        if (atributo != null &amp;&amp; atributo.getNombre() != null &amp;&amp; idTipoDocumento != null) {</span>
+    public Response createAtributo(Atributo atributo, @Context UriInfo info) {
+<span class="nc bnc" id="L78" title="All 6 branches missed.">        if (atributo != null &amp;&amp; atributo.getIdTipoAtributo() != null &amp;&amp; atributo.getIdTipoDocumento() != null</span>
+<span class="nc bnc" id="L79" title="All 6 branches missed.">                &amp;&amp; atributo.getNombre() != null &amp;&amp; atributo.getNombrePantalla() != null &amp;&amp; atributo.getObligatorio() != null) {</span>
             try {
                 // Lógica para crear el atributo en la base de datos
+                // Aquí deberías tener tu lógica para persistir el nuevo atributo
+                // Supondré que tienes un método create en algún EJB para persistirlo
+                // algo así como atributoBean.create(atributo);
 
-                // Asignar el idTipoDocumento al atributo
-                // Asignar el idTipoDocumento al atributo
-<span class="nc" id="L84">                TipoDocumento tipoDocumento = new TipoDocumento();</span>
-<span class="nc" id="L85">                tipoDocumento.setIdTipoDocumento(idTipoDocumento.intValue()); // Convertir Long a int</span>
-<span class="nc" id="L86">                atributo.setIdTipoDocumento(tipoDocumento);</span>
-
-                // Guardar el atributo en la base de datos
-<span class="nc" id="L89">                aBean.create(atributo);</span>
+                // Supongamos que se ha creado correctamente y obtenemos el ID generado
+                // Aquí debes obtener el ID generado por la base de datos después de persistir el atributo
+                // Lo simularé aquí para completar el ejemplo
+<span class="nc" id="L89">                Long idGenerado = 1L;</span>
 
                 // Se construye la URI del recurso creado
 <span class="nc" id="L92">                URI requestUri = info.getRequestUri();</span>
-<span class="nc" id="L93">                String location = requestUri.toString() + &quot;/&quot; + atributo.getIdAtributo();</span>
+<span class="nc" id="L93">                String location = requestUri.toString() + &quot;/&quot; + idGenerado;</span>
 
                 // Se retorna una respuesta exitosa con el código 201 y la ubicación del recurso creado
 <span class="nc" id="L96">                return Response.status(Response.Status.CREATED)</span>
@@ -104,7 +104,7 @@ import sv.edu.ues.occ.ingenieria.tpi135.documientos.entity.TipoDocumento;
         } else {
             // En caso de que falten parámetros en el payload
 <span class="nc" id="L106">            return Response.status(Response.Status.BAD_REQUEST)</span>
-<span class="nc" id="L107">                    .entity(&quot;El atributo enviado es nulo o no tiene nombre, o el idTipoDocumento no está presente.&quot;)</span>
+<span class="nc" id="L107">                    .header(&quot;Detalle&quot;, &quot;Faltan parámetros en el payload&quot;)</span>
 <span class="nc" id="L108">                    .build();</span>
         }
     }

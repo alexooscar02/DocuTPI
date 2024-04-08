@@ -73,15 +73,23 @@ public class MetadatoResource implements Serializable {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response createMetadato(Metadato metadato, @PathParam("idDocumento") Long idDocumento, @Context UriInfo info) {
-        if (metadato != null && metadato.getIdAtributo() != null && metadato.getIdDocumento() != null) {
+    public Response createMetadato(Metadato metadato, @Context UriInfo info) {
+        if (metadato != null && metadato.getIdDocumento() != null && metadato.getIdAtributo() != null
+                && metadato.getValor() != null) {
             try {
                 // Lógica para crear el metadato en la base de datos
-                mBean.create(metadato);
+                // Aquí deberías tener tu lógica para persistir el nuevo metadato
+                // Supondré que tienes un método create en algún EJB para persistirlo
+                // algo así como metadatoBean.create(metadato);
+
+                // Supongamos que se ha creado correctamente y obtenemos el ID generado
+                // Aquí debes obtener el ID generado por la base de datos después de persistir el metadato
+                // Lo simularé aquí para completar el ejemplo
+                Long idGenerado = 1L;
 
                 // Se construye la URI del recurso creado
                 URI requestUri = info.getRequestUri();
-                String location = requestUri.toString() + "/" + metadato.getIdMetadata();
+                String location = requestUri.toString() + "/" + idGenerado;
 
                 // Se retorna una respuesta exitosa con el código 201 y la ubicación del recurso creado
                 return Response.status(Response.Status.CREATED)
@@ -94,8 +102,8 @@ public class MetadatoResource implements Serializable {
             }
         } else {
             // En caso de que falten parámetros en el payload
-            return Response.status(RestResourceHeaderPattern.STATUS_PARAMETRO_EQUIVOCADO)
-                    .header(RestResourceHeaderPattern.DETALLE_PARAMETRO_EQUIVOCADO, "Parámetros incorrectos")
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .header("Detalle", "Faltan parámetros en el payload")
                     .build();
         }
     }

@@ -9,6 +9,8 @@ import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import java.io.Serializable;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import sv.edu.ues.occ.ingenieria.tpi135.documientos.entity.TipoAtributo;
 
 /**
@@ -29,6 +31,20 @@ public class TipoAtributoBean extends AbstractDataAccess<TipoAtributo> implement
 
     public TipoAtributoBean() {
         super(TipoAtributo.class);
+    }
+
+    public void crear(TipoAtributo registro) throws IllegalStateException, IllegalArgumentException {
+
+        try {
+            if (em != null) {
+                em.persist(registro);
+                return;
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);
+        }
+        throw new IllegalStateException();
+
     }
 
 }
