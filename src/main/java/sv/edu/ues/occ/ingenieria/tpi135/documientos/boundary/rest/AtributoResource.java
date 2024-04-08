@@ -37,29 +37,21 @@ public class AtributoResource implements Serializable {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createAtributo(@PathParam("idTipoDocumento") Integer idTipoDocumento, Atributo atributo, @Context UriInfo info) {
         if (atributo == null || atributo.getNombre() == null || atributo.getNombrePantalla() == null || atributo.getObligatorio() == null) {
-            // Caso: Payload nulo o parámetros faltantes
             return Response.status(RestResourceHeaderPattern.STATUS_PARAMETRO_EQUIVOCADO)
                     .header(RestResourceHeaderPattern.DETALLE_PARAMETRO_EQUIVOCADO, "Parámetros incorrectos")
                     .build();
         }
-
         try {
-            // Asignamos el ID del tipo de documento al atributo
             atributo.setIdTipoDocumento(new TipoDocumento(idTipoDocumento));
-
-            // Lógica para crear el atributo en la base de datos
             aBean.create(atributo);
 
-            // Construimos la URI del recurso creado
             URI requestUri = info.getRequestUri();
             String location = requestUri.toString() + "/" + atributo.getIdAtributo();
 
-            // Retornamos una respuesta exitosa con el código 201 y la ubicación del recurso creado
             return Response.status(Response.Status.CREATED)
                     .header("Location", location)
                     .build();
         } catch (Exception ex) {
-            // En caso de que ocurra una excepción durante la creación del atributo
             Logger.getLogger(getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);
             return Response.serverError().build();
         }

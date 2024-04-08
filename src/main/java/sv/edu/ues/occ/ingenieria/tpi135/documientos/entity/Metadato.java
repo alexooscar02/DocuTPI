@@ -94,7 +94,6 @@ public class Metadato implements Serializable {
         this.comentarios = comentarios;
     }
 
-    @JsonbTransient
     public Atributo getIdAtributo() {
         return idAtributo;
     }
@@ -103,7 +102,6 @@ public class Metadato implements Serializable {
         this.idAtributo = idAtributo;
     }
 
-    @JsonbTransient
     public Documento getIdDocumento() {
         return idDocumento;
     }

@@ -84,26 +84,22 @@ public class TipoAtributoResource implements Serializable {
     public Response createTipoAtributo(TipoAtributo tipoAtributo, @Context UriInfo info) {
         if (tipoAtributo == null || tipoAtributo.getExpresionRegular() == null || tipoAtributo.getIndicacionesScreen() == null
                 || tipoAtributo.getNombre() == null || tipoAtributo.getNombreScreen() == null || tipoAtributo.getObservaciones() == null) {
-            // Caso: Payload nulo o parámetros faltantes
             return Response.status(RestResourceHeaderPattern.STATUS_PARAMETRO_EQUIVOCADO)
                     .header(RestResourceHeaderPattern.DETALLE_PARAMETRO_EQUIVOCADO, "Parámetros incorrectos")
                     .build();
         }
 
         try {
-            // Lógica para crear el tipo de atributo en la base de datos
+            
             taBean.create(tipoAtributo);
 
-            // Construimos la URI del recurso creado
             URI requestUri = info.getRequestUri();
             String location = requestUri.toString() + "/" + tipoAtributo.getIdTipoAtributo();
 
-            // Retornamos una respuesta exitosa con el código 201 y la ubicación del recurso creado
             return Response.status(Response.Status.CREATED)
                     .header("Location", location)
                     .build();
         } catch (Exception ex) {
-            // En caso de que ocurra una excepción durante la creación del tipo de atributo
             Logger.getLogger(getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);
             return Response.serverError().build();
         }

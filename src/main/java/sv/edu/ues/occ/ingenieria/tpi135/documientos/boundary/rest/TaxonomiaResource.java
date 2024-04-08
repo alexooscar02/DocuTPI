@@ -47,30 +47,24 @@ public class TaxonomiaResource {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createTaxonomia(@PathParam("idDocumento") Long idDocumento, Taxonomia taxonomia, @Context UriInfo info) {
         if (taxonomia == null || taxonomia.getIdDocumento() == null || taxonomia.getIdTipoDocumento() == null) {
-            // Caso: Payload nulo o parámetros faltantes
             return Response.status(RestResourceHeaderPattern.STATUS_PARAMETRO_EQUIVOCADO)
                     .header(RestResourceHeaderPattern.DETALLE_PARAMETRO_EQUIVOCADO, "Parámetros incorrectos")
                     .build();
         }
 
         try {
-            // Asignamos el ID del documento y el ID del tipo de documento a la taxonomía
             taxonomia.setIdDocumento(new Documento(idDocumento));
             taxonomia.setIdTipoDocumento(new TipoDocumento(taxonomia.getIdTipoDocumento().getIdTipoDocumento())); // Asignar solo el ID
 
-            // Lógica para crear la taxonomía en la base de datos
             tBean.create(taxonomia);
 
-            // Construimos la URI del recurso creado
             URI requestUri = info.getRequestUri();
             String location = requestUri.toString() + "/" + taxonomia.getIdTaxonomia();
 
-            // Retornamos una respuesta exitosa con el código 201 y la ubicación del recurso creado
             return Response.status(Response.Status.CREATED)
                     .header("Location", location)
                     .build();
         } catch (Exception ex) {
-            // En caso de que ocurra una excepción durante la creación de la taxonomía
             Logger.getLogger(getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .header(RestResourceHeaderPattern.DETALLE_PARAMETRO_EQUIVOCADO, "Error interno del servidor")

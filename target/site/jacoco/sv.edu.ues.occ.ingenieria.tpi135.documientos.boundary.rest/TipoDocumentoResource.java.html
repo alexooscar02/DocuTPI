@@ -78,7 +78,7 @@ import sv.edu.ues.occ.ingenieria.tpi135.documientos.entity.TipoDocumento;
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createTipoDocumento(TipoDocumento tipoDocumento, @Context UriInfo info) {
-<span class="nc bnc" id="L81" title="All 6 branches missed.">        if (tipoDocumento == null || tipoDocumento.getNombre() == null || tipoDocumento.getActivo() == null) {</span>
+<span class="nc bnc" id="L81" title="All 8 branches missed.">        if (tipoDocumento == null || tipoDocumento.getNombre() == null || tipoDocumento.getActivo() == null || tipoDocumento.getObservaciones()==null) {</span>
             // Caso: Payload nulo o parámetros faltantes
 <span class="nc" id="L83">            return Response.status(RestResourceHeaderPattern.STATUS_PARAMETRO_EQUIVOCADO)</span>
 <span class="nc" id="L84">                    .header(RestResourceHeaderPattern.DETALLE_PARAMETRO_EQUIVOCADO, &quot;Parámetros incorrectos&quot;)</span>

@@ -136,7 +136,6 @@ public class Documento implements Serializable {
         this.comentarios = comentarios;
     }
 
-    @JsonbTransient
     public List<Metadato> getMetadatoList() {
         return metadatoList;
     }
@@ -145,7 +144,6 @@ public class Documento implements Serializable {
         this.metadatoList = metadatoList;
     }
 
-    @JsonbTransient
     public List<Taxonomia> getTaxonomiaList() {
         return taxonomiaList;
     }
@@ -154,6 +152,7 @@ public class Documento implements Serializable {
         this.taxonomiaList = taxonomiaList;
     }
 
+   
     @Override
     public int hashCode() {
         int hash = 0;
@@ -178,5 +177,5 @@ public class Documento implements Serializable {
     public String toString() {
         return "entity.Documento[ idDocumento=" + idDocumento + " ]";
     }
-    
+
 }

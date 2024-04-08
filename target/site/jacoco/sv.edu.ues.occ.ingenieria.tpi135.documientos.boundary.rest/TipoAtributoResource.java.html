@@ -91,21 +91,22 @@ import sv.edu.ues.occ.ingenieria.tpi135.documientos.entity.TipoAtributo;
         }
 
         try {
+            
             // Lógica para crear el tipo de atributo en la base de datos
-<span class="nc" id="L95">            taBean.create(tipoAtributo);</span>
+<span class="nc" id="L96">            taBean.create(tipoAtributo);</span>
 
             // Construimos la URI del recurso creado
-<span class="nc" id="L98">            URI requestUri = info.getRequestUri();</span>
-<span class="nc" id="L99">            String location = requestUri.toString() + &quot;/&quot; + tipoAtributo.getIdTipoAtributo();</span>
+<span class="nc" id="L99">            URI requestUri = info.getRequestUri();</span>
+<span class="nc" id="L100">            String location = requestUri.toString() + &quot;/&quot; + tipoAtributo.getIdTipoAtributo();</span>
 
             // Retornamos una respuesta exitosa con el código 201 y la ubicación del recurso creado
-<span class="nc" id="L102">            return Response.status(Response.Status.CREATED)</span>
-<span class="nc" id="L103">                    .header(&quot;Location&quot;, location)</span>
-<span class="nc" id="L104">                    .build();</span>
-<span class="nc" id="L105">        } catch (Exception ex) {</span>
+<span class="nc" id="L103">            return Response.status(Response.Status.CREATED)</span>
+<span class="nc" id="L104">                    .header(&quot;Location&quot;, location)</span>
+<span class="nc" id="L105">                    .build();</span>
+<span class="nc" id="L106">        } catch (Exception ex) {</span>
             // En caso de que ocurra una excepción durante la creación del tipo de atributo
-<span class="nc" id="L107">            Logger.getLogger(getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);</span>
-<span class="nc" id="L108">            return Response.serverError().build();</span>
+<span class="nc" id="L108">            Logger.getLogger(getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);</span>
+<span class="nc" id="L109">            return Response.serverError().build();</span>
         }
     }
 

@@ -9,7 +9,11 @@ import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Root;
 import java.io.Serializable;
+import java.util.List;
 import sv.edu.ues.occ.ingenieria.tpi135.documientos.entity.Atributo;
 
 /**
@@ -40,6 +44,14 @@ public class AtributoBean extends AbstractDataAccess<Atributo> implements Serial
         } else {
             return ultimoId + 1; // Generamos un nuevo ID sumando 1 al último ID utilizado
         }
+    }
+
+    public List<Atributo> findByIdTipoDocumentoIdTipoDocumento(Integer idTipoDocumento) {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<Atributo> query = cb.createQuery(Atributo.class);
+        Root<Atributo> root = query.from(Atributo.class);
+        query.where(cb.equal(root.get("idTipoDocumento").get("idTipoDocumento"), idTipoDocumento));
+        return em.createQuery(query).getResultList();
     }
 
 }

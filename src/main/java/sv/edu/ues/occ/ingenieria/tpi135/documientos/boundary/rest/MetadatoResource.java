@@ -17,95 +17,97 @@ import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.UriInfo;
+import static java.awt.SystemColor.info;
 import java.io.Serializable;
 import java.net.URI;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import sv.edu.ues.occ.ingenieria.tpi135.documientos.Control.AtributoBean;
+import sv.edu.ues.occ.ingenieria.tpi135.documientos.Control.DocumentoBean;
 import sv.edu.ues.occ.ingenieria.tpi135.documientos.Control.MetadatoBean;
+import sv.edu.ues.occ.ingenieria.tpi135.documientos.entity.Atributo;
+import sv.edu.ues.occ.ingenieria.tpi135.documientos.entity.Documento;
 import sv.edu.ues.occ.ingenieria.tpi135.documientos.entity.Metadato;
+import sv.edu.ues.occ.ingenieria.tpi135.documientos.entity.Taxonomia;
+import sv.edu.ues.occ.ingenieria.tpi135.documientos.entity.TipoDocumento;
 
 /**
  *
  * @author alexo
  */
-@Path("metadato")
-public class MetadatoResource implements Serializable {
+@Path("/documento/{idDocumento}/metadato")
+public class MetadatoResource {
 
     @Inject
     MetadatoBean mBean;
 
-    @GET
-    @Produces({MediaType.APPLICATION_JSON})
-    public List<Metadato> findRange(
-            @QueryParam(value = "first")
-            @DefaultValue(value = "0") int first,
-            @QueryParam(value = "pagesize")
-            @DefaultValue(value = "50") int pageSize
-    ) {
-        if (first >= 0 && pageSize > 0) {
-            return mBean.findRange(first, pageSize);
-        }
-        return Collections.EMPTY_LIST;
-    }
+    @Inject
+    DocumentoBean dBean;
 
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    @Path("/{id}")
-    public Response findById(@PathParam("id") final Integer idMetadato) {
-        if (idMetadato != null) {
-            Metadato found = mBean.findById(idMetadato);
-            if (found != null) {
-                return Response.status(Response.Status.OK)
-                        .entity(found)
-                        .build();
-            }
-            return Response.status(Response.Status.NOT_FOUND)
-                    .header("not-found", "id")
-                    .build();
-        }
-        return Response.status(422)
-                .header("missing-parameter", "id")
-                .build();
-    }
+    @Inject
+    AtributoBean aBean;
 
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response createMetadato(Metadato metadato, @Context UriInfo info) {
-        if (metadato != null && metadato.getIdDocumento() != null && metadato.getIdAtributo() != null
-                && metadato.getValor() != null) {
-            try {
-                // Lógica para crear el metadato en la base de datos
-                // Aquí deberías tener tu lógica para persistir el nuevo metadato
-                // Supondré que tienes un método create en algún EJB para persistirlo
-                // algo así como metadatoBean.create(metadato);
+    public Response createMetadato(@PathParam("idDocumento") Long idDocumento, Metadato metadato, @Context UriInfo uriInfo) {
+        if (metadato == null || metadato.getIdAtributo() == null || metadato.getIdDocumento() == null || metadato.getValor() == null) {
+            // Caso: Payload nulo o parámetros faltantes
+            return Response.status(RestResourceHeaderPattern.STATUS_PARAMETRO_EQUIVOCADO)
+                    .header(RestResourceHeaderPattern.DETALLE_PARAMETRO_EQUIVOCADO, "Parámetros incorrectos")
+                    .build();
+        }
 
-                // Supongamos que se ha creado correctamente y obtenemos el ID generado
-                // Aquí debes obtener el ID generado por la base de datos después de persistir el metadato
-                // Lo simularé aquí para completar el ejemplo
-                Long idGenerado = 1L;
+        try {
+            // Asignar el ID del documento al metadato
+            metadato.setIdDocumento(new Documento(idDocumento));
 
-                // Se construye la URI del recurso creado
-                URI requestUri = info.getRequestUri();
-                String location = requestUri.toString() + "/" + idGenerado;
-
-                // Se retorna una respuesta exitosa con el código 201 y la ubicación del recurso creado
-                return Response.status(Response.Status.CREATED)
-                        .header("Location", location)
+            // Validar que el atributo pertenezca a la taxonomía del documento
+            if (!validateAttributeBelongsToDocument(metadato.getIdAtributo(), idDocumento)) {
+                return Response.status(405) // Método no permitido
+                        .header(RestResourceHeaderPattern.DETALLE_PARAMETRO_EQUIVOCADO, "El atributo no pertenece a la taxonomía del documento")
                         .build();
-            } catch (Exception ex) {
-                // En caso de que ocurra una excepción durante la creación del metadato
-                Logger.getLogger(getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);
-                return Response.serverError().build();
             }
-        } else {
-            // En caso de que falten parámetros en el payload
-            return Response.status(Response.Status.BAD_REQUEST)
-                    .header("Detalle", "Faltan parámetros en el payload")
+
+            // Lógica para crear el metadato en la base de datos
+            mBean.create(metadato);
+
+            // Construir la URI del recurso creado
+            URI requestUri = uriInfo.getRequestUri();
+            String location = requestUri.toString() + "/" + metadato.getIdMetadata();
+
+            // Retornar una respuesta exitosa con el código 201 y la ubicación del recurso creado
+            return Response.status(Response.Status.CREATED)
+                    .header("Location", location)
+                    .build();
+        } catch (Exception ex) {
+            // En caso de que ocurra una excepción durante la creación del metadato
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .header(RestResourceHeaderPattern.DETALLE_PARAMETRO_EQUIVOCADO, "Error interno del servidor")
                     .build();
         }
     }
 
+    private boolean validateAttributeBelongsToDocument(Atributo atributo, Long idDocumento) {
+        Documento documento = dBean.findById(idDocumento);
+
+        // Obtener el TipoDocumento del documento a través de la lista de Taxonomia
+        TipoDocumento tipoDocumento = null;
+        for (Taxonomia taxonomia : documento.getTaxonomiaList()) {
+            tipoDocumento = taxonomia.getIdTipoDocumento();
+            break;
+        }
+
+        if (tipoDocumento == null) {
+            return false; // No se pudo obtener el TipoDocumento
+        }
+
+        List<Atributo> atributosDelTipoDeDocumento = aBean.findByIdTipoDocumentoIdTipoDocumento(tipoDocumento.getIdTipoDocumento());
+        return atributosDelTipoDeDocumento.contains(atributo);
+    }
 }
