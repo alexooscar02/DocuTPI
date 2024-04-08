@@ -4,6 +4,7 @@
  */
 package sv.edu.ues.occ.ingenieria.tpi135.documientos.entity;
 
+import jakarta.json.bind.annotation.JsonbTransient;
 import java.io.Serializable;
 import java.util.List;
 import jakarta.persistence.Basic;
@@ -58,106 +59,107 @@ public class Atributo implements Serializable {
     @ManyToOne
     private TipoDocumento idTipoDocumento;
 
-<span class="fc" id="L61">    public Atributo() {</span>
-<span class="fc" id="L62">    }</span>
+<span class="fc" id="L62">    public Atributo() {</span>
+<span class="fc" id="L63">    }</span>
 
-<span class="nc" id="L64">    public Atributo(Long idAtributo) {</span>
-<span class="nc" id="L65">        this.idAtributo = idAtributo;</span>
-<span class="nc" id="L66">    }</span>
+<span class="nc" id="L65">    public Atributo(Long idAtributo) {</span>
+<span class="nc" id="L66">        this.idAtributo = idAtributo;</span>
+<span class="nc" id="L67">    }</span>
 
-<span class="nc" id="L68">    public Atributo(Long idAtributo, String nombre) {</span>
-<span class="nc" id="L69">        this.idAtributo = idAtributo;</span>
-<span class="nc" id="L70">        this.nombre = nombre;</span>
-<span class="nc" id="L71">    }</span>
+<span class="nc" id="L69">    public Atributo(Long idAtributo, String nombre) {</span>
+<span class="nc" id="L70">        this.idAtributo = idAtributo;</span>
+<span class="nc" id="L71">        this.nombre = nombre;</span>
+<span class="nc" id="L72">    }</span>
 
     public Long getIdAtributo() {
-<span class="fc" id="L74">        return idAtributo;</span>
+<span class="fc" id="L75">        return idAtributo;</span>
     }
 
     public void setIdAtributo(Long idAtributo) {
-<span class="fc" id="L78">        this.idAtributo = idAtributo;</span>
-<span class="fc" id="L79">    }</span>
+<span class="fc" id="L79">        this.idAtributo = idAtributo;</span>
+<span class="fc" id="L80">    }</span>
 
     public String getNombre() {
-<span class="fc" id="L82">        return nombre;</span>
+<span class="fc" id="L83">        return nombre;</span>
     }
 
     public void setNombre(String nombre) {
-<span class="fc" id="L86">        this.nombre = nombre;</span>
-<span class="fc" id="L87">    }</span>
+<span class="fc" id="L87">        this.nombre = nombre;</span>
+<span class="fc" id="L88">    }</span>
 
     public String getNombrePantalla() {
-<span class="fc" id="L90">        return nombrePantalla;</span>
+<span class="fc" id="L91">        return nombrePantalla;</span>
     }
 
     public void setNombrePantalla(String nombrePantalla) {
-<span class="fc" id="L94">        this.nombrePantalla = nombrePantalla;</span>
-<span class="fc" id="L95">    }</span>
+<span class="fc" id="L95">        this.nombrePantalla = nombrePantalla;</span>
+<span class="fc" id="L96">    }</span>
 
     public String getIndicacionesPantalla() {
-<span class="fc" id="L98">        return indicacionesPantalla;</span>
+<span class="fc" id="L99">        return indicacionesPantalla;</span>
     }
 
     public void setIndicacionesPantalla(String indicacionesPantalla) {
-<span class="nc" id="L102">        this.indicacionesPantalla = indicacionesPantalla;</span>
-<span class="nc" id="L103">    }</span>
+<span class="nc" id="L103">        this.indicacionesPantalla = indicacionesPantalla;</span>
+<span class="nc" id="L104">    }</span>
 
     public Boolean getObligatorio() {
-<span class="fc" id="L106">        return obligatorio;</span>
+<span class="fc" id="L107">        return obligatorio;</span>
     }
 
     public void setObligatorio(Boolean obligatorio) {
-<span class="fc" id="L110">        this.obligatorio = obligatorio;</span>
-<span class="fc" id="L111">    }</span>
+<span class="fc" id="L111">        this.obligatorio = obligatorio;</span>
+<span class="fc" id="L112">    }</span>
 
+    @JsonbTransient
     public List&lt;Metadato&gt; getMetadatoList() {
-<span class="fc" id="L114">        return metadatoList;</span>
+<span class="fc" id="L116">        return metadatoList;</span>
     }
 
     public void setMetadatoList(List&lt;Metadato&gt; metadatoList) {
-<span class="nc" id="L118">        this.metadatoList = metadatoList;</span>
-<span class="nc" id="L119">    }</span>
+<span class="nc" id="L120">        this.metadatoList = metadatoList;</span>
+<span class="nc" id="L121">    }</span>
 
     public TipoAtributo getIdTipoAtributo() {
-<span class="fc" id="L122">        return idTipoAtributo;</span>
+<span class="fc" id="L124">        return idTipoAtributo;</span>
     }
 
     public void setIdTipoAtributo(TipoAtributo idTipoAtributo) {
-<span class="fc" id="L126">        this.idTipoAtributo = idTipoAtributo;</span>
-<span class="fc" id="L127">    }</span>
+<span class="fc" id="L128">        this.idTipoAtributo = idTipoAtributo;</span>
+<span class="fc" id="L129">    }</span>
 
     public TipoDocumento getIdTipoDocumento() {
-<span class="fc" id="L130">        return idTipoDocumento;</span>
+<span class="fc" id="L132">        return idTipoDocumento;</span>
     }
 
     public void setIdTipoDocumento(TipoDocumento idTipoDocumento) {
-<span class="fc" id="L134">        this.idTipoDocumento = idTipoDocumento;</span>
-<span class="fc" id="L135">    }</span>
+<span class="fc" id="L136">        this.idTipoDocumento = idTipoDocumento;</span>
+<span class="fc" id="L137">    }</span>
 
     @Override
     public int hashCode() {
-<span class="nc" id="L139">        int hash = 0;</span>
-<span class="nc bnc" id="L140" title="All 2 branches missed.">        hash += (idAtributo != null ? idAtributo.hashCode() : 0);</span>
-<span class="nc" id="L141">        return hash;</span>
+<span class="nc" id="L141">        int hash = 0;</span>
+<span class="nc bnc" id="L142" title="All 2 branches missed.">        hash += (idAtributo != null ? idAtributo.hashCode() : 0);</span>
+<span class="nc" id="L143">        return hash;</span>
     }
 
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-<span class="nc bnc" id="L147" title="All 2 branches missed.">        if (!(object instanceof Atributo)) {</span>
-<span class="nc" id="L148">            return false;</span>
+<span class="nc bnc" id="L149" title="All 2 branches missed.">        if (!(object instanceof Atributo)) {</span>
+<span class="nc" id="L150">            return false;</span>
         }
-<span class="nc" id="L150">        Atributo other = (Atributo) object;</span>
-<span class="nc bnc" id="L151" title="All 8 branches missed.">        if ((this.idAtributo == null &amp;&amp; other.idAtributo != null) || (this.idAtributo != null &amp;&amp; !this.idAtributo.equals(other.idAtributo))) {</span>
-<span class="nc" id="L152">            return false;</span>
+<span class="nc" id="L152">        Atributo other = (Atributo) object;</span>
+<span class="nc bnc" id="L153" title="All 8 branches missed.">        if ((this.idAtributo == null &amp;&amp; other.idAtributo != null) || (this.idAtributo != null &amp;&amp; !this.idAtributo.equals(other.idAtributo))) {</span>
+<span class="nc" id="L154">            return false;</span>
         }
-<span class="nc" id="L154">        return true;</span>
+<span class="nc" id="L156">        return true;</span>
     }
 
     @Override
     public String toString() {
-<span class="nc" id="L159">        return &quot;entity.Atributo[ idAtributo=&quot; + idAtributo + &quot; ]&quot;;</span>
+<span class="nc" id="L161">        return &quot;entity.Atributo[ idAtributo=&quot; + idAtributo + &quot; ]&quot;;</span>
     }
-    
+
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

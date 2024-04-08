@@ -171,6 +171,7 @@ public class PrimerParcialIT {
         Assertions.assertTrue(respuesta.getHeaders().containsKey("Location"));
         String[] lex = respuesta.getHeaderString("Location").split("/");
         ID_ATRIBUTO_CREADO = Long.valueOf(lex[lex.length - 1]);
+        System.out.println(ID_ATRIBUTO_CREADO);
     }
 
     @Test
@@ -200,6 +201,7 @@ public class PrimerParcialIT {
         Assertions.assertTrue(respuesta.getHeaders().containsKey("Location"));
         String[] lex = respuesta.getHeaderString("Location").split("/");
         ID_DOCUMENTO_CREADO = Long.valueOf(lex[lex.length - 1]);
+        System.out.println(ID_DOCUMENTO_CREADO);
     }
 
     @Test
@@ -224,84 +226,88 @@ public class PrimerParcialIT {
         nuevo.setIdDocumento(new Documento(ID_DOCUMENTO_CREADO));
         nuevo.setIdTipoDocumento(new TipoDocumento(ID_TIPO_DOCUMENTO_CREADO));
         respuesta = builder.post(Entity.entity(nuevo, MediaType.APPLICATION_JSON));
+        System.out.println(payara1.getLogs());
+
         Assertions.assertEquals(201, respuesta.getStatus());
         Assertions.assertTrue(respuesta.getHeaders().containsKey("Location"));
+        System.out.println(payara1.getLogs());
         String[] lex = respuesta.getHeaderString("Location").split("/");
         ID_TAXONOMIA_CREADO = Long.valueOf(lex[lex.length - 1]);
+        System.out.println(ID_TAXONOMIA_CREADO);
     }
 
-//    @Test
-//    @Order(6)
-//    public void testCreateMetadato() {
-//        System.out.println("createMetadatoIT");
-//
-//        Metadato nuevo = new Metadato();
-//        nuevo.setIdMetadata(1l);
-//        Invocation.Builder builder = target.path("documento/{idDocumento}/metadato")
-//                .resolveTemplate("idDocumento", ID_DOCUMENTO_CREADO)
-//                .request(MediaType.APPLICATION_JSON);
-//        Response respuesta = builder.post(Entity.entity(null, MediaType.APPLICATION_JSON));
-//        // payload nulo
-//        Assertions.assertEquals(RestResourceHeaderPattern.STATUS_PARAMETRO_EQUIVOCADO, respuesta.getStatus());
-//        // payload vacio
-//        respuesta = builder.post(Entity.entity(nuevo, MediaType.APPLICATION_JSON));
-//        Assertions.assertEquals(RestResourceHeaderPattern.STATUS_PARAMETRO_EQUIVOCADO, respuesta.getStatus());
-//        Assertions.assertTrue(respuesta.getHeaders().containsKey(RestResourceHeaderPattern.DETALLE_PARAMETRO_EQUIVOCADO));
-//
-//        //// crear tipo de documento equivocado
-//        Invocation.Builder builderT = target.path("tipodocumento").request(MediaType.APPLICATION_JSON);
-//        TipoDocumento nuevoT = new TipoDocumento();
-//
-//        nuevoT.setIdTipoDocumento(null);
-//        nuevoT.setActivo(Boolean.TRUE);
-//        nuevoT.setNombre("tipo equivocado");
-//        nuevoT.setObservaciones("ninguna");
-//        Response respuestaT = builderT.post(Entity.entity(nuevoT, MediaType.APPLICATION_JSON));
-//        Assertions.assertEquals(201, respuestaT.getStatus());
-//        Assertions.assertTrue(respuestaT.getHeaders().containsKey("Location"));
-//        String[] lex = respuestaT.getHeaderString("Location").split("/");
-//        nuevoT.setIdTipoDocumento(Integer.valueOf(lex[lex.length - 1]));
-//        //// crear atributo equivocado
-//
-//        Atributo nuevoA = new Atributo();
-//        nuevoA.setIdAtributo(1l);
-//        Invocation.Builder builderA = target.path("tipodocumento/{idTipoDocumento}/atributo")
-//                .resolveTemplate("idTipoDocumento", nuevoT.getIdTipoDocumento())
-//                .request(MediaType.APPLICATION_JSON);
-//
-//        nuevoA.setIdAtributo(null);
-//        nuevoA.setIdTipoAtributo(new TipoAtributo(ID_TIPO_ATRIBUTO_CREADO));
-//        nuevoA.setIdTipoDocumento(nuevoT);
-//        nuevoA.setNombre("atributo equivocado");
-//        nuevoA.setNombrePantalla("algun nombre para atributo equivocado");
-//        nuevoA.setObligatorio(Boolean.TRUE);
-//        respuesta = builderA.post(Entity.entity(nuevoA, MediaType.APPLICATION_JSON));
-//        Assertions.assertEquals(201, respuesta.getStatus());
-//        Assertions.assertTrue(respuesta.getHeaders().containsKey("Location"));
-//        lex = respuesta.getHeaderString("Location").split("/");
-//        nuevoA.setIdAtributo(Long.valueOf(lex[lex.length - 1]));
-//
-//        //// intentar crear metadato que no pertenece a la taxonomia
-//        nuevo.setIdMetadata(null);
-//        nuevo.setIdAtributo(nuevoA);
-//        nuevo.setIdDocumento(new Documento(ID_DOCUMENTO_CREADO));
-//        nuevo.setValor("algun valor");
-//
-//        respuesta = builder.post(Entity.entity(nuevo, MediaType.APPLICATION_JSON));
-//        Assertions.assertEquals(405, respuesta.getStatus());
-//
-//        // crear atributo valido
-//        nuevo = new Metadato();
-//        nuevo.setIdAtributo(new Atributo(ID_ATRIBUTO_CREADO));
-//        nuevo.setIdDocumento(new Documento(ID_DOCUMENTO_CREADO));
-//        nuevo.setValor("valor valido");
-//        respuesta = builder.post(Entity.entity(nuevo, MediaType.APPLICATION_JSON));
-//        Assertions.assertEquals(201, respuesta.getStatus());
-//
-//        Assertions.assertTrue(respuesta.getHeaders().containsKey("Location"));
-//        lex = respuesta.getHeaderString("Location").split("/");
-//        ID_METADATO_CREADO = Long.valueOf(lex[lex.length - 1]);
-//    }
+    @Test
+    @Order(6)
+    public void testCreateMetadato() {
+        System.out.println("createMetadatoIT");
+
+        Metadato nuevo = new Metadato();
+        nuevo.setIdMetadata(1l);
+        Invocation.Builder builder = target.path("documento/{idDocumento}/metadato")
+                .resolveTemplate("idDocumento", ID_DOCUMENTO_CREADO)
+                .request(MediaType.APPLICATION_JSON);
+        Response respuesta = builder.post(Entity.entity(null, MediaType.APPLICATION_JSON));
+        // payload nulo
+        Assertions.assertEquals(RestResourceHeaderPattern.STATUS_PARAMETRO_EQUIVOCADO, respuesta.getStatus());
+        // payload vacio
+        respuesta = builder.post(Entity.entity(nuevo, MediaType.APPLICATION_JSON));
+        Assertions.assertEquals(RestResourceHeaderPattern.STATUS_PARAMETRO_EQUIVOCADO, respuesta.getStatus());
+        Assertions.assertTrue(respuesta.getHeaders().containsKey(RestResourceHeaderPattern.DETALLE_PARAMETRO_EQUIVOCADO));
+
+        //// crear tipo de documento equivocado
+        Invocation.Builder builderT = target.path("tipodocumento").request(MediaType.APPLICATION_JSON);
+        TipoDocumento nuevoT = new TipoDocumento();
+
+        nuevoT.setIdTipoDocumento(null);
+        nuevoT.setActivo(Boolean.TRUE);
+        nuevoT.setNombre("tipo equivocado");
+        nuevoT.setObservaciones("ninguna");
+        Response respuestaT = builderT.post(Entity.entity(nuevoT, MediaType.APPLICATION_JSON));
+        Assertions.assertEquals(201, respuestaT.getStatus());
+        Assertions.assertTrue(respuestaT.getHeaders().containsKey("Location"));
+        String[] lex = respuestaT.getHeaderString("Location").split("/");
+        nuevoT.setIdTipoDocumento(Integer.valueOf(lex[lex.length - 1]));
+        //// crear atributo equivocado
+
+        Atributo nuevoA = new Atributo();
+        nuevoA.setIdAtributo(1l);
+        Invocation.Builder builderA = target.path("tipodocumento/{idTipoDocumento}/atributo")
+                .resolveTemplate("idTipoDocumento", nuevoT.getIdTipoDocumento())
+                .request(MediaType.APPLICATION_JSON);
+
+        nuevoA.setIdAtributo(null);
+        nuevoA.setIdTipoAtributo(new TipoAtributo(ID_TIPO_ATRIBUTO_CREADO));
+        nuevoA.setIdTipoDocumento(nuevoT);
+        nuevoA.setNombre("atributo equivocado");
+        nuevoA.setNombrePantalla("algun nombre para atributo equivocado");
+        nuevoA.setObligatorio(Boolean.TRUE);
+        respuesta = builderA.post(Entity.entity(nuevoA, MediaType.APPLICATION_JSON));
+        Assertions.assertEquals(201, respuesta.getStatus());
+        Assertions.assertTrue(respuesta.getHeaders().containsKey("Location"));
+        lex = respuesta.getHeaderString("Location").split("/");
+        nuevoA.setIdAtributo(Long.valueOf(lex[lex.length - 1]));
+
+        //// intentar crear metadato que no pertenece a la taxonomia
+        nuevo.setIdMetadata(null);
+        nuevo.setIdAtributo(nuevoA);
+        nuevo.setIdDocumento(new Documento(ID_DOCUMENTO_CREADO));
+        nuevo.setValor("algun valor");
+
+        respuesta = builder.post(Entity.entity(nuevo, MediaType.APPLICATION_JSON));
+        Assertions.assertEquals(405, respuesta.getStatus());
+
+        // crear atributo valido
+        nuevo = new Metadato();
+        nuevo.setIdAtributo(new Atributo(ID_ATRIBUTO_CREADO));
+        nuevo.setIdDocumento(new Documento(ID_DOCUMENTO_CREADO));
+        nuevo.setValor("valor valido");
+        respuesta = builder.post(Entity.entity(nuevo, MediaType.APPLICATION_JSON));
+        Assertions.assertEquals(201, respuesta.getStatus());
+
+        Assertions.assertTrue(respuesta.getHeaders().containsKey("Location"));
+        lex = respuesta.getHeaderString("Location").split("/");
+        ID_METADATO_CREADO = Long.valueOf(lex[lex.length - 1]);
+    }
 //
 //    @Test
 //    @Order(7)

@@ -4,6 +4,7 @@
  */
 package sv.edu.ues.occ.ingenieria.tpi135.documientos.entity;
 
+import jakarta.json.bind.annotation.JsonbTransient;
 import java.io.Serializable;
 import java.util.Date;
 import jakarta.persistence.Basic;
@@ -71,6 +72,7 @@ public class Taxonomia implements Serializable {
         this.fechaCreacion = fechaCreacion;
     }
 
+    @JsonbTransient
     public Documento getIdDocumento() {
         return idDocumento;
     }
@@ -79,6 +81,7 @@ public class Taxonomia implements Serializable {
         this.idDocumento = idDocumento;
     }
 
+    @JsonbTransient
     public TipoDocumento getIdTipoDocumento() {
         return idTipoDocumento;
     }

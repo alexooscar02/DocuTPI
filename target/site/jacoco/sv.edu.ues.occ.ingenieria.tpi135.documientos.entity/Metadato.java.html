@@ -4,6 +4,7 @@
  */
 package sv.edu.ues.occ.ingenieria.tpi135.documientos.entity;
 
+import jakarta.json.bind.annotation.JsonbTransient;
 import java.io.Serializable;
 import java.util.Date;
 import jakarta.persistence.Basic;
@@ -54,85 +55,87 @@ public class Metadato implements Serializable {
     @ManyToOne
     private Documento idDocumento;
 
-<span class="fc" id="L57">    public Metadato() {</span>
-<span class="fc" id="L58">    }</span>
+<span class="nc" id="L58">    public Metadato() {</span>
+<span class="nc" id="L59">    }</span>
 
-<span class="nc" id="L60">    public Metadato(Long idMetadata) {</span>
-<span class="nc" id="L61">        this.idMetadata = idMetadata;</span>
-<span class="nc" id="L62">    }</span>
+<span class="nc" id="L61">    public Metadato(Long idMetadata) {</span>
+<span class="nc" id="L62">        this.idMetadata = idMetadata;</span>
+<span class="nc" id="L63">    }</span>
 
     public Long getIdMetadata() {
-<span class="nc" id="L65">        return idMetadata;</span>
+<span class="nc" id="L66">        return idMetadata;</span>
     }
 
     public void setIdMetadata(Long idMetadata) {
-<span class="fc" id="L69">        this.idMetadata = idMetadata;</span>
-<span class="fc" id="L70">    }</span>
+<span class="nc" id="L70">        this.idMetadata = idMetadata;</span>
+<span class="nc" id="L71">    }</span>
 
     public String getValor() {
-<span class="nc" id="L73">        return valor;</span>
+<span class="nc" id="L74">        return valor;</span>
     }
 
     public void setValor(String valor) {
-<span class="nc" id="L77">        this.valor = valor;</span>
-<span class="nc" id="L78">    }</span>
+<span class="nc" id="L78">        this.valor = valor;</span>
+<span class="nc" id="L79">    }</span>
 
     public Date getFechaCreacion() {
-<span class="nc" id="L81">        return fechaCreacion;</span>
+<span class="nc" id="L82">        return fechaCreacion;</span>
     }
 
     public void setFechaCreacion(Date fechaCreacion) {
-<span class="nc" id="L85">        this.fechaCreacion = fechaCreacion;</span>
-<span class="nc" id="L86">    }</span>
+<span class="nc" id="L86">        this.fechaCreacion = fechaCreacion;</span>
+<span class="nc" id="L87">    }</span>
 
     public String getComentarios() {
-<span class="nc" id="L89">        return comentarios;</span>
+<span class="nc" id="L90">        return comentarios;</span>
     }
 
     public void setComentarios(String comentarios) {
-<span class="nc" id="L93">        this.comentarios = comentarios;</span>
-<span class="nc" id="L94">    }</span>
+<span class="nc" id="L94">        this.comentarios = comentarios;</span>
+<span class="nc" id="L95">    }</span>
 
+    @JsonbTransient
     public Atributo getIdAtributo() {
-<span class="nc" id="L97">        return idAtributo;</span>
+<span class="nc" id="L99">        return idAtributo;</span>
     }
 
     public void setIdAtributo(Atributo idAtributo) {
-<span class="nc" id="L101">        this.idAtributo = idAtributo;</span>
-<span class="nc" id="L102">    }</span>
+<span class="nc" id="L103">        this.idAtributo = idAtributo;</span>
+<span class="nc" id="L104">    }</span>
 
+    @JsonbTransient
     public Documento getIdDocumento() {
-<span class="nc" id="L105">        return idDocumento;</span>
+<span class="nc" id="L108">        return idDocumento;</span>
     }
 
     public void setIdDocumento(Documento idDocumento) {
-<span class="nc" id="L109">        this.idDocumento = idDocumento;</span>
-<span class="nc" id="L110">    }</span>
+<span class="nc" id="L112">        this.idDocumento = idDocumento;</span>
+<span class="nc" id="L113">    }</span>
 
     @Override
     public int hashCode() {
-<span class="nc" id="L114">        int hash = 0;</span>
-<span class="nc bnc" id="L115" title="All 2 branches missed.">        hash += (idMetadata != null ? idMetadata.hashCode() : 0);</span>
-<span class="nc" id="L116">        return hash;</span>
+<span class="nc" id="L117">        int hash = 0;</span>
+<span class="nc bnc" id="L118" title="All 2 branches missed.">        hash += (idMetadata != null ? idMetadata.hashCode() : 0);</span>
+<span class="nc" id="L119">        return hash;</span>
     }
 
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-<span class="nc bnc" id="L122" title="All 2 branches missed.">        if (!(object instanceof Metadato)) {</span>
-<span class="nc" id="L123">            return false;</span>
+<span class="nc bnc" id="L125" title="All 2 branches missed.">        if (!(object instanceof Metadato)) {</span>
+<span class="nc" id="L126">            return false;</span>
         }
-<span class="nc" id="L125">        Metadato other = (Metadato) object;</span>
-<span class="nc bnc" id="L126" title="All 8 branches missed.">        if ((this.idMetadata == null &amp;&amp; other.idMetadata != null) || (this.idMetadata != null &amp;&amp; !this.idMetadata.equals(other.idMetadata))) {</span>
-<span class="nc" id="L127">            return false;</span>
+<span class="nc" id="L128">        Metadato other = (Metadato) object;</span>
+<span class="nc bnc" id="L129" title="All 8 branches missed.">        if ((this.idMetadata == null &amp;&amp; other.idMetadata != null) || (this.idMetadata != null &amp;&amp; !this.idMetadata.equals(other.idMetadata))) {</span>
+<span class="nc" id="L130">            return false;</span>
         }
-<span class="nc" id="L129">        return true;</span>
+<span class="nc" id="L132">        return true;</span>
     }
 
     @Override
     public String toString() {
-<span class="nc" id="L134">        return &quot;entity.Metadato[ idMetadata=&quot; + idMetadata + &quot; ]&quot;;</span>
+<span class="nc" id="L137">        return &quot;entity.Metadato[ idMetadata=&quot; + idMetadata + &quot; ]&quot;;</span>
     }
-    
+
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

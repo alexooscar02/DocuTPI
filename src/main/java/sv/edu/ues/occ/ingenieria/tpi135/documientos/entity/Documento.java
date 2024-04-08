@@ -4,6 +4,7 @@
  */
 package sv.edu.ues.occ.ingenieria.tpi135.documientos.entity;
 
+import jakarta.json.bind.annotation.JsonbTransient;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -135,6 +136,7 @@ public class Documento implements Serializable {
         this.comentarios = comentarios;
     }
 
+    @JsonbTransient
     public List<Metadato> getMetadatoList() {
         return metadatoList;
     }
@@ -143,6 +145,7 @@ public class Documento implements Serializable {
         this.metadatoList = metadatoList;
     }
 
+    @JsonbTransient
     public List<Taxonomia> getTaxonomiaList() {
         return taxonomiaList;
     }

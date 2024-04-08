@@ -4,6 +4,7 @@
  */
 package sv.edu.ues.occ.ingenieria.tpi135.documientos.entity;
 
+import jakarta.json.bind.annotation.JsonbTransient;
 import java.io.Serializable;
 import java.util.List;
 import jakarta.persistence.Basic;
@@ -87,6 +88,7 @@ public class TipoDocumento implements Serializable {
         this.observaciones = observaciones;
     }
 
+    @JsonbTransient
     public List<Atributo> getAtributoList() {
         return atributoList;
     }
@@ -95,6 +97,7 @@ public class TipoDocumento implements Serializable {
         this.atributoList = atributoList;
     }
 
+    @JsonbTransient
     public List<Taxonomia> getTaxonomiaList() {
         return taxonomiaList;
     }
@@ -127,5 +130,5 @@ public class TipoDocumento implements Serializable {
     public String toString() {
         return "entity.TipoDocumento[ idTipoDocumento=" + idTipoDocumento + " ]";
     }
-    
+
 }

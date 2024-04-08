@@ -4,6 +4,7 @@
  */
 package sv.edu.ues.occ.ingenieria.tpi135.documientos.entity;
 
+import jakarta.json.bind.annotation.JsonbTransient;
 import java.io.Serializable;
 import java.util.Date;
 import jakarta.persistence.Basic;
@@ -93,6 +94,7 @@ public class Metadato implements Serializable {
         this.comentarios = comentarios;
     }
 
+    @JsonbTransient
     public Atributo getIdAtributo() {
         return idAtributo;
     }
@@ -101,6 +103,7 @@ public class Metadato implements Serializable {
         this.idAtributo = idAtributo;
     }
 
+    @JsonbTransient
     public Documento getIdDocumento() {
         return idDocumento;
     }
@@ -133,5 +136,5 @@ public class Metadato implements Serializable {
     public String toString() {
         return "entity.Metadato[ idMetadata=" + idMetadata + " ]";
     }
-    
+
 }

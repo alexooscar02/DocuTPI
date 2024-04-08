@@ -4,6 +4,7 @@
  */
 package sv.edu.ues.occ.ingenieria.tpi135.documientos.entity;
 
+import jakarta.json.bind.annotation.JsonbTransient;
 import java.io.Serializable;
 import java.util.List;
 import jakarta.persistence.Basic;
@@ -110,6 +111,7 @@ public class Atributo implements Serializable {
         this.obligatorio = obligatorio;
     }
 
+    @JsonbTransient
     public List<Metadato> getMetadatoList() {
         return metadatoList;
     }
@@ -158,5 +160,5 @@ public class Atributo implements Serializable {
     public String toString() {
         return "entity.Atributo[ idAtributo=" + idAtributo + " ]";
     }
-    
+
 }

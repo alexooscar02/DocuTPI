@@ -8,7 +8,7 @@ Documientos-1.0-SNAPSHOT,sv.edu.ues.occ.ingenieria.tpi135.documientos.boundary.r
 Documientos-1.0-SNAPSHOT,sv.edu.ues.occ.ingenieria.tpi135.documientos.boundary.rest,RestResourceHeaderPattern,3,0,0,0,1,0,1,0,1,0
 Documientos-1.0-SNAPSHOT,sv.edu.ues.occ.ingenieria.tpi135.documientos.boundary.rest,TipoAtributoResource,102,0,20,0,30,0,14,0,4,0
 Documientos-1.0-SNAPSHOT,sv.edu.ues.occ.ingenieria.tpi135.documientos.boundary.rest,AtributoResource,60,0,8,0,15,0,6,0,2,0
-Documientos-1.0-SNAPSHOT,sv.edu.ues.occ.ingenieria.tpi135.documientos.entity,Metadato,90,7,12,0,29,4,21,2,15,2
+Documientos-1.0-SNAPSHOT,sv.edu.ues.occ.ingenieria.tpi135.documientos.entity,Metadato,97,0,12,0,33,0,23,0,17,0
 Documientos-1.0-SNAPSHOT,sv.edu.ues.occ.ingenieria.tpi135.documientos.entity,TipoDocumento,54,43,12,0,14,19,11,12,5,12
 Documientos-1.0-SNAPSHOT,sv.edu.ues.occ.ingenieria.tpi135.documientos.entity,TipoAtributo,50,54,12,0,12,24,10,15,4,15
 Documientos-1.0-SNAPSHOT,sv.edu.ues.occ.ingenieria.tpi135.documientos.entity,Taxonomia,56,27,12,0,15,12,11,8,5,8

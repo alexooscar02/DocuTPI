@@ -4,6 +4,7 @@
  */
 package sv.edu.ues.occ.ingenieria.tpi135.documientos.entity;
 
+import jakarta.json.bind.annotation.JsonbTransient;
 import java.io.Serializable;
 import java.util.List;
 import jakarta.persistence.Basic;
@@ -107,6 +108,7 @@ public class TipoAtributo implements Serializable {
         this.indicacionesScreen = indicacionesScreen;
     }
 
+    @JsonbTransient
     public List<Atributo> getAtributoList() {
         return atributoList;
     }
@@ -139,5 +141,5 @@ public class TipoAtributo implements Serializable {
     public String toString() {
         return "entity.TipoAtributo[ idTipoAtributo=" + idTipoAtributo + " ]";
     }
-    
+
 }
