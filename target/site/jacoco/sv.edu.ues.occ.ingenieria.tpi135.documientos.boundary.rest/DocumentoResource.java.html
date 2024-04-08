@@ -75,32 +75,25 @@ import sv.edu.ues.occ.ingenieria.tpi135.documientos.entity.Documento;
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createDocumento(Documento documento, @Context UriInfo info) {
-        // Verifica si los parámetros requeridos son nulos
-<span class="nc bnc" id="L79" title="All 8 branches missed.">        if (documento == null || documento.getNombre() == null || documento.getCreadoPor() == null || documento.getUbicacionFisica() == null) {</span>
-<span class="nc" id="L80">            return Response.status(RestResourceHeaderPattern.STATUS_PARAMETRO_EQUIVOCADO)</span>
-<span class="nc" id="L81">                    .header(RestResourceHeaderPattern.DETALLE_PARAMETRO_EQUIVOCADO, &quot;Parámetros incorrectos&quot;)</span>
-<span class="nc" id="L82">                    .build();</span>
+<span class="nc bnc" id="L78" title="All 8 branches missed.">        if (documento == null || documento.getNombre() == null || documento.getCreadoPor() == null || documento.getUbicacionFisica() == null) {</span>
+<span class="nc" id="L79">            return Response.status(RestResourceHeaderPattern.STATUS_PARAMETRO_EQUIVOCADO)</span>
+<span class="nc" id="L80">                    .header(RestResourceHeaderPattern.DETALLE_PARAMETRO_EQUIVOCADO, &quot;Parámetros incorrectos&quot;)</span>
+<span class="nc" id="L81">                    .build();</span>
         }
-
-        // Lógica para crear el documento en la base de datos
         try {
-            // Lógica para crear el documento en la base de datos
-<span class="nc" id="L88">            dBean.create(documento);</span>
+<span class="nc" id="L84">            dBean.create(documento);</span>
 
-            // Construimos la URI del recurso creado
-<span class="nc" id="L91">            URI requestUri = info.getRequestUri();</span>
-<span class="nc" id="L92">            String location = requestUri.toString() + &quot;/&quot; + documento.getIdDocumento();</span>
+<span class="nc" id="L86">            URI requestUri = info.getRequestUri();</span>
+<span class="nc" id="L87">            String location = requestUri.toString() + &quot;/&quot; + documento.getIdDocumento();</span>
 
-            // Retornamos una respuesta exitosa con el código 201 y la ubicación del recurso creado
-<span class="nc" id="L95">            return Response.status(Response.Status.CREATED)</span>
-<span class="nc" id="L96">                    .header(&quot;Location&quot;, location)</span>
-<span class="nc" id="L97">                    .build();</span>
-<span class="nc" id="L98">        } catch (Exception ex) {</span>
-            // En caso de que ocurra una excepción durante la creación del documento
-<span class="nc" id="L100">            Logger.getLogger(getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);</span>
-<span class="nc" id="L101">            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)</span>
-<span class="nc" id="L102">                    .entity(&quot;Error interno al procesar la solicitud&quot;)</span>
-<span class="nc" id="L103">                    .build();</span>
+<span class="nc" id="L89">            return Response.status(Response.Status.CREATED)</span>
+<span class="nc" id="L90">                    .header(&quot;Location&quot;, location)</span>
+<span class="nc" id="L91">                    .build();</span>
+<span class="nc" id="L92">        } catch (Exception ex) {</span>
+<span class="nc" id="L93">            Logger.getLogger(getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);</span>
+<span class="nc" id="L94">            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)</span>
+<span class="nc" id="L95">                    .entity(&quot;Error interno al procesar la solicitud&quot;)</span>
+<span class="nc" id="L96">                    .build();</span>
         }
     }
 

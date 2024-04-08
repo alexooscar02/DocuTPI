@@ -79,28 +79,23 @@ import sv.edu.ues.occ.ingenieria.tpi135.documientos.entity.TipoDocumento;
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createTipoDocumento(TipoDocumento tipoDocumento, @Context UriInfo info) {
 <span class="nc bnc" id="L81" title="All 8 branches missed.">        if (tipoDocumento == null || tipoDocumento.getNombre() == null || tipoDocumento.getActivo() == null || tipoDocumento.getObservaciones()==null) {</span>
-            // Caso: Payload nulo o parámetros faltantes
-<span class="nc" id="L83">            return Response.status(RestResourceHeaderPattern.STATUS_PARAMETRO_EQUIVOCADO)</span>
-<span class="nc" id="L84">                    .header(RestResourceHeaderPattern.DETALLE_PARAMETRO_EQUIVOCADO, &quot;Parámetros incorrectos&quot;)</span>
-<span class="nc" id="L85">                    .build();</span>
+<span class="nc" id="L82">            return Response.status(RestResourceHeaderPattern.STATUS_PARAMETRO_EQUIVOCADO)</span>
+<span class="nc" id="L83">                    .header(RestResourceHeaderPattern.DETALLE_PARAMETRO_EQUIVOCADO, &quot;Parámetros incorrectos&quot;)</span>
+<span class="nc" id="L84">                    .build();</span>
         }
 
         try {
-            // Lógica para crear el tipo de documento en la base de datos
-<span class="nc" id="L90">            tdBean.create(tipoDocumento);</span>
+<span class="nc" id="L88">            tdBean.create(tipoDocumento);</span>
 
-            // Construimos la URI del recurso creado
-<span class="nc" id="L93">            URI requestUri = info.getRequestUri();</span>
-<span class="nc" id="L94">            String location = requestUri.toString() + &quot;/&quot; + tipoDocumento.getIdTipoDocumento();</span>
+<span class="nc" id="L90">            URI requestUri = info.getRequestUri();</span>
+<span class="nc" id="L91">            String location = requestUri.toString() + &quot;/&quot; + tipoDocumento.getIdTipoDocumento();</span>
 
-            // Retornamos una respuesta exitosa con el código 201 y la ubicación del recurso creado
-<span class="nc" id="L97">            return Response.status(Response.Status.CREATED)</span>
-<span class="nc" id="L98">                    .header(&quot;Location&quot;, location)</span>
-<span class="nc" id="L99">                    .build();</span>
-<span class="nc" id="L100">        } catch (Exception ex) {</span>
-            // En caso de que ocurra una excepción durante la creación del tipo de documento
-<span class="nc" id="L102">            Logger.getLogger(getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);</span>
-<span class="nc" id="L103">            return Response.serverError().build();</span>
+<span class="nc" id="L93">            return Response.status(Response.Status.CREATED)</span>
+<span class="nc" id="L94">                    .header(&quot;Location&quot;, location)</span>
+<span class="nc" id="L95">                    .build();</span>
+<span class="nc" id="L96">        } catch (Exception ex) {</span>
+<span class="nc" id="L97">            Logger.getLogger(getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);</span>
+<span class="nc" id="L98">            return Response.serverError().build();</span>
         }
     }
 

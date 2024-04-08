@@ -102,7 +102,7 @@ public class PrimerParcialIT {
         Assertions.assertEquals(RestResourceHeaderPattern.STATUS_PARAMETRO_EQUIVOCADO, respuesta.getStatus());
         Assertions.assertTrue(respuesta.getHeaders().containsKey(RestResourceHeaderPattern.DETALLE_PARAMETRO_EQUIVOCADO));
         // payload correcto
-        //nuevo.setIdTipoAtributo(null);
+        nuevo.setIdTipoAtributo(null);
         nuevo.setExpresionRegular("a");
         nuevo.setIndicacionesScreen("cualquier texto");
         nuevo.setNombre("texto plano");

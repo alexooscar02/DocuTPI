@@ -49,23 +49,23 @@ public class Taxonomia implements Serializable {
     @ManyToOne
     private TipoDocumento idTipoDocumento;
 
-<span class="nc" id="L52">    public Taxonomia() {</span>
-<span class="nc" id="L53">    }</span>
+<span class="fc" id="L52">    public Taxonomia() {</span>
+<span class="fc" id="L53">    }</span>
 
 <span class="nc" id="L55">    public Taxonomia(Long idTaxonomia) {</span>
 <span class="nc" id="L56">        this.idTaxonomia = idTaxonomia;</span>
 <span class="nc" id="L57">    }</span>
 
     public Long getIdTaxonomia() {
-<span class="nc" id="L60">        return idTaxonomia;</span>
+<span class="fc" id="L60">        return idTaxonomia;</span>
     }
 
     public void setIdTaxonomia(Long idTaxonomia) {
-<span class="nc" id="L64">        this.idTaxonomia = idTaxonomia;</span>
-<span class="nc" id="L65">    }</span>
+<span class="fc" id="L64">        this.idTaxonomia = idTaxonomia;</span>
+<span class="fc" id="L65">    }</span>
 
     public Date getFechaCreacion() {
-<span class="nc" id="L68">        return fechaCreacion;</span>
+<span class="fc" id="L68">        return fechaCreacion;</span>
     }
 
     public void setFechaCreacion(Date fechaCreacion) {
@@ -74,21 +74,21 @@ public class Taxonomia implements Serializable {
 
     @JsonbTransient
     public Documento getIdDocumento() {
-<span class="nc" id="L77">        return idDocumento;</span>
+<span class="fc" id="L77">        return idDocumento;</span>
     }
 
     public void setIdDocumento(Documento idDocumento) {
-<span class="nc" id="L81">        this.idDocumento = idDocumento;</span>
-<span class="nc" id="L82">    }</span>
+<span class="fc" id="L81">        this.idDocumento = idDocumento;</span>
+<span class="fc" id="L82">    }</span>
 
     @JsonbTransient
     public TipoDocumento getIdTipoDocumento() {
-<span class="nc" id="L86">        return idTipoDocumento;</span>
+<span class="fc" id="L86">        return idTipoDocumento;</span>
     }
 
     public void setIdTipoDocumento(TipoDocumento idTipoDocumento) {
-<span class="nc" id="L90">        this.idTipoDocumento = idTipoDocumento;</span>
-<span class="nc" id="L91">    }</span>
+<span class="fc" id="L90">        this.idTipoDocumento = idTipoDocumento;</span>
+<span class="fc" id="L91">    }</span>
 
     @Override
     public int hashCode() {

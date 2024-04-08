@@ -40,7 +40,7 @@ import sv.edu.ues.occ.ingenieria.tpi135.documientos.entity.TipoDocumento;
  * @author alexo
  */
 @Path(&quot;/documento/{idDocumento}/metadato&quot;)
-<span class="nc" id="L43">public class MetadatoResource {</span>
+<span class="nc" id="L43">public class MetadatoResource implements Serializable {</span>
 
     @Inject
     MetadatoBean mBean;
@@ -68,7 +68,7 @@ import sv.edu.ues.occ.ingenieria.tpi135.documientos.entity.TipoDocumento;
 
             // Validar que el atributo pertenezca a la taxonomía del documento
 <span class="nc bnc" id="L70" title="All 2 branches missed.">            if (!validateAttributeBelongsToDocument(metadato.getIdAtributo(), idDocumento)) {</span>
-<span class="nc" id="L71">                return Response.status(405) // Método no permitido</span>
+<span class="nc" id="L71">                return Response.status(Response.Status.BAD_REQUEST)</span>
 <span class="nc" id="L72">                        .header(RestResourceHeaderPattern.DETALLE_PARAMETRO_EQUIVOCADO, &quot;El atributo no pertenece a la taxonomía del documento&quot;)</span>
 <span class="nc" id="L73">                        .build();</span>
             }
@@ -94,21 +94,24 @@ import sv.edu.ues.occ.ingenieria.tpi135.documientos.entity.TipoDocumento;
     }
 
     private boolean validateAttributeBelongsToDocument(Atributo atributo, Long idDocumento) {
-<span class="nc" id="L97">        Documento documento = dBean.findById(idDocumento);</span>
+        // Obtener el documento
+<span class="nc" id="L98">        Documento documento = dBean.findById(idDocumento);</span>
 
-        // Obtener el TipoDocumento del documento a través de la lista de Taxonomia
-<span class="nc" id="L100">        TipoDocumento tipoDocumento = null;</span>
-<span class="nc bnc" id="L101" title="All 2 branches missed.">        for (Taxonomia taxonomia : documento.getTaxonomiaList()) {</span>
-<span class="nc" id="L102">            tipoDocumento = taxonomia.getIdTipoDocumento();</span>
-<span class="nc" id="L103">            break;</span>
+        // Verificar si el documento tiene una taxonomía
+<span class="nc bnc" id="L101" title="All 4 branches missed.">        if (documento.getTaxonomiaList() == null || documento.getTaxonomiaList().isEmpty()) {</span>
+<span class="nc" id="L102">            return false;</span>
         }
 
-<span class="nc bnc" id="L106" title="All 2 branches missed.">        if (tipoDocumento == null) {</span>
-<span class="nc" id="L107">            return false; // No se pudo obtener el TipoDocumento</span>
-        }
+        // Obtener el TipoDocumento del primer elemento de la lista de taxonomías
+<span class="nc" id="L106">        Taxonomia firstTaxonomia = documento.getTaxonomiaList().get(0);</span>
+<span class="nc" id="L107">        TipoDocumento tipoDocumento = firstTaxonomia.getIdTipoDocumento();</span>
 
+        // Verificar si el TipoDocumento tiene el atributo especificado
 <span class="nc" id="L110">        List&lt;Atributo&gt; atributosDelTipoDeDocumento = aBean.findByIdTipoDocumentoIdTipoDocumento(tipoDocumento.getIdTipoDocumento());</span>
-<span class="nc" id="L111">        return atributosDelTipoDeDocumento.contains(atributo);</span>
+<span class="nc" id="L111">        return atributosDelTipoDeDocumento.stream()</span>
+<span class="nc" id="L112">                .map(Atributo::getIdAtributo)</span>
+<span class="nc" id="L113">                .anyMatch(id -&gt; id.equals(atributo.getIdAtributo()));</span>
     }
+
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

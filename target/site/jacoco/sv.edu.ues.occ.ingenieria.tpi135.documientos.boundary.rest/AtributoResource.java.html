@@ -37,31 +37,23 @@ import sv.edu.ues.occ.ingenieria.tpi135.documientos.entity.TipoDocumento;
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createAtributo(@PathParam(&quot;idTipoDocumento&quot;) Integer idTipoDocumento, Atributo atributo, @Context UriInfo info) {
 <span class="nc bnc" id="L39" title="All 8 branches missed.">        if (atributo == null || atributo.getNombre() == null || atributo.getNombrePantalla() == null || atributo.getObligatorio() == null) {</span>
-            // Caso: Payload nulo o parámetros faltantes
-<span class="nc" id="L41">            return Response.status(RestResourceHeaderPattern.STATUS_PARAMETRO_EQUIVOCADO)</span>
-<span class="nc" id="L42">                    .header(RestResourceHeaderPattern.DETALLE_PARAMETRO_EQUIVOCADO, &quot;Parámetros incorrectos&quot;)</span>
-<span class="nc" id="L43">                    .build();</span>
+<span class="nc" id="L40">            return Response.status(RestResourceHeaderPattern.STATUS_PARAMETRO_EQUIVOCADO)</span>
+<span class="nc" id="L41">                    .header(RestResourceHeaderPattern.DETALLE_PARAMETRO_EQUIVOCADO, &quot;Parámetros incorrectos&quot;)</span>
+<span class="nc" id="L42">                    .build();</span>
         }
-
         try {
-            // Asignamos el ID del tipo de documento al atributo
-<span class="nc" id="L48">            atributo.setIdTipoDocumento(new TipoDocumento(idTipoDocumento));</span>
+<span class="nc" id="L45">            atributo.setIdTipoDocumento(new TipoDocumento(idTipoDocumento));</span>
+<span class="nc" id="L46">            aBean.create(atributo);</span>
 
-            // Lógica para crear el atributo en la base de datos
-<span class="nc" id="L51">            aBean.create(atributo);</span>
+<span class="nc" id="L48">            URI requestUri = info.getRequestUri();</span>
+<span class="nc" id="L49">            String location = requestUri.toString() + &quot;/&quot; + atributo.getIdAtributo();</span>
 
-            // Construimos la URI del recurso creado
-<span class="nc" id="L54">            URI requestUri = info.getRequestUri();</span>
-<span class="nc" id="L55">            String location = requestUri.toString() + &quot;/&quot; + atributo.getIdAtributo();</span>
-
-            // Retornamos una respuesta exitosa con el código 201 y la ubicación del recurso creado
-<span class="nc" id="L58">            return Response.status(Response.Status.CREATED)</span>
-<span class="nc" id="L59">                    .header(&quot;Location&quot;, location)</span>
-<span class="nc" id="L60">                    .build();</span>
-<span class="nc" id="L61">        } catch (Exception ex) {</span>
-            // En caso de que ocurra una excepción durante la creación del atributo
-<span class="nc" id="L63">            Logger.getLogger(getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);</span>
-<span class="nc" id="L64">            return Response.serverError().build();</span>
+<span class="nc" id="L51">            return Response.status(Response.Status.CREATED)</span>
+<span class="nc" id="L52">                    .header(&quot;Location&quot;, location)</span>
+<span class="nc" id="L53">                    .build();</span>
+<span class="nc" id="L54">        } catch (Exception ex) {</span>
+<span class="nc" id="L55">            Logger.getLogger(getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);</span>
+<span class="nc" id="L56">            return Response.serverError().build();</span>
         }
     }
 

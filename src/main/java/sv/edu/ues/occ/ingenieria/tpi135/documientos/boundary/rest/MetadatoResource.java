@@ -40,7 +40,7 @@ import sv.edu.ues.occ.ingenieria.tpi135.documientos.entity.TipoDocumento;
  * @author alexo
  */
 @Path("/documento/{idDocumento}/metadato")
-public class MetadatoResource {
+public class MetadatoResource implements Serializable {
 
     @Inject
     MetadatoBean mBean;
@@ -68,7 +68,7 @@ public class MetadatoResource {
 
             // Validar que el atributo pertenezca a la taxonomía del documento
             if (!validateAttributeBelongsToDocument(metadato.getIdAtributo(), idDocumento)) {
-                return Response.status(405) // Método no permitido
+                return Response.status(Response.Status.BAD_REQUEST)
                         .header(RestResourceHeaderPattern.DETALLE_PARAMETRO_EQUIVOCADO, "El atributo no pertenece a la taxonomía del documento")
                         .build();
             }
@@ -94,20 +94,23 @@ public class MetadatoResource {
     }
 
     private boolean validateAttributeBelongsToDocument(Atributo atributo, Long idDocumento) {
+        // Obtener el documento
         Documento documento = dBean.findById(idDocumento);
 
-        // Obtener el TipoDocumento del documento a través de la lista de Taxonomia
-        TipoDocumento tipoDocumento = null;
-        for (Taxonomia taxonomia : documento.getTaxonomiaList()) {
-            tipoDocumento = taxonomia.getIdTipoDocumento();
-            break;
+        // Verificar si el documento tiene una taxonomía
+        if (documento.getTaxonomiaList() == null || documento.getTaxonomiaList().isEmpty()) {
+            return false;
         }
 
-        if (tipoDocumento == null) {
-            return false; // No se pudo obtener el TipoDocumento
-        }
+        // Obtener el TipoDocumento del primer elemento de la lista de taxonomías
+        Taxonomia firstTaxonomia = documento.getTaxonomiaList().get(0);
+        TipoDocumento tipoDocumento = firstTaxonomia.getIdTipoDocumento();
 
+        // Verificar si el TipoDocumento tiene el atributo especificado
         List<Atributo> atributosDelTipoDeDocumento = aBean.findByIdTipoDocumentoIdTipoDocumento(tipoDocumento.getIdTipoDocumento());
-        return atributosDelTipoDeDocumento.contains(atributo);
+        return atributosDelTipoDeDocumento.stream()
+                .map(Atributo::getIdAtributo)
+                .anyMatch(id -> id.equals(atributo.getIdAtributo()));
     }
+
 }
