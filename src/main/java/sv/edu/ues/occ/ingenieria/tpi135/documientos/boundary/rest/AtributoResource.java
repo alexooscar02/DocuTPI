@@ -72,32 +72,21 @@ public class AtributoResource implements Serializable {
     }
 
     @POST
+    @Path("tipodocumento/{idTipoDocumento}/atributo")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response createAtributo(Atributo atributo, @Context UriInfo info) {
+    public Response createAtributo(@PathParam("idTipoDocumento") Long idTipoDocumento, Atributo atributo, @Context UriInfo info) {
         if (atributo != null && atributo.getIdTipoAtributo() != null && atributo.getIdTipoDocumento() != null
                 && atributo.getNombre() != null && atributo.getNombrePantalla() != null && atributo.getObligatorio() != null) {
             try {
                 // Lógica para crear el atributo en la base de datos
-                // Aquí deberías tener tu lógica para persistir el nuevo atributo
-                // Supondré que tienes un método create en algún EJB para persistirlo
-                // algo así como atributoBean.create(atributo);
-
-                // Supongamos que se ha creado correctamente y obtenemos el ID generado
-                // Aquí debes obtener el ID generado por la base de datos después de persistir el atributo
-                // Lo simularé aquí para completar el ejemplo
+                // ...
                 Long idGenerado = 1L;
-
-                // Se construye la URI del recurso creado
-                URI requestUri = info.getRequestUri();
-                String location = requestUri.toString() + "/" + idGenerado;
-
-                // Se retorna una respuesta exitosa con el código 201 y la ubicación del recurso creado
+                URI requestUri = info.getAbsolutePathBuilder().path(idGenerado.toString()).build();
                 return Response.status(Response.Status.CREATED)
-                        .header("Location", location)
+                        .header("Location", requestUri.toString())
                         .build();
             } catch (Exception ex) {
-                // En caso de que ocurra una excepción durante la creación del atributo
                 Logger.getLogger(getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);
                 return Response.serverError().build();
             }

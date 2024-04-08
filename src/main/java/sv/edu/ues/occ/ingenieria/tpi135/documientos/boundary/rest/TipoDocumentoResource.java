@@ -80,37 +80,42 @@ public class TipoDocumentoResource implements Serializable {
     public Response createTipoDocumento(TipoDocumento tipoDocumento, @Context UriInfo info) {
         if (tipoDocumento != null && tipoDocumento.getNombre() != null && tipoDocumento.getActivo() != null) {
             try {
-                // Lógica para crear el tipo de documento en la base de datos
+                // Si el id llega como null, asignamos uno nuevo
+                if (tipoDocumento.getIdTipoDocumento() == null) {
+                    // Aquí debes implementar la lógica para obtener un id único, por ejemplo, consultando la base de datos
+                    Integer nuevoId = tdBean.obtenerNuevoId(); // Método que devuelve un nuevo id único
+                    tipoDocumento.setIdTipoDocumento(nuevoId);
+                }
+
+                // Lógica para crear el tipo de atributo en la base de datos
                 tdBean.create(tipoDocumento);
 
-                // Generar un nuevo ID para el tipo de documento
-                Integer nuevoId = obtenerNuevoId();
-
-                // Construir la URI del recurso creado
+                // Construimos la URI del recurso creado
                 URI requestUri = info.getRequestUri();
-                String location = requestUri.toString() + "/" + nuevoId;
+                String location = requestUri.toString() + "/" + tipoDocumento.getIdTipoDocumento();
 
-                // Retornar una respuesta exitosa con el código 201 y la ubicación del recurso creado
+                // Retornamos una respuesta exitosa con el código 201 y la ubicación del recurso creado
                 return Response.status(Response.Status.CREATED)
                         .header("Location", location)
                         .build();
             } catch (Exception ex) {
+                // En caso de que ocurra una excepción durante la creación del tipo de atributo
                 Logger.getLogger(getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);
                 return Response.serverError().build();
             }
         } else {
+            // En caso de que falten parámetros en el payload
             return Response.status(RestResourceHeaderPattern.STATUS_PARAMETRO_EQUIVOCADO)
                     .header(RestResourceHeaderPattern.DETALLE_PARAMETRO_EQUIVOCADO, "Parámetros incorrectos")
                     .build();
         }
     }
 
-    public Integer obtenerNuevoId() {
-        Random random = new Random();
-        // Generar un entero aleatorio en el rango de Integer.MIN_VALUE a Integer.MAX_VALUE
-        return random.nextInt();
-    }
-
+//    public Integer obtenerNuevoId() {
+//        Random random = new Random();
+//        // Generar un entero aleatorio en el rango de Integer.MIN_VALUE a Integer.MAX_VALUE
+//        return random.nextInt();
+//    }
 }
 
 //    @PUT

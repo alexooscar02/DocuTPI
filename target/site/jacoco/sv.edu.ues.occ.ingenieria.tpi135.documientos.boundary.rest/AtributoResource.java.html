@@ -72,40 +72,29 @@ import sv.edu.ues.occ.ingenieria.tpi135.documientos.entity.TipoDocumento;
     }
 
     @POST
+    @Path(&quot;tipodocumento/{idTipoDocumento}/atributo&quot;)
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response createAtributo(Atributo atributo, @Context UriInfo info) {
-<span class="nc bnc" id="L78" title="All 6 branches missed.">        if (atributo != null &amp;&amp; atributo.getIdTipoAtributo() != null &amp;&amp; atributo.getIdTipoDocumento() != null</span>
-<span class="nc bnc" id="L79" title="All 6 branches missed.">                &amp;&amp; atributo.getNombre() != null &amp;&amp; atributo.getNombrePantalla() != null &amp;&amp; atributo.getObligatorio() != null) {</span>
+    public Response createAtributo(@PathParam(&quot;idTipoDocumento&quot;) Long idTipoDocumento, Atributo atributo, @Context UriInfo info) {
+<span class="nc bnc" id="L79" title="All 6 branches missed.">        if (atributo != null &amp;&amp; atributo.getIdTipoAtributo() != null &amp;&amp; atributo.getIdTipoDocumento() != null</span>
+<span class="nc bnc" id="L80" title="All 6 branches missed.">                &amp;&amp; atributo.getNombre() != null &amp;&amp; atributo.getNombrePantalla() != null &amp;&amp; atributo.getObligatorio() != null) {</span>
             try {
                 // Lógica para crear el atributo en la base de datos
-                // Aquí deberías tener tu lógica para persistir el nuevo atributo
-                // Supondré que tienes un método create en algún EJB para persistirlo
-                // algo así como atributoBean.create(atributo);
-
-                // Supongamos que se ha creado correctamente y obtenemos el ID generado
-                // Aquí debes obtener el ID generado por la base de datos después de persistir el atributo
-                // Lo simularé aquí para completar el ejemplo
-<span class="nc" id="L89">                Long idGenerado = 1L;</span>
-
-                // Se construye la URI del recurso creado
-<span class="nc" id="L92">                URI requestUri = info.getRequestUri();</span>
-<span class="nc" id="L93">                String location = requestUri.toString() + &quot;/&quot; + idGenerado;</span>
-
-                // Se retorna una respuesta exitosa con el código 201 y la ubicación del recurso creado
-<span class="nc" id="L96">                return Response.status(Response.Status.CREATED)</span>
-<span class="nc" id="L97">                        .header(&quot;Location&quot;, location)</span>
-<span class="nc" id="L98">                        .build();</span>
-<span class="nc" id="L99">            } catch (Exception ex) {</span>
-                // En caso de que ocurra una excepción durante la creación del atributo
-<span class="nc" id="L101">                Logger.getLogger(getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);</span>
-<span class="nc" id="L102">                return Response.serverError().build();</span>
+                // ...
+<span class="nc" id="L84">                Long idGenerado = 1L;</span>
+<span class="nc" id="L85">                URI requestUri = info.getAbsolutePathBuilder().path(idGenerado.toString()).build();</span>
+<span class="nc" id="L86">                return Response.status(Response.Status.CREATED)</span>
+<span class="nc" id="L87">                        .header(&quot;Location&quot;, requestUri.toString())</span>
+<span class="nc" id="L88">                        .build();</span>
+<span class="nc" id="L89">            } catch (Exception ex) {</span>
+<span class="nc" id="L90">                Logger.getLogger(getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);</span>
+<span class="nc" id="L91">                return Response.serverError().build();</span>
             }
         } else {
             // En caso de que falten parámetros en el payload
-<span class="nc" id="L106">            return Response.status(Response.Status.BAD_REQUEST)</span>
-<span class="nc" id="L107">                    .header(&quot;Detalle&quot;, &quot;Faltan parámetros en el payload&quot;)</span>
-<span class="nc" id="L108">                    .build();</span>
+<span class="nc" id="L95">            return Response.status(Response.Status.BAD_REQUEST)</span>
+<span class="nc" id="L96">                    .header(&quot;Detalle&quot;, &quot;Faltan parámetros en el payload&quot;)</span>
+<span class="nc" id="L97">                    .build();</span>
         }
     }
 }

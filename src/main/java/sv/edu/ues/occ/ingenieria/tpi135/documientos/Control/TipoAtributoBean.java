@@ -8,6 +8,7 @@ import jakarta.ejb.LocalBean;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.Query;
 import java.io.Serializable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -45,6 +46,20 @@ public class TipoAtributoBean extends AbstractDataAccess<TipoAtributo> implement
         }
         throw new IllegalStateException();
 
+    }
+
+    public Integer obtenerNuevoId() {
+        // Consulta para obtener el máximo ID de TipoAtributo
+        Query query = em.createQuery("SELECT MAX(t.idTipoAtributo) FROM TipoAtributo t");
+        Integer maxId = (Integer) query.getSingleResult();
+
+        // Si no hay registros en la tabla, asignamos el primer ID como 1
+        if (maxId == null) {
+            return 1;
+        }
+
+        // Devolvemos el máximo ID incrementado en 1 para garantizar un nuevo ID único
+        return maxId + 1;
     }
 
 }

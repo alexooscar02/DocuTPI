@@ -89,7 +89,7 @@ public class TipoAtributoResource implements Serializable {
                 // Si el id llega como null, asignamos uno nuevo
                 if (tipoAtributo.getIdTipoAtributo() == null) {
                     // Aquí debes implementar la lógica para obtener un id único, por ejemplo, consultando la base de datos
-                    Integer nuevoId = obtenerNuevoId(); // Método que devuelve un nuevo id único
+                    Integer nuevoId = taBean.obtenerNuevoId(); // Método que devuelve un nuevo id único
                     tipoAtributo.setIdTipoAtributo(nuevoId);
                 }
 
@@ -117,12 +117,11 @@ public class TipoAtributoResource implements Serializable {
         }
     }
 
-    public Integer obtenerNuevoId() {
-        Random random = new Random();
-        // Generar un entero aleatorio en el rango de Integer.MIN_VALUE a Integer.MAX_VALUE
-        return random.nextInt();
-    }
-
+//    public Integer obtenerNuevoId() {
+//       Integer random= new Random().nextInt(9999);
+//        // Generar un entero aleatorio en el rango de Integer.MIN_VALUE a Integer.MAX_VALUE
+//        return random;
+//    }
 }
 
 //    @PUT

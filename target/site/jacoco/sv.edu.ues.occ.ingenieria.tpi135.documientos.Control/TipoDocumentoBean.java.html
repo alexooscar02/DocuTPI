@@ -8,6 +8,7 @@ import jakarta.ejb.LocalBean;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.Query;
 import java.io.Serializable;
 import sv.edu.ues.occ.ingenieria.tpi135.documientos.entity.TipoDocumento;
 
@@ -23,12 +24,26 @@ public class TipoDocumentoBean extends AbstractDataAccess&lt;TipoDocumento&gt; i
     public EntityManager em;
 
     public TipoDocumentoBean() {
-<span class="nc" id="L26">        super(TipoDocumento.class);</span>
-<span class="nc" id="L27">    }</span>
+<span class="nc" id="L27">        super(TipoDocumento.class);</span>
+<span class="nc" id="L28">    }</span>
 
     @Override
     public EntityManager getEntityManager() {
-<span class="nc" id="L31">        return em;</span>
+<span class="nc" id="L32">        return em;</span>
+    }
+
+    public Integer obtenerNuevoId() {
+        // Consulta para obtener el máximo ID de TipoAtributo
+<span class="nc" id="L37">        Query query = em.createQuery(&quot;SELECT MAX(t.idTipoDocumento) FROM TipoDocumento t&quot;);</span>
+<span class="nc" id="L38">        Integer maxId = (Integer) query.getSingleResult();</span>
+
+        // Si no hay registros en la tabla, asignamos el primer ID como 1
+<span class="nc bnc" id="L41" title="All 2 branches missed.">        if (maxId == null) {</span>
+<span class="nc" id="L42">            return 1;</span>
+        }
+
+        // Devolvemos el máximo ID incrementado en 1 para garantizar un nuevo ID único
+<span class="nc" id="L46">        return maxId + 1;</span>
     }
 
 }

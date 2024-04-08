@@ -89,7 +89,7 @@ import sv.edu.ues.occ.ingenieria.tpi135.documientos.entity.TipoAtributo;
                 // Si el id llega como null, asignamos uno nuevo
 <span class="nc bnc" id="L90" title="All 2 branches missed.">                if (tipoAtributo.getIdTipoAtributo() == null) {</span>
                     // Aquí debes implementar la lógica para obtener un id único, por ejemplo, consultando la base de datos
-<span class="nc" id="L92">                    Integer nuevoId = obtenerNuevoId(); // Método que devuelve un nuevo id único</span>
+<span class="nc" id="L92">                    Integer nuevoId = taBean.obtenerNuevoId(); // Método que devuelve un nuevo id único</span>
 <span class="nc" id="L93">                    tipoAtributo.setIdTipoAtributo(nuevoId);</span>
                 }
 
@@ -117,12 +117,11 @@ import sv.edu.ues.occ.ingenieria.tpi135.documientos.entity.TipoAtributo;
         }
     }
 
-    public Integer obtenerNuevoId() {
-<span class="nc" id="L121">        Random random = new Random();</span>
-        // Generar un entero aleatorio en el rango de Integer.MIN_VALUE a Integer.MAX_VALUE
-<span class="nc" id="L123">        return random.nextInt();</span>
-    }
-
+//    public Integer obtenerNuevoId() {
+//       Integer random= new Random().nextInt(9999);
+//        // Generar un entero aleatorio en el rango de Integer.MIN_VALUE a Integer.MAX_VALUE
+//        return random;
+//    }
 }
 
 //    @PUT

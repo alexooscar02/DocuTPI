@@ -8,6 +8,7 @@ import jakarta.ejb.LocalBean;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.Query;
 import java.io.Serializable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -26,25 +27,39 @@ public class TipoAtributoBean extends AbstractDataAccess&lt;TipoAtributo&gt; imp
 
     @Override
     public EntityManager getEntityManager() {
-<span class="nc" id="L29">        return em;</span>
+<span class="nc" id="L30">        return em;</span>
     }
 
     public TipoAtributoBean() {
-<span class="nc" id="L33">        super(TipoAtributo.class);</span>
-<span class="nc" id="L34">    }</span>
+<span class="nc" id="L34">        super(TipoAtributo.class);</span>
+<span class="nc" id="L35">    }</span>
 
     public void crear(TipoAtributo registro) throws IllegalStateException, IllegalArgumentException {
 
         try {
-<span class="nc bnc" id="L39" title="All 2 branches missed.">            if (em != null) {</span>
-<span class="nc" id="L40">                em.persist(registro);</span>
-<span class="nc" id="L41">                return;</span>
+<span class="nc bnc" id="L40" title="All 2 branches missed.">            if (em != null) {</span>
+<span class="nc" id="L41">                em.persist(registro);</span>
+<span class="nc" id="L42">                return;</span>
             }
-<span class="nc" id="L43">        } catch (Exception ex) {</span>
-<span class="nc" id="L44">            Logger.getLogger(getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);</span>
-<span class="nc" id="L45">        }</span>
-<span class="nc" id="L46">        throw new IllegalStateException();</span>
+<span class="nc" id="L44">        } catch (Exception ex) {</span>
+<span class="nc" id="L45">            Logger.getLogger(getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);</span>
+<span class="nc" id="L46">        }</span>
+<span class="nc" id="L47">        throw new IllegalStateException();</span>
 
+    }
+
+    public Integer obtenerNuevoId() {
+        // Consulta para obtener el máximo ID de TipoAtributo
+<span class="nc" id="L53">        Query query = em.createQuery(&quot;SELECT MAX(t.idTipoAtributo) FROM TipoAtributo t&quot;);</span>
+<span class="nc" id="L54">        Integer maxId = (Integer) query.getSingleResult();</span>
+
+        // Si no hay registros en la tabla, asignamos el primer ID como 1
+<span class="nc bnc" id="L57" title="All 2 branches missed.">        if (maxId == null) {</span>
+<span class="nc" id="L58">            return 1;</span>
+        }
+
+        // Devolvemos el máximo ID incrementado en 1 para garantizar un nuevo ID único
+<span class="nc" id="L62">        return maxId + 1;</span>
     }
 
 }

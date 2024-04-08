@@ -113,6 +113,7 @@ public class PrimerParcialIT {
         Assertions.assertTrue(respuesta.getHeaders().containsKey("Location"));
         String[] lex = respuesta.getHeaderString("Location").split("/");
         ID_TIPO_ATRIBUTO_CREADO = Integer.valueOf(lex[lex.length - 1]);
+        System.out.println(ID_TIPO_ATRIBUTO_CREADO);
     }
 
     @Test
@@ -139,37 +140,38 @@ public class PrimerParcialIT {
         Assertions.assertTrue(respuesta.getHeaders().containsKey("Location"));
         String[] lex = respuesta.getHeaderString("Location").split("/");
         ID_TIPO_DOCUMENTO_CREADO = Integer.valueOf(lex[lex.length - 1]);
+        System.out.println(ID_TIPO_DOCUMENTO_CREADO);
     }
 
-//    @Test
-//    @Order(3)
-//    public void testCreateAtributo() {
-//        System.out.println("createAtributoIT");
-//        Atributo nuevo = new Atributo();
-//        nuevo.setIdAtributo(1l);
-//        Invocation.Builder builder = target.path("tipodocumento/{idTipoDocumento}/atributo")
-//                .resolveTemplate("idTipoDocumento", ID_TIPO_DOCUMENTO_CREADO)
-//                .request(MediaType.APPLICATION_JSON);
-//        Response respuesta = builder.post(Entity.entity(null, MediaType.APPLICATION_JSON));
-//        // payload nulo
-//        Assertions.assertEquals(RestResourceHeaderPattern.STATUS_PARAMETRO_EQUIVOCADO, respuesta.getStatus());
-//        // payload vacio
-//        respuesta = builder.post(Entity.entity(nuevo, MediaType.APPLICATION_JSON));
-//        Assertions.assertEquals(RestResourceHeaderPattern.STATUS_PARAMETRO_EQUIVOCADO, respuesta.getStatus());
-//        Assertions.assertTrue(respuesta.getHeaders().containsKey(RestResourceHeaderPattern.DETALLE_PARAMETRO_EQUIVOCADO));
-//        // payload correcto
-//        nuevo.setIdAtributo(null);
-//        nuevo.setIdTipoAtributo(new TipoAtributo(ID_TIPO_ATRIBUTO_CREADO));
-//        nuevo.setIdTipoDocumento(new TipoDocumento(ID_TIPO_DOCUMENTO_CREADO));
-//        nuevo.setNombre("algun nombre para atributo");
-//        nuevo.setNombrePantalla("algun nombre para atributo");
-//        nuevo.setObligatorio(Boolean.TRUE);
-//        respuesta = builder.post(Entity.entity(nuevo, MediaType.APPLICATION_JSON));
-//        Assertions.assertEquals(201, respuesta.getStatus());
-//        Assertions.assertTrue(respuesta.getHeaders().containsKey("Location"));
-//        String[] lex = respuesta.getHeaderString("Location").split("/");
-//        ID_ATRIBUTO_CREADO = Long.valueOf(lex[lex.length - 1]);
-//    }
+    @Test
+    @Order(3)
+    public void testCreateAtributo() {
+        System.out.println("createAtributoIT");
+        Atributo nuevo = new Atributo();
+        nuevo.setIdAtributo(1l);
+        Invocation.Builder builder = target.path("tipodocumento/{idTipoDocumento}/atributo")
+                .resolveTemplate("idTipoDocumento", ID_TIPO_DOCUMENTO_CREADO)
+                .request(MediaType.APPLICATION_JSON);
+        Response respuesta = builder.post(Entity.entity(null, MediaType.APPLICATION_JSON));
+        // payload nulo
+        Assertions.assertEquals(RestResourceHeaderPattern.STATUS_PARAMETRO_EQUIVOCADO, respuesta.getStatus());
+        // payload vacio
+        respuesta = builder.post(Entity.entity(nuevo, MediaType.APPLICATION_JSON));
+        Assertions.assertEquals(RestResourceHeaderPattern.STATUS_PARAMETRO_EQUIVOCADO, respuesta.getStatus());
+        Assertions.assertTrue(respuesta.getHeaders().containsKey(RestResourceHeaderPattern.DETALLE_PARAMETRO_EQUIVOCADO));
+        // payload correcto
+        nuevo.setIdAtributo(null);
+        nuevo.setIdTipoAtributo(new TipoAtributo(ID_TIPO_ATRIBUTO_CREADO));
+        nuevo.setIdTipoDocumento(new TipoDocumento(ID_TIPO_DOCUMENTO_CREADO));
+        nuevo.setNombre("algun nombre para atributo");
+        nuevo.setNombrePantalla("algun nombre para atributo");
+        nuevo.setObligatorio(Boolean.TRUE);
+        respuesta = builder.post(Entity.entity(nuevo, MediaType.APPLICATION_JSON));
+        Assertions.assertEquals(201, respuesta.getStatus());
+        Assertions.assertTrue(respuesta.getHeaders().containsKey("Location"));
+        String[] lex = respuesta.getHeaderString("Location").split("/");
+        ID_ATRIBUTO_CREADO = Long.valueOf(lex[lex.length - 1]);
+    }
 //
 //    @Test
 //    @Order(4)
@@ -377,5 +379,4 @@ public class PrimerParcialIT {
 //        System.out.println("Metadato " + json);
 //
 //    }
-
 }
