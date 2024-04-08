@@ -64,31 +64,31 @@ public class Documento implements Serializable {
     @OneToMany(mappedBy = &quot;idDocumento&quot;)
     private List&lt;Taxonomia&gt; taxonomiaList;
 
-<span class="nc" id="L67">    public Documento() {</span>
-<span class="nc" id="L68">    }</span>
+<span class="fc" id="L67">    public Documento() {</span>
+<span class="fc" id="L68">    }</span>
 
 <span class="nc" id="L70">    public Documento(Long idDocumento) {</span>
 <span class="nc" id="L71">        this.idDocumento = idDocumento;</span>
 <span class="nc" id="L72">    }</span>
 
     public Long getIdDocumento() {
-<span class="nc" id="L75">        return idDocumento;</span>
+<span class="fc" id="L75">        return idDocumento;</span>
     }
 
     public void setIdDocumento(Long idDocumento) {
-<span class="nc" id="L79">        this.idDocumento = idDocumento;</span>
-<span class="nc" id="L80">    }</span>
+<span class="fc" id="L79">        this.idDocumento = idDocumento;</span>
+<span class="fc" id="L80">    }</span>
 
     public String getNombre() {
-<span class="nc" id="L83">        return nombre;</span>
+<span class="fc" id="L83">        return nombre;</span>
     }
 
     public void setNombre(String nombre) {
-<span class="nc" id="L87">        this.nombre = nombre;</span>
-<span class="nc" id="L88">    }</span>
+<span class="fc" id="L87">        this.nombre = nombre;</span>
+<span class="fc" id="L88">    }</span>
 
     public String getReferenciaExterna() {
-<span class="nc" id="L91">        return referenciaExterna;</span>
+<span class="fc" id="L91">        return referenciaExterna;</span>
     }
 
     public void setReferenciaExterna(String referenciaExterna) {
@@ -96,15 +96,15 @@ public class Documento implements Serializable {
 <span class="nc" id="L96">    }</span>
 
     public String getUbicacionFisica() {
-<span class="nc" id="L99">        return ubicacionFisica;</span>
+<span class="fc" id="L99">        return ubicacionFisica;</span>
     }
 
     public void setUbicacionFisica(String ubicacionFisica) {
-<span class="nc" id="L103">        this.ubicacionFisica = ubicacionFisica;</span>
-<span class="nc" id="L104">    }</span>
+<span class="fc" id="L103">        this.ubicacionFisica = ubicacionFisica;</span>
+<span class="fc" id="L104">    }</span>
 
     public String getUrl() {
-<span class="nc" id="L107">        return url;</span>
+<span class="fc" id="L107">        return url;</span>
     }
 
     public void setUrl(String url) {
@@ -112,7 +112,7 @@ public class Documento implements Serializable {
 <span class="nc" id="L112">    }</span>
 
     public Date getFechaCreacion() {
-<span class="nc" id="L115">        return fechaCreacion;</span>
+<span class="fc" id="L115">        return fechaCreacion;</span>
     }
 
     public void setFechaCreacion(Date fechaCreacion) {
@@ -120,15 +120,15 @@ public class Documento implements Serializable {
 <span class="nc" id="L120">    }</span>
 
     public String getCreadoPor() {
-<span class="nc" id="L123">        return creadoPor;</span>
+<span class="fc" id="L123">        return creadoPor;</span>
     }
 
     public void setCreadoPor(String creadoPor) {
-<span class="nc" id="L127">        this.creadoPor = creadoPor;</span>
-<span class="nc" id="L128">    }</span>
+<span class="fc" id="L127">        this.creadoPor = creadoPor;</span>
+<span class="fc" id="L128">    }</span>
 
     public String getComentarios() {
-<span class="nc" id="L131">        return comentarios;</span>
+<span class="fc" id="L131">        return comentarios;</span>
     }
 
     public void setComentarios(String comentarios) {
@@ -136,7 +136,7 @@ public class Documento implements Serializable {
 <span class="nc" id="L136">    }</span>
 
     public List&lt;Metadato&gt; getMetadatoList() {
-<span class="nc" id="L139">        return metadatoList;</span>
+<span class="fc" id="L139">        return metadatoList;</span>
     }
 
     public void setMetadatoList(List&lt;Metadato&gt; metadatoList) {
@@ -144,7 +144,7 @@ public class Documento implements Serializable {
 <span class="nc" id="L144">    }</span>
 
     public List&lt;Taxonomia&gt; getTaxonomiaList() {
-<span class="nc" id="L147">        return taxonomiaList;</span>
+<span class="fc" id="L147">        return taxonomiaList;</span>
     }
 
     public void setTaxonomiaList(List&lt;Taxonomia&gt; taxonomiaList) {
