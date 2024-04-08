@@ -200,37 +200,36 @@ public class PrimerParcialIT {
         Assertions.assertTrue(respuesta.getHeaders().containsKey("Location"));
         String[] lex = respuesta.getHeaderString("Location").split("/");
         ID_DOCUMENTO_CREADO = Long.valueOf(lex[lex.length - 1]);
-        System.out.println(ID_DOCUMENTO_CREADO);
     }
-//
-//    @Test
-//    @Order(5)
-//    public void testCreateTaxonomia() {
-//        System.out.println("createTaxonomiaIT");
-//
-//        Taxonomia nuevo = new Taxonomia();
-//        nuevo.setIdTaxonomia(1l);
-//        Invocation.Builder builder = target.path("documento/{idDocumento}/taxonomia")
-//                .resolveTemplate("idDocumento", ID_DOCUMENTO_CREADO)
-//                .request(MediaType.APPLICATION_JSON);
-//        Response respuesta = builder.post(Entity.entity(null, MediaType.APPLICATION_JSON));
-//        // payload nulo
-//        Assertions.assertEquals(RestResourceHeaderPattern.STATUS_PARAMETRO_EQUIVOCADO, respuesta.getStatus());
-//        // payload vacio
-//        respuesta = builder.post(Entity.entity(nuevo, MediaType.APPLICATION_JSON));
-//        Assertions.assertEquals(RestResourceHeaderPattern.STATUS_PARAMETRO_EQUIVOCADO, respuesta.getStatus());
-//        Assertions.assertTrue(respuesta.getHeaders().containsKey(RestResourceHeaderPattern.DETALLE_PARAMETRO_EQUIVOCADO));
-//        // payload correcto
-//        nuevo.setIdTaxonomia(null);
-//        nuevo.setIdDocumento(new Documento(ID_DOCUMENTO_CREADO));
-//        nuevo.setIdTipoDocumento(new TipoDocumento(ID_TIPO_DOCUMENTO_CREADO));
-//        respuesta = builder.post(Entity.entity(nuevo, MediaType.APPLICATION_JSON));
-//        Assertions.assertEquals(201, respuesta.getStatus());
-//        Assertions.assertTrue(respuesta.getHeaders().containsKey("Location"));
-//        String[] lex = respuesta.getHeaderString("Location").split("/");
-//        ID_TAXONOMIA_CREADO = Long.valueOf(lex[lex.length - 1]);
-//    }
-//
+
+    @Test
+    @Order(5)
+    public void testCreateTaxonomia() {
+        System.out.println("createTaxonomiaIT");
+
+        Taxonomia nuevo = new Taxonomia();
+        nuevo.setIdTaxonomia(1l);
+        Invocation.Builder builder = target.path("documento/{idDocumento}/taxonomia")
+                .resolveTemplate("idDocumento", ID_DOCUMENTO_CREADO)
+                .request(MediaType.APPLICATION_JSON);
+        Response respuesta = builder.post(Entity.entity(null, MediaType.APPLICATION_JSON));
+        // payload nulo
+        Assertions.assertEquals(RestResourceHeaderPattern.STATUS_PARAMETRO_EQUIVOCADO, respuesta.getStatus());
+        // payload vacio
+        respuesta = builder.post(Entity.entity(nuevo, MediaType.APPLICATION_JSON));
+        Assertions.assertEquals(RestResourceHeaderPattern.STATUS_PARAMETRO_EQUIVOCADO, respuesta.getStatus());
+        Assertions.assertTrue(respuesta.getHeaders().containsKey(RestResourceHeaderPattern.DETALLE_PARAMETRO_EQUIVOCADO));
+        // payload correcto
+        nuevo.setIdTaxonomia(null);
+        nuevo.setIdDocumento(new Documento(ID_DOCUMENTO_CREADO));
+        nuevo.setIdTipoDocumento(new TipoDocumento(ID_TIPO_DOCUMENTO_CREADO));
+        respuesta = builder.post(Entity.entity(nuevo, MediaType.APPLICATION_JSON));
+        Assertions.assertEquals(201, respuesta.getStatus());
+        Assertions.assertTrue(respuesta.getHeaders().containsKey("Location"));
+        String[] lex = respuesta.getHeaderString("Location").split("/");
+        ID_TAXONOMIA_CREADO = Long.valueOf(lex[lex.length - 1]);
+    }
+
 //    @Test
 //    @Order(6)
 //    public void testCreateMetadato() {
