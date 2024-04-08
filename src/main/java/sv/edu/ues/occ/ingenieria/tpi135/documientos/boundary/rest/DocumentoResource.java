@@ -84,20 +84,23 @@ public class DocumentoResource implements Serializable {
 
         // Lógica para crear el documento en la base de datos
         try {
-            // Supongamos que se ha creado correctamente y obtenemos el ID generado
-            Long idGenerado = 1L;
+            // Lógica para crear el documento en la base de datos
+            dBean.create(documento);
 
-            // Se construye la URI del recurso creado
-            URI locationUri = info.getRequestUriBuilder()
-                    .path(Long.toString(idGenerado))
+            // Construimos la URI del recurso creado
+            URI requestUri = info.getRequestUri();
+            String location = requestUri.toString() + "/" + documento.getIdDocumento();
+
+            // Retornamos una respuesta exitosa con el código 201 y la ubicación del recurso creado
+            return Response.status(Response.Status.CREATED)
+                    .header("Location", location)
                     .build();
-
-            // Se retorna una respuesta exitosa con el código 201 y la ubicación del recurso creado
-            return Response.created(locationUri).build();
         } catch (Exception ex) {
             // En caso de que ocurra una excepción durante la creación del documento
             Logger.getLogger(getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);
-            return Response.serverError().build();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity("Error interno al procesar la solicitud")
+                    .build();
         }
     }
 
