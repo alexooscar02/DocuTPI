@@ -5,6 +5,9 @@
 package sv.edu.ues.occ.ingenieria.tpi135.documientos.boundary.rest;
 
 import jakarta.inject.Inject;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.Query;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DefaultValue;
 import jakarta.ws.rs.GET;
@@ -71,23 +74,37 @@ public class AtributoResource implements Serializable {
                 .build();
     }
 
+    @PersistenceContext
+    private EntityManager entityManager;
+
     @POST
-    @Path("tipodocumento/{idTipoDocumento}/atributo")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response createAtributo(@PathParam("idTipoDocumento") Long idTipoDocumento, Atributo atributo, @Context UriInfo info) {
-        if (atributo != null && atributo.getIdTipoAtributo() != null && atributo.getIdTipoDocumento() != null
-                && atributo.getNombre() != null && atributo.getNombrePantalla() != null && atributo.getObligatorio() != null) {
+    public Response createAtributo(Atributo atributo, @Context UriInfo info) {
+        if (atributo != null && atributo.getNombre() != null
+                && atributo.getNombrePantalla() != null && atributo.getObligatorio() != null) {
             try {
+                // Si el id llega como null, asignamos uno nuevo
+                if (atributo.getIdAtributo() == null) {
+                    // Aquí implementamos la lógica para obtener un id único
+                    Long nuevoId = generarNuevoIdAtributo(); // Método que devuelve un nuevo id único
+                    atributo.setIdAtributo(nuevoId);
+                }
+
                 // Lógica para crear el atributo en la base de datos
-                // ...
-                Long idGenerado = 1L;
-                URI requestUri = info.getAbsolutePathBuilder().path(idGenerado.toString()).build();
+                entityManager.persist(atributo);
+
+                // Construimos la URI del recurso creado
+                URI requestUri = info.getRequestUri();
+                String location = requestUri.toString() + "/" + atributo.getIdAtributo();
+
+                // Retornamos una respuesta exitosa con el código 201 y la ubicación del recurso creado
                 return Response.status(Response.Status.CREATED)
-                        .header("Location", requestUri.toString())
+                        .header("Location", location)
                         .build();
             } catch (Exception ex) {
-                Logger.getLogger(getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);
+                // En caso de que ocurra una excepción durante la creación del atributo
+                ex.printStackTrace();
                 return Response.serverError().build();
             }
         } else {
@@ -95,6 +112,17 @@ public class AtributoResource implements Serializable {
             return Response.status(Response.Status.BAD_REQUEST)
                     .header("Detalle", "Faltan parámetros en el payload")
                     .build();
+        }
+    }
+
+    // Método para generar un nuevo ID único para un atributo
+    private Long generarNuevoIdAtributo() {
+        Query query = entityManager.createQuery("SELECT MAX(a.idAtributo) FROM Atributo a");
+        Long ultimoId = (Long) query.getSingleResult();
+        if (ultimoId == null) {
+            return 1L; // Si no hay ningún ID en la base de datos, empezamos desde 1
+        } else {
+            return ultimoId + 1; // Generamos un nuevo ID sumando 1 al último ID utilizado
         }
     }
 }

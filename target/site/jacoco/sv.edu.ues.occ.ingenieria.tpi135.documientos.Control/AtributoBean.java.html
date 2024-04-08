@@ -8,6 +8,7 @@ import jakarta.ejb.LocalBean;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.Query;
 import java.io.Serializable;
 import sv.edu.ues.occ.ingenieria.tpi135.documientos.entity.Atributo;
 
@@ -23,12 +24,22 @@ public class AtributoBean extends AbstractDataAccess&lt;Atributo&gt; implements 
     EntityManager em;
 
     public AtributoBean() {
-<span class="nc" id="L26">        super(Atributo.class);</span>
-<span class="nc" id="L27">    }</span>
+<span class="nc" id="L27">        super(Atributo.class);</span>
+<span class="nc" id="L28">    }</span>
 
     @Override
     public EntityManager getEntityManager() {
-<span class="nc" id="L31">        return em;</span>
+<span class="nc" id="L32">        return em;</span>
+    }
+
+    public Long generarNuevoIdAtributo() {
+<span class="nc" id="L36">        Query query = em.createQuery(&quot;SELECT MAX(a.idAtributo) FROM Atributo a&quot;);</span>
+<span class="nc" id="L37">        Long ultimoId = (Long) query.getSingleResult();</span>
+<span class="nc bnc" id="L38" title="All 2 branches missed.">        if (ultimoId == null) {</span>
+<span class="nc" id="L39">            return 1L; // Si no hay ningún ID en la base de datos, empezamos desde 1</span>
+        } else {
+<span class="nc" id="L41">            return ultimoId + 1; // Generamos un nuevo ID sumando 1 al último ID utilizado</span>
+        }
     }
 
 }

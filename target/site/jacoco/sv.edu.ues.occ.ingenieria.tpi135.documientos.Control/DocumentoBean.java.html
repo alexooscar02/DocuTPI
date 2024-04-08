@@ -8,7 +8,9 @@ import jakarta.ejb.LocalBean;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.Query;
 import java.io.Serializable;
+import java.util.List;
 import sv.edu.ues.occ.ingenieria.tpi135.documientos.entity.Documento;
 
 /**
@@ -23,12 +25,24 @@ public class DocumentoBean extends AbstractDataAccess&lt;Documento&gt; implement
     EntityManager em;
 
     public DocumentoBean() {
-<span class="nc" id="L26">        super(Documento.class);</span>
-<span class="nc" id="L27">    }</span>
+<span class="nc" id="L28">        super(Documento.class);</span>
+<span class="nc" id="L29">    }</span>
 
     @Override
     public EntityManager getEntityManager() {
-<span class="nc" id="L31">        return em;</span>
+<span class="nc" id="L33">        return em;</span>
+    }
+    
+    public Long generarNuevoIdDocumento() {
+        // Consulta JPQL para obtener el último ID de documento
+<span class="nc" id="L38">        Query query = em.createQuery(&quot;SELECT MAX(d.idDocumento) FROM Documento d&quot;);</span>
+
+        // Ejecutar la consulta y obtener el resultado
+<span class="nc" id="L41">        List&lt;Long&gt; resultList = query.getResultList();</span>
+<span class="nc" id="L42">        Long ultimoId = resultList.get(0);</span>
+
+        // Retornar el nuevo ID (el último ID incrementado en 1)
+<span class="nc" id="L45">        return ultimoId + 1;</span>
     }
 
 }

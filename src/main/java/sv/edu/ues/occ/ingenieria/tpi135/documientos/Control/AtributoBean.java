@@ -8,6 +8,7 @@ import jakarta.ejb.LocalBean;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.Query;
 import java.io.Serializable;
 import sv.edu.ues.occ.ingenieria.tpi135.documientos.entity.Atributo;
 
@@ -29,6 +30,16 @@ public class AtributoBean extends AbstractDataAccess<Atributo> implements Serial
     @Override
     public EntityManager getEntityManager() {
         return em;
+    }
+
+    public Long generarNuevoIdAtributo() {
+        Query query = em.createQuery("SELECT MAX(a.idAtributo) FROM Atributo a");
+        Long ultimoId = (Long) query.getSingleResult();
+        if (ultimoId == null) {
+            return 1L; // Si no hay ningún ID en la base de datos, empezamos desde 1
+        } else {
+            return ultimoId + 1; // Generamos un nuevo ID sumando 1 al último ID utilizado
+        }
     }
 
 }
