@@ -81,19 +81,24 @@ import sv.edu.ues.occ.ingenieria.tpi135.documientos.entity.Documento;
 <span class="nc" id="L81">                    .build();</span>
         }
         try {
-<span class="nc" id="L84">            dBean.create(documento);</span>
 
-<span class="nc" id="L86">            URI requestUri = info.getRequestUri();</span>
-<span class="nc" id="L87">            String location = requestUri.toString() + &quot;/&quot; + documento.getIdDocumento();</span>
+//            if (documento.getIdDocumento()== null) {
+//                Long nuevoId = dBean.generarNuevoIdDocumento(); // Método que devuelve un nuevo id único
+//                documento.setIdDocumento(nuevoId);
+//            }
+<span class="nc" id="L89">            dBean.create(documento);</span>
 
-<span class="nc" id="L89">            return Response.status(Response.Status.CREATED)</span>
-<span class="nc" id="L90">                    .header(&quot;Location&quot;, location)</span>
-<span class="nc" id="L91">                    .build();</span>
-<span class="nc" id="L92">        } catch (Exception ex) {</span>
-<span class="nc" id="L93">            Logger.getLogger(getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);</span>
-<span class="nc" id="L94">            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)</span>
-<span class="nc" id="L95">                    .entity(&quot;Error interno al procesar la solicitud&quot;)</span>
+<span class="nc" id="L91">            URI requestUri = info.getRequestUri();</span>
+<span class="nc" id="L92">            String location = requestUri.toString() + &quot;/&quot; + documento.getIdDocumento();</span>
+
+<span class="nc" id="L94">            return Response.status(Response.Status.CREATED)</span>
+<span class="nc" id="L95">                    .header(&quot;Location&quot;, location)</span>
 <span class="nc" id="L96">                    .build();</span>
+<span class="nc" id="L97">        } catch (Exception ex) {</span>
+<span class="nc" id="L98">            Logger.getLogger(getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);</span>
+<span class="nc" id="L99">            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)</span>
+<span class="nc" id="L100">                    .entity(&quot;Error interno al procesar la solicitud&quot;)</span>
+<span class="nc" id="L101">                    .build();</span>
         }
     }
 

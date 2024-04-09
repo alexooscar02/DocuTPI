@@ -36,7 +36,7 @@ public class AtributoBean extends AbstractDataAccess<Atributo> implements Serial
         return em;
     }
 
-    public Long generarNuevoIdAtributo() {
+    public Long obtenerNuevoId() {
         Query query = em.createQuery("SELECT MAX(a.idAtributo) FROM Atributo a");
         Long ultimoId = (Long) query.getSingleResult();
         if (ultimoId == null) {

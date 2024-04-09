@@ -81,6 +81,11 @@ public class DocumentoResource implements Serializable {
                     .build();
         }
         try {
+
+//            if (documento.getIdDocumento()== null) {
+//                Long nuevoId = dBean.generarNuevoIdDocumento(); // Método que devuelve un nuevo id único
+//                documento.setIdDocumento(nuevoId);
+//            }
             dBean.create(documento);
 
             URI requestUri = info.getRequestUri();

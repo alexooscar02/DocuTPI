@@ -43,6 +43,11 @@ public class AtributoResource implements Serializable {
         }
         try {
             atributo.setIdTipoDocumento(new TipoDocumento(idTipoDocumento));
+            
+            if (atributo.getIdAtributo()== null) {
+                Long nuevoId = aBean.obtenerNuevoId(); // Método que devuelve un nuevo id único
+                atributo.setIdAtributo(nuevoId);
+            }
             aBean.create(atributo);
 
             URI requestUri = info.getRequestUri();

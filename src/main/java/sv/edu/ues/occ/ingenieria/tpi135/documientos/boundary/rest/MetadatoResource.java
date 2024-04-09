@@ -56,31 +56,24 @@ public class MetadatoResource implements Serializable {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createMetadato(@PathParam("idDocumento") Long idDocumento, Metadato metadato, @Context UriInfo uriInfo) {
         if (metadato == null || metadato.getIdAtributo() == null || metadato.getIdDocumento() == null || metadato.getValor() == null) {
-            // Caso: Payload nulo o parámetros faltantes
             return Response.status(RestResourceHeaderPattern.STATUS_PARAMETRO_EQUIVOCADO)
                     .header(RestResourceHeaderPattern.DETALLE_PARAMETRO_EQUIVOCADO, "Parámetros incorrectos")
                     .build();
         }
 
         try {
-            // Asignar el ID del documento al metadato
             metadato.setIdDocumento(new Documento(idDocumento));
 
-            // Validar que el atributo pertenezca a la taxonomía del documento
             if (!validateAttributeBelongsToDocument(metadato.getIdAtributo(), idDocumento)) {
                 return Response.status(Response.Status.BAD_REQUEST)
                         .header(RestResourceHeaderPattern.DETALLE_PARAMETRO_EQUIVOCADO, "El atributo no pertenece a la taxonomía del documento")
                         .build();
             }
-
-            // Lógica para crear el metadato en la base de datos
             mBean.create(metadato);
 
-            // Construir la URI del recurso creado
             URI requestUri = uriInfo.getRequestUri();
             String location = requestUri.toString() + "/" + metadato.getIdMetadata();
 
-            // Retornar una respuesta exitosa con el código 201 y la ubicación del recurso creado
             return Response.status(Response.Status.CREATED)
                     .header("Location", location)
                     .build();

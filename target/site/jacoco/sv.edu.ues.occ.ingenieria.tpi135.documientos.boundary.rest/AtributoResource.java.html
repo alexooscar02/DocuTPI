@@ -43,17 +43,22 @@ import sv.edu.ues.occ.ingenieria.tpi135.documientos.entity.TipoDocumento;
         }
         try {
 <span class="nc" id="L45">            atributo.setIdTipoDocumento(new TipoDocumento(idTipoDocumento));</span>
-<span class="nc" id="L46">            aBean.create(atributo);</span>
+            
+<span class="nc bnc" id="L47" title="All 2 branches missed.">            if (atributo.getIdAtributo()== null) {</span>
+<span class="nc" id="L48">                Long nuevoId = aBean.obtenerNuevoId(); // Método que devuelve un nuevo id único</span>
+<span class="nc" id="L49">                atributo.setIdAtributo(nuevoId);</span>
+            }
+<span class="nc" id="L51">            aBean.create(atributo);</span>
 
-<span class="nc" id="L48">            URI requestUri = info.getRequestUri();</span>
-<span class="nc" id="L49">            String location = requestUri.toString() + &quot;/&quot; + atributo.getIdAtributo();</span>
+<span class="nc" id="L53">            URI requestUri = info.getRequestUri();</span>
+<span class="nc" id="L54">            String location = requestUri.toString() + &quot;/&quot; + atributo.getIdAtributo();</span>
 
-<span class="nc" id="L51">            return Response.status(Response.Status.CREATED)</span>
-<span class="nc" id="L52">                    .header(&quot;Location&quot;, location)</span>
-<span class="nc" id="L53">                    .build();</span>
-<span class="nc" id="L54">        } catch (Exception ex) {</span>
-<span class="nc" id="L55">            Logger.getLogger(getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);</span>
-<span class="nc" id="L56">            return Response.serverError().build();</span>
+<span class="nc" id="L56">            return Response.status(Response.Status.CREATED)</span>
+<span class="nc" id="L57">                    .header(&quot;Location&quot;, location)</span>
+<span class="nc" id="L58">                    .build();</span>
+<span class="nc" id="L59">        } catch (Exception ex) {</span>
+<span class="nc" id="L60">            Logger.getLogger(getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);</span>
+<span class="nc" id="L61">            return Response.serverError().build();</span>
         }
     }
 

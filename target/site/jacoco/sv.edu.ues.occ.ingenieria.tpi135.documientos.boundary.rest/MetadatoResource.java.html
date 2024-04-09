@@ -67,50 +67,51 @@ import sv.edu.ues.occ.ingenieria.tpi135.documientos.entity.TipoDocumento;
 <span class="nc" id="L67">            metadato.setIdDocumento(new Documento(idDocumento));</span>
 
             // Validar que el atributo pertenezca a la taxonomía del documento
-<span class="nc bnc" id="L70" title="All 2 branches missed.">            if (!validateAttributeBelongsToDocument(metadato.getIdAtributo(), idDocumento)) {</span>
-<span class="nc" id="L71">                return Response.status(Response.Status.BAD_REQUEST)</span>
-<span class="nc" id="L72">                        .header(RestResourceHeaderPattern.DETALLE_PARAMETRO_EQUIVOCADO, &quot;El atributo no pertenece a la taxonomía del documento&quot;)</span>
-<span class="nc" id="L73">                        .build();</span>
+            // Validar que el atributo pertenezca a la taxonomía del documento
+<span class="nc bnc" id="L71" title="All 2 branches missed.">            if (!validateAttributeBelongsToDocument(metadato.getIdAtributo(), idDocumento)) {</span>
+<span class="nc" id="L72">                return Response.status(Response.Status.BAD_REQUEST)</span>
+<span class="nc" id="L73">                        .header(RestResourceHeaderPattern.DETALLE_PARAMETRO_EQUIVOCADO, &quot;El atributo no pertenece a la taxonomía del documento&quot;)</span>
+<span class="nc" id="L74">                        .build();</span>
             }
 
             // Lógica para crear el metadato en la base de datos
-<span class="nc" id="L77">            mBean.create(metadato);</span>
+<span class="nc" id="L78">            mBean.create(metadato);</span>
 
             // Construir la URI del recurso creado
-<span class="nc" id="L80">            URI requestUri = uriInfo.getRequestUri();</span>
-<span class="nc" id="L81">            String location = requestUri.toString() + &quot;/&quot; + metadato.getIdMetadata();</span>
+<span class="nc" id="L81">            URI requestUri = uriInfo.getRequestUri();</span>
+<span class="nc" id="L82">            String location = requestUri.toString() + &quot;/&quot; + metadato.getIdMetadata();</span>
 
             // Retornar una respuesta exitosa con el código 201 y la ubicación del recurso creado
-<span class="nc" id="L84">            return Response.status(Response.Status.CREATED)</span>
-<span class="nc" id="L85">                    .header(&quot;Location&quot;, location)</span>
-<span class="nc" id="L86">                    .build();</span>
-<span class="nc" id="L87">        } catch (Exception ex) {</span>
+<span class="nc" id="L85">            return Response.status(Response.Status.CREATED)</span>
+<span class="nc" id="L86">                    .header(&quot;Location&quot;, location)</span>
+<span class="nc" id="L87">                    .build();</span>
+<span class="nc" id="L88">        } catch (Exception ex) {</span>
             // En caso de que ocurra una excepción durante la creación del metadato
-<span class="nc" id="L89">            Logger.getLogger(getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);</span>
-<span class="nc" id="L90">            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)</span>
-<span class="nc" id="L91">                    .header(RestResourceHeaderPattern.DETALLE_PARAMETRO_EQUIVOCADO, &quot;Error interno del servidor&quot;)</span>
-<span class="nc" id="L92">                    .build();</span>
+<span class="nc" id="L90">            Logger.getLogger(getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);</span>
+<span class="nc" id="L91">            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)</span>
+<span class="nc" id="L92">                    .header(RestResourceHeaderPattern.DETALLE_PARAMETRO_EQUIVOCADO, &quot;Error interno del servidor&quot;)</span>
+<span class="nc" id="L93">                    .build();</span>
         }
     }
 
     private boolean validateAttributeBelongsToDocument(Atributo atributo, Long idDocumento) {
         // Obtener el documento
-<span class="nc" id="L98">        Documento documento = dBean.findById(idDocumento);</span>
+<span class="nc" id="L99">        Documento documento = dBean.findById(idDocumento);</span>
 
         // Verificar si el documento tiene una taxonomía
-<span class="nc bnc" id="L101" title="All 4 branches missed.">        if (documento.getTaxonomiaList() == null || documento.getTaxonomiaList().isEmpty()) {</span>
-<span class="nc" id="L102">            return false;</span>
+<span class="nc bnc" id="L102" title="All 4 branches missed.">        if (documento.getTaxonomiaList() == null || documento.getTaxonomiaList().isEmpty()) {</span>
+<span class="nc" id="L103">            return false;</span>
         }
 
         // Obtener el TipoDocumento del primer elemento de la lista de taxonomías
-<span class="nc" id="L106">        Taxonomia firstTaxonomia = documento.getTaxonomiaList().get(0);</span>
-<span class="nc" id="L107">        TipoDocumento tipoDocumento = firstTaxonomia.getIdTipoDocumento();</span>
+<span class="nc" id="L107">        Taxonomia firstTaxonomia = documento.getTaxonomiaList().get(0);</span>
+<span class="nc" id="L108">        TipoDocumento tipoDocumento = firstTaxonomia.getIdTipoDocumento();</span>
 
         // Verificar si el TipoDocumento tiene el atributo especificado
-<span class="nc" id="L110">        List&lt;Atributo&gt; atributosDelTipoDeDocumento = aBean.findByIdTipoDocumentoIdTipoDocumento(tipoDocumento.getIdTipoDocumento());</span>
-<span class="nc" id="L111">        return atributosDelTipoDeDocumento.stream()</span>
-<span class="nc" id="L112">                .map(Atributo::getIdAtributo)</span>
-<span class="nc" id="L113">                .anyMatch(id -&gt; id.equals(atributo.getIdAtributo()));</span>
+<span class="nc" id="L111">        List&lt;Atributo&gt; atributosDelTipoDeDocumento = aBean.findByIdTipoDocumentoIdTipoDocumento(tipoDocumento.getIdTipoDocumento());</span>
+<span class="nc" id="L112">        return atributosDelTipoDeDocumento.stream()</span>
+<span class="nc" id="L113">                .map(Atributo::getIdAtributo)</span>
+<span class="nc" id="L114">                .anyMatch(id -&gt; id.equals(atributo.getIdAtributo()));</span>
     }
 
 }

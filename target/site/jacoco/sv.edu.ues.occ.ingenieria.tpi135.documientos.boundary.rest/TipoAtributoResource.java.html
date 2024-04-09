@@ -84,35 +84,27 @@ import sv.edu.ues.occ.ingenieria.tpi135.documientos.entity.TipoAtributo;
     public Response createTipoAtributo(TipoAtributo tipoAtributo, @Context UriInfo info) {
 <span class="nc bnc" id="L85" title="All 6 branches missed.">        if (tipoAtributo == null || tipoAtributo.getExpresionRegular() == null || tipoAtributo.getIndicacionesScreen() == null</span>
 <span class="nc bnc" id="L86" title="All 6 branches missed.">                || tipoAtributo.getNombre() == null || tipoAtributo.getNombreScreen() == null || tipoAtributo.getObservaciones() == null) {</span>
-            // Caso: Payload nulo o parámetros faltantes
-<span class="nc" id="L88">            return Response.status(RestResourceHeaderPattern.STATUS_PARAMETRO_EQUIVOCADO)</span>
-<span class="nc" id="L89">                    .header(RestResourceHeaderPattern.DETALLE_PARAMETRO_EQUIVOCADO, &quot;Parámetros incorrectos&quot;)</span>
-<span class="nc" id="L90">                    .build();</span>
+<span class="nc" id="L87">            return Response.status(RestResourceHeaderPattern.STATUS_PARAMETRO_EQUIVOCADO)</span>
+<span class="nc" id="L88">                    .header(RestResourceHeaderPattern.DETALLE_PARAMETRO_EQUIVOCADO, &quot;Parámetros incorrectos&quot;)</span>
+<span class="nc" id="L89">                    .build();</span>
         }
-
         try {
-            // Si el id llega como null, asignamos uno nuevo
-<span class="nc bnc" id="L95" title="All 2 branches missed.">            if (tipoAtributo.getIdTipoAtributo() == null) {</span>
-                // Aquí debes implementar la lógica para obtener un id único, por ejemplo, consultando la base de datos
-<span class="nc" id="L97">                Integer nuevoId = taBean.obtenerNuevoId(); // Método que devuelve un nuevo id único</span>
-<span class="nc" id="L98">                tipoAtributo.setIdTipoAtributo(nuevoId);</span>
+<span class="nc bnc" id="L92" title="All 2 branches missed.">            if (tipoAtributo.getIdTipoAtributo() == null) {</span>
+<span class="nc" id="L93">                Integer nuevoId = taBean.obtenerNuevoId(); // Método que devuelve un nuevo id único</span>
+<span class="nc" id="L94">                tipoAtributo.setIdTipoAtributo(nuevoId);</span>
             }
 
-            // Lógica para crear el tipo de atributo en la base de datos
-<span class="nc" id="L102">            taBean.create(tipoAtributo);</span>
+<span class="nc" id="L97">            taBean.create(tipoAtributo);</span>
 
-            // Construimos la URI del recurso creado
-<span class="nc" id="L105">            URI requestUri = info.getRequestUri();</span>
-<span class="nc" id="L106">            String location = requestUri.toString() + &quot;/&quot; + tipoAtributo.getIdTipoAtributo();</span>
+<span class="nc" id="L99">            URI requestUri = info.getRequestUri();</span>
+<span class="nc" id="L100">            String location = requestUri.toString() + &quot;/&quot; + tipoAtributo.getIdTipoAtributo();</span>
 
-            // Retornamos una respuesta exitosa con el código 201 y la ubicación del recurso creado
-<span class="nc" id="L109">            return Response.status(Response.Status.CREATED)</span>
-<span class="nc" id="L110">                    .header(&quot;Location&quot;, location)</span>
-<span class="nc" id="L111">                    .build();</span>
-<span class="nc" id="L112">        } catch (Exception ex) {</span>
-            // En caso de que ocurra una excepción durante la creación del tipo de atributo
-<span class="nc" id="L114">            Logger.getLogger(getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);</span>
-<span class="nc" id="L115">            return Response.serverError().build();</span>
+<span class="nc" id="L102">            return Response.status(Response.Status.CREATED)</span>
+<span class="nc" id="L103">                    .header(&quot;Location&quot;, location)</span>
+<span class="nc" id="L104">                    .build();</span>
+<span class="nc" id="L105">        } catch (Exception ex) {</span>
+<span class="nc" id="L106">            Logger.getLogger(getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);</span>
+<span class="nc" id="L107">            return Response.serverError().build();</span>
         }
     }
 

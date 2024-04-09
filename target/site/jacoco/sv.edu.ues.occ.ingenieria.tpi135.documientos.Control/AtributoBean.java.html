@@ -36,7 +36,7 @@ public class AtributoBean extends AbstractDataAccess&lt;Atributo&gt; implements 
 <span class="nc" id="L36">        return em;</span>
     }
 
-    public Long generarNuevoIdAtributo() {
+    public Long obtenerNuevoId() {
 <span class="nc" id="L40">        Query query = em.createQuery(&quot;SELECT MAX(a.idAtributo) FROM Atributo a&quot;);</span>
 <span class="nc" id="L41">        Long ultimoId = (Long) query.getSingleResult();</span>
 <span class="nc bnc" id="L42" title="All 2 branches missed.">        if (ultimoId == null) {</span>
