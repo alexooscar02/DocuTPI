@@ -32,7 +32,8 @@ import jakarta.persistence.Table;
     @NamedQuery(name = "Atributo.findByNombre", query = "SELECT a FROM Atributo a WHERE a.nombre = :nombre"),
     @NamedQuery(name = "Atributo.findByNombrePantalla", query = "SELECT a FROM Atributo a WHERE a.nombrePantalla = :nombrePantalla"),
     @NamedQuery(name = "Atributo.findByIndicacionesPantalla", query = "SELECT a FROM Atributo a WHERE a.indicacionesPantalla = :indicacionesPantalla"),
-    @NamedQuery(name = "Atributo.findByObligatorio", query = "SELECT a FROM Atributo a WHERE a.obligatorio = :obligatorio")})
+    @NamedQuery(name = "Atributo.findByObligatorio", query = "SELECT a FROM Atributo a WHERE a.obligatorio = :obligatorio"),
+    @NamedQuery(name = "Atributo.findTipoDocumentobyId", query = "SELECT a.idTipoDocumento.idTipoDocumento FROM Atributo a WHERE a.idAtributo = :idAtributo"),})
 public class Atributo implements Serializable {
 
     private static final long serialVersionUID = 1L;

@@ -23,12 +23,14 @@ import java.net.URI;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import sv.edu.ues.occ.ingenieria.tpi135.documientos.Control.AtributoBean;
 import sv.edu.ues.occ.ingenieria.tpi135.documientos.Control.DocumentoBean;
 import sv.edu.ues.occ.ingenieria.tpi135.documientos.Control.MetadatoBean;
+import sv.edu.ues.occ.ingenieria.tpi135.documientos.Control.TaxonomiaBean;
 import sv.edu.ues.occ.ingenieria.tpi135.documientos.entity.Atributo;
 import sv.edu.ues.occ.ingenieria.tpi135.documientos.entity.Documento;
 import sv.edu.ues.occ.ingenieria.tpi135.documientos.entity.Metadato;
@@ -51,6 +53,9 @@ public class MetadatoResource implements Serializable {
     @Inject
     AtributoBean aBean;
 
+    @Inject
+    TaxonomiaBean tBean;
+
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
@@ -62,13 +67,15 @@ public class MetadatoResource implements Serializable {
         }
 
         try {
-            metadato.setIdDocumento(new Documento(idDocumento));
+            //metadato.setIdDocumento(new Documento(idDocumento));
 
-            if (!validateAttributeBelongsToDocument(metadato.getIdAtributo(), idDocumento)) {
-                return Response.status(Response.Status.BAD_REQUEST)
-                        .header(RestResourceHeaderPattern.DETALLE_PARAMETRO_EQUIVOCADO, "El atributo no pertenece a la taxonomía del documento")
+            if (!Objects.equals(tBean.findTipoDocumentoByDocumento(Long.valueOf(metadato.getIdDocumento().getIdDocumento().toString())), aBean.findTipoDocumentoById(Long.valueOf(metadato.getIdAtributo().getIdAtributo().toString())))) {
+
+                return Response.status(405)
+                        .header("METODO-NO-POSIBLE", metadato.toString())
                         .build();
             }
+
             mBean.create(metadato);
 
             URI requestUri = uriInfo.getRequestUri();
@@ -78,32 +85,10 @@ public class MetadatoResource implements Serializable {
                     .header("Location", location)
                     .build();
         } catch (Exception ex) {
-            // En caso de que ocurra una excepción durante la creación del metadato
             Logger.getLogger(getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .header(RestResourceHeaderPattern.DETALLE_PARAMETRO_EQUIVOCADO, "Error interno del servidor")
                     .build();
         }
     }
-
-    private boolean validateAttributeBelongsToDocument(Atributo atributo, Long idDocumento) {
-        // Obtener el documento
-        Documento documento = dBean.findById(idDocumento);
-
-        // Verificar si el documento tiene una taxonomía
-        if (documento.getTaxonomiaList() == null || documento.getTaxonomiaList().isEmpty()) {
-            return false;
-        }
-
-        // Obtener el TipoDocumento del primer elemento de la lista de taxonomías
-        Taxonomia firstTaxonomia = documento.getTaxonomiaList().get(0);
-        TipoDocumento tipoDocumento = firstTaxonomia.getIdTipoDocumento();
-
-        // Verificar si el TipoDocumento tiene el atributo especificado
-        List<Atributo> atributosDelTipoDeDocumento = aBean.findByIdTipoDocumentoIdTipoDocumento(tipoDocumento.getIdTipoDocumento());
-        return atributosDelTipoDeDocumento.stream()
-                .map(Atributo::getIdAtributo)
-                .anyMatch(id -> id.equals(atributo.getIdAtributo()));
-    }
-
 }

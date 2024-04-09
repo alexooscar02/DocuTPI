@@ -11,11 +11,14 @@ import jakarta.ejb.TransactionAttributeType;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.Query;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import sv.edu.ues.occ.ingenieria.tpi135.documientos.entity.Taxonomia;
+import sv.edu.ues.occ.ingenieria.tpi135.documientos.entity.TipoDocumento;
 
 /**
  *
@@ -51,4 +54,18 @@ public class TaxonomiaBean extends AbstractDataAccess<Taxonomia> implements Seri
 //            throw new IllegalStateException("Error al crear la taxonomía", ex);
 //        }
 //    }
+    //aqui hace falta un metodo que busque tipoDocumento por documento
+    public Long findTipoDocumentoByDocumento(Long idDocumento) {
+
+        try {
+            Query query = em.createNamedQuery("Taxonomia.findTipoDocumentoByDocumento");
+            query.setParameter("idDocumento", idDocumento);
+            List<Integer> results = query.getResultList();
+
+            return ((Long) Long.valueOf(results.get(0).toString()));
+
+        } catch (Exception ex) {
+            return null;
+        }
+    }
 }

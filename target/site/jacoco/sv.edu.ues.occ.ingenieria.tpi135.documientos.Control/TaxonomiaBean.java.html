@@ -11,11 +11,14 @@ import jakarta.ejb.TransactionAttributeType;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.Query;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import sv.edu.ues.occ.ingenieria.tpi135.documientos.entity.Taxonomia;
+import sv.edu.ues.occ.ingenieria.tpi135.documientos.entity.TipoDocumento;
 
 /**
  *
@@ -29,12 +32,12 @@ public class TaxonomiaBean extends AbstractDataAccess&lt;Taxonomia&gt; implement
     EntityManager em;
 
     public TaxonomiaBean() {
-<span class="nc" id="L32">        super(Taxonomia.class);</span>
-<span class="nc" id="L33">    }</span>
+<span class="nc" id="L35">        super(Taxonomia.class);</span>
+<span class="nc" id="L36">    }</span>
 
     @Override
     public EntityManager getEntityManager() {
-<span class="nc" id="L37">        return em;</span>
+<span class="nc" id="L40">        return em;</span>
     }
 
 //    @TransactionAttribute(TransactionAttributeType.REQUIRED)
@@ -51,5 +54,19 @@ public class TaxonomiaBean extends AbstractDataAccess&lt;Taxonomia&gt; implement
 //            throw new IllegalStateException(&quot;Error al crear la taxonomía&quot;, ex);
 //        }
 //    }
+    //aqui hace falta un metodo que busque tipoDocumento por documento
+    public Long findTipoDocumentoByDocumento(Long idDocumento) {
+
+        try {
+<span class="nc" id="L61">            Query query = em.createNamedQuery(&quot;Taxonomia.findTipoDocumentoByDocumento&quot;);</span>
+<span class="nc" id="L62">            query.setParameter(&quot;idDocumento&quot;, idDocumento);</span>
+<span class="nc" id="L63">            List&lt;Integer&gt; results = query.getResultList();</span>
+
+<span class="nc" id="L65">            return ((Long) Long.valueOf(results.get(0).toString()));</span>
+
+<span class="nc" id="L67">        } catch (Exception ex) {</span>
+<span class="nc" id="L68">            return null;</span>
+        }
+    }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

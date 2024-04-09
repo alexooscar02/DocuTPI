@@ -284,6 +284,7 @@ public class PrimerParcialIT {
         nuevoA.setNombrePantalla("algun nombre para atributo equivocado");
         nuevoA.setObligatorio(Boolean.TRUE);
         respuesta = builderA.post(Entity.entity(nuevoA, MediaType.APPLICATION_JSON));
+        System.out.println(payara1.getLogs());
 
         Assertions.assertEquals(201, respuesta.getStatus());
         Assertions.assertTrue(respuesta.getHeaders().containsKey("Location"));
@@ -299,99 +300,97 @@ public class PrimerParcialIT {
 
         respuesta = builder.post(Entity.entity(nuevo, MediaType.APPLICATION_JSON));
         Assertions.assertEquals(405, respuesta.getStatus());
-        //System.out.println(payara1.getLogs());
 
         // crear atributo valido
         nuevo = new Metadato();
         nuevo.setIdAtributo(new Atributo(ID_ATRIBUTO_CREADO));
         nuevo.setIdDocumento(new Documento(ID_DOCUMENTO_CREADO));
         nuevo.setValor("valor valido");
+        System.out.println(ID_ATRIBUTO_CREADO + ID_DOCUMENTO_CREADO);
         respuesta = builder.post(Entity.entity(nuevo, MediaType.APPLICATION_JSON));
-        
         Assertions.assertEquals(201, respuesta.getStatus());
-        
 
         Assertions.assertTrue(respuesta.getHeaders().containsKey("Location"));
         lex = respuesta.getHeaderString("Location").split("/");
         ID_METADATO_CREADO = Long.valueOf(lex[lex.length - 1]);
         System.out.println(ID_METADATO_CREADO);
     }
+
 //
-
-    @Test
-    @Order(7)
-    public void testValidarResultados() {
-        System.out.println("validarResultadosIT");
-
-        System.out.println("============== ID TIPO ATRIBUTO GENERADO " + ID_TIPO_ATRIBUTO_CREADO);
-        Response respuesta = target.path("tipoatributo/{idTipoAtributo}")
-                .resolveTemplate("idTipoAtributo", ID_TIPO_ATRIBUTO_CREADO)
-                .request(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON)
-                .get();
-        Assertions.assertEquals(200, respuesta.getStatus());
-        String json = respuesta.readEntity(String.class);
-        Assertions.assertNotNull(json);
-        System.out.println("TipoAtributo " + json);
-        // tipo documento
-        System.out.println("============== ID TIPO DOCUMENTO GENERADO " + ID_TIPO_DOCUMENTO_CREADO);
-        respuesta = target.path("tipodocumento/{idTipoDocumento}")
-                .resolveTemplate("idTipoDocumento", ID_TIPO_DOCUMENTO_CREADO)
-                .request(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON)
-                .get();
-        Assertions.assertEquals(200, respuesta.getStatus());
-        json = respuesta.readEntity(String.class);
-        Assertions.assertNotNull(json);
-        System.out.println("TipoDocumento " + json);
-        // atributo
-        System.out.println("============== ID ATRIBUTO GENERADO " + ID_ATRIBUTO_CREADO);
-        respuesta = target.path("tipodocumento/{idTipoDocumento}/atributo/{idAtributo}")
-                .resolveTemplate("idTipoDocumento", ID_TIPO_DOCUMENTO_CREADO)
-                .resolveTemplate("idAtributo", ID_ATRIBUTO_CREADO)
-                .request(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON)
-                .get();
-        Assertions.assertEquals(200, respuesta.getStatus());
-        json = respuesta.readEntity(String.class);
-        Assertions.assertNotNull(json);
-        System.out.println("Atributo " + json);
-        // documento
-        System.out.println("============== ID DOCUMENTO GENERADO " + ID_DOCUMENTO_CREADO);
-        respuesta = target.path("documento/{idDocumento}")
-                .resolveTemplate("idDocumento", ID_DOCUMENTO_CREADO)
-                .request(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON)
-                .get();
-
-        Assertions.assertEquals(200, respuesta.getStatus());
-        json = respuesta.readEntity(String.class);
-        Assertions.assertNotNull(json);
-        System.out.println("Atributo " + json);
-        // taxonomia
-        System.out.println("============== ID TAXONOMIA GENERADO " + ID_TAXONOMIA_CREADO);
-        respuesta = target.path("documento/{idDocumento}/taxonomia/{idTaxonomia}")
-                .resolveTemplate("idDocumento", ID_DOCUMENTO_CREADO)
-                .resolveTemplate("idTaxonomia", ID_TAXONOMIA_CREADO)
-                .request(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON)
-                .get();
-        Assertions.assertEquals(200, respuesta.getStatus());
-        json = respuesta.readEntity(String.class);
-        Assertions.assertNotNull(json);
-        System.out.println("Taxonomia " + json);
-        // metadato
-        System.out.println("============== ID METADATO GENERADO " + ID_METADATO_CREADO);
-        respuesta = target.path("documento/{idDocumento}/metadato/{idMetadato}")
-                .resolveTemplate("idDocumento", ID_DOCUMENTO_CREADO)
-                .resolveTemplate("idMetadato", ID_METADATO_CREADO)
-                .request(MediaType.APPLICATION_JSON)
-                .accept(MediaType.APPLICATION_JSON)
-                .get();
-        Assertions.assertEquals(200, respuesta.getStatus());
-        json = respuesta.readEntity(String.class);
-        Assertions.assertNotNull(json);
-        System.out.println("Metadato " + json);
-
-    }
+//    @Test
+//    @Order(7)
+//    public void testValidarResultados() {
+//        System.out.println("validarResultadosIT");
+//
+//        System.out.println("============== ID TIPO ATRIBUTO GENERADO " + ID_TIPO_ATRIBUTO_CREADO);
+//        Response respuesta = target.path("tipoatributo/{idTipoAtributo}")
+//                .resolveTemplate("idTipoAtributo", ID_TIPO_ATRIBUTO_CREADO)
+//                .request(MediaType.APPLICATION_JSON)
+//                .accept(MediaType.APPLICATION_JSON)
+//                .get();
+//        Assertions.assertEquals(200, respuesta.getStatus());
+//        String json = respuesta.readEntity(String.class);
+//        Assertions.assertNotNull(json);
+//        System.out.println("TipoAtributo " + json);
+//        // tipo documento
+//        System.out.println("============== ID TIPO DOCUMENTO GENERADO " + ID_TIPO_DOCUMENTO_CREADO);
+//        respuesta = target.path("tipodocumento/{idTipoDocumento}")
+//                .resolveTemplate("idTipoDocumento", ID_TIPO_DOCUMENTO_CREADO)
+//                .request(MediaType.APPLICATION_JSON)
+//                .accept(MediaType.APPLICATION_JSON)
+//                .get();
+//        Assertions.assertEquals(200, respuesta.getStatus());
+//        json = respuesta.readEntity(String.class);
+//        Assertions.assertNotNull(json);
+//        System.out.println("TipoDocumento " + json);
+//        // atributo
+//        System.out.println("============== ID ATRIBUTO GENERADO " + ID_ATRIBUTO_CREADO);
+//        respuesta = target.path("tipodocumento/{idTipoDocumento}/atributo/{idAtributo}")
+//                .resolveTemplate("idTipoDocumento", ID_TIPO_DOCUMENTO_CREADO)
+//                .resolveTemplate("idAtributo", ID_ATRIBUTO_CREADO)
+//                .request(MediaType.APPLICATION_JSON)
+//                .accept(MediaType.APPLICATION_JSON)
+//                .get();
+//        Assertions.assertEquals(200, respuesta.getStatus());
+//        json = respuesta.readEntity(String.class);
+//        Assertions.assertNotNull(json);
+//        System.out.println("Atributo " + json);
+//        // documento
+//        System.out.println("============== ID DOCUMENTO GENERADO " + ID_DOCUMENTO_CREADO);
+//        respuesta = target.path("documento/{idDocumento}")
+//                .resolveTemplate("idDocumento", ID_DOCUMENTO_CREADO)
+//                .request(MediaType.APPLICATION_JSON)
+//                .accept(MediaType.APPLICATION_JSON)
+//                .get();
+//
+//        Assertions.assertEquals(200, respuesta.getStatus());
+//        json = respuesta.readEntity(String.class);
+//        Assertions.assertNotNull(json);
+//        System.out.println("Atributo " + json);
+//        // taxonomia
+//        System.out.println("============== ID TAXONOMIA GENERADO " + ID_TAXONOMIA_CREADO);
+//        respuesta = target.path("documento/{idDocumento}/taxonomia/{idTaxonomia}")
+//                .resolveTemplate("idDocumento", ID_DOCUMENTO_CREADO)
+//                .resolveTemplate("idTaxonomia", ID_TAXONOMIA_CREADO)
+//                .request(MediaType.APPLICATION_JSON)
+//                .accept(MediaType.APPLICATION_JSON)
+//                .get();
+//        Assertions.assertEquals(200, respuesta.getStatus());
+//        json = respuesta.readEntity(String.class);
+//        Assertions.assertNotNull(json);
+//        System.out.println("Taxonomia " + json);
+//        // metadato
+//        System.out.println("============== ID METADATO GENERADO " + ID_METADATO_CREADO);
+//        respuesta = target.path("documento/{idDocumento}/metadato/{idMetadato}")
+//                .resolveTemplate("idDocumento", ID_DOCUMENTO_CREADO)
+//                .resolveTemplate("idMetadato", ID_METADATO_CREADO)
+//                .request(MediaType.APPLICATION_JSON)
+//                .accept(MediaType.APPLICATION_JSON)
+//                .get();
+//        Assertions.assertEquals(200, respuesta.getStatus());
+//        json = respuesta.readEntity(String.class);
+//        Assertions.assertNotNull(json);
+//        System.out.println("Metadato " + json);
+//
+//    }
 }

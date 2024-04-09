@@ -23,12 +23,14 @@ import java.net.URI;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import sv.edu.ues.occ.ingenieria.tpi135.documientos.Control.AtributoBean;
 import sv.edu.ues.occ.ingenieria.tpi135.documientos.Control.DocumentoBean;
 import sv.edu.ues.occ.ingenieria.tpi135.documientos.Control.MetadatoBean;
+import sv.edu.ues.occ.ingenieria.tpi135.documientos.Control.TaxonomiaBean;
 import sv.edu.ues.occ.ingenieria.tpi135.documientos.entity.Atributo;
 import sv.edu.ues.occ.ingenieria.tpi135.documientos.entity.Documento;
 import sv.edu.ues.occ.ingenieria.tpi135.documientos.entity.Metadato;
@@ -40,7 +42,7 @@ import sv.edu.ues.occ.ingenieria.tpi135.documientos.entity.TipoDocumento;
  * @author alexo
  */
 @Path(&quot;/documento/{idDocumento}/metadato&quot;)
-<span class="nc" id="L43">public class MetadatoResource implements Serializable {</span>
+<span class="nc" id="L45">public class MetadatoResource implements Serializable {</span>
 
     @Inject
     MetadatoBean mBean;
@@ -51,68 +53,43 @@ import sv.edu.ues.occ.ingenieria.tpi135.documientos.entity.TipoDocumento;
     @Inject
     AtributoBean aBean;
 
+    @Inject
+    TaxonomiaBean tBean;
+
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createMetadato(@PathParam(&quot;idDocumento&quot;) Long idDocumento, Metadato metadato, @Context UriInfo uriInfo) {
-<span class="nc bnc" id="L58" title="All 8 branches missed.">        if (metadato == null || metadato.getIdAtributo() == null || metadato.getIdDocumento() == null || metadato.getValor() == null) {</span>
-            // Caso: Payload nulo o parámetros faltantes
-<span class="nc" id="L60">            return Response.status(RestResourceHeaderPattern.STATUS_PARAMETRO_EQUIVOCADO)</span>
-<span class="nc" id="L61">                    .header(RestResourceHeaderPattern.DETALLE_PARAMETRO_EQUIVOCADO, &quot;Parámetros incorrectos&quot;)</span>
-<span class="nc" id="L62">                    .build();</span>
+<span class="nc bnc" id="L63" title="All 8 branches missed.">        if (metadato == null || metadato.getIdAtributo() == null || metadato.getIdDocumento() == null || metadato.getValor() == null) {</span>
+<span class="nc" id="L64">            return Response.status(RestResourceHeaderPattern.STATUS_PARAMETRO_EQUIVOCADO)</span>
+<span class="nc" id="L65">                    .header(RestResourceHeaderPattern.DETALLE_PARAMETRO_EQUIVOCADO, &quot;Parámetros incorrectos&quot;)</span>
+<span class="nc" id="L66">                    .build();</span>
         }
 
         try {
-            // Asignar el ID del documento al metadato
-<span class="nc" id="L67">            metadato.setIdDocumento(new Documento(idDocumento));</span>
+            //metadato.setIdDocumento(new Documento(idDocumento));
 
-            // Validar que el atributo pertenezca a la taxonomía del documento
-            // Validar que el atributo pertenezca a la taxonomía del documento
-<span class="nc bnc" id="L71" title="All 2 branches missed.">            if (!validateAttributeBelongsToDocument(metadato.getIdAtributo(), idDocumento)) {</span>
-<span class="nc" id="L72">                return Response.status(Response.Status.BAD_REQUEST)</span>
-<span class="nc" id="L73">                        .header(RestResourceHeaderPattern.DETALLE_PARAMETRO_EQUIVOCADO, &quot;El atributo no pertenece a la taxonomía del documento&quot;)</span>
-<span class="nc" id="L74">                        .build();</span>
+<span class="nc bnc" id="L72" title="All 2 branches missed.">            if (!Objects.equals(tBean.findTipoDocumentoByDocumento(Long.valueOf(metadato.getIdDocumento().getIdDocumento().toString())), aBean.findTipoDocumentoById(Long.valueOf(metadato.getIdAtributo().getIdAtributo().toString())))) {</span>
+
+<span class="nc" id="L74">                return Response.status(405)</span>
+<span class="nc" id="L75">                        .header(&quot;METODO-NO-POSIBLE&quot;, metadato.toString())</span>
+<span class="nc" id="L76">                        .build();</span>
             }
 
-            // Lógica para crear el metadato en la base de datos
-<span class="nc" id="L78">            mBean.create(metadato);</span>
+<span class="nc" id="L79">            mBean.create(metadato);</span>
 
-            // Construir la URI del recurso creado
 <span class="nc" id="L81">            URI requestUri = uriInfo.getRequestUri();</span>
 <span class="nc" id="L82">            String location = requestUri.toString() + &quot;/&quot; + metadato.getIdMetadata();</span>
 
-            // Retornar una respuesta exitosa con el código 201 y la ubicación del recurso creado
-<span class="nc" id="L85">            return Response.status(Response.Status.CREATED)</span>
-<span class="nc" id="L86">                    .header(&quot;Location&quot;, location)</span>
-<span class="nc" id="L87">                    .build();</span>
-<span class="nc" id="L88">        } catch (Exception ex) {</span>
-            // En caso de que ocurra una excepción durante la creación del metadato
-<span class="nc" id="L90">            Logger.getLogger(getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);</span>
-<span class="nc" id="L91">            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)</span>
-<span class="nc" id="L92">                    .header(RestResourceHeaderPattern.DETALLE_PARAMETRO_EQUIVOCADO, &quot;Error interno del servidor&quot;)</span>
-<span class="nc" id="L93">                    .build();</span>
+<span class="nc" id="L84">            return Response.status(Response.Status.CREATED)</span>
+<span class="nc" id="L85">                    .header(&quot;Location&quot;, location)</span>
+<span class="nc" id="L86">                    .build();</span>
+<span class="nc" id="L87">        } catch (Exception ex) {</span>
+<span class="nc" id="L88">            Logger.getLogger(getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);</span>
+<span class="nc" id="L89">            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)</span>
+<span class="nc" id="L90">                    .header(RestResourceHeaderPattern.DETALLE_PARAMETRO_EQUIVOCADO, &quot;Error interno del servidor&quot;)</span>
+<span class="nc" id="L91">                    .build();</span>
         }
     }
-
-    private boolean validateAttributeBelongsToDocument(Atributo atributo, Long idDocumento) {
-        // Obtener el documento
-<span class="nc" id="L99">        Documento documento = dBean.findById(idDocumento);</span>
-
-        // Verificar si el documento tiene una taxonomía
-<span class="nc bnc" id="L102" title="All 4 branches missed.">        if (documento.getTaxonomiaList() == null || documento.getTaxonomiaList().isEmpty()) {</span>
-<span class="nc" id="L103">            return false;</span>
-        }
-
-        // Obtener el TipoDocumento del primer elemento de la lista de taxonomías
-<span class="nc" id="L107">        Taxonomia firstTaxonomia = documento.getTaxonomiaList().get(0);</span>
-<span class="nc" id="L108">        TipoDocumento tipoDocumento = firstTaxonomia.getIdTipoDocumento();</span>
-
-        // Verificar si el TipoDocumento tiene el atributo especificado
-<span class="nc" id="L111">        List&lt;Atributo&gt; atributosDelTipoDeDocumento = aBean.findByIdTipoDocumentoIdTipoDocumento(tipoDocumento.getIdTipoDocumento());</span>
-<span class="nc" id="L112">        return atributosDelTipoDeDocumento.stream()</span>
-<span class="nc" id="L113">                .map(Atributo::getIdAtributo)</span>
-<span class="nc" id="L114">                .anyMatch(id -&gt; id.equals(atributo.getIdAtributo()));</span>
-    }
-
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>
