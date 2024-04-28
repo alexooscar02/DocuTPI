@@ -31,7 +31,9 @@ import jakarta.persistence.TemporalType;
     @NamedQuery(name = "Taxonomia.findAll", query = "SELECT t FROM Taxonomia t"),
     @NamedQuery(name = "Taxonomia.findByIdTaxonomia", query = "SELECT t FROM Taxonomia t WHERE t.idTaxonomia = :idTaxonomia"),
     @NamedQuery(name = "Taxonomia.findByFechaCreacion", query = "SELECT t FROM Taxonomia t WHERE t.fechaCreacion = :fechaCreacion"),
-    @NamedQuery(name = "Taxonomia.findTipoDocumentoByDocumento", query = "SELECT t.idTipoDocumento.idTipoDocumento FROM Taxonomia t WHERE t.idDocumento = :idDocumento")})
+    @NamedQuery(name = "Taxonomia.findTipoDocumentoByDocumento", query = "SELECT t.idTipoDocumento.idTipoDocumento FROM Taxonomia t WHERE t.idDocumento = :idDocumento"),
+    @NamedQuery(name = "Taxonomia.findByDocumento", query = "SELECT t FROM Taxonomia t WHERE t.idDocumento.idDocumento = :idDocumento")
+})
 public class Taxonomia implements Serializable {
 
     private static final long serialVersionUID = 1L;

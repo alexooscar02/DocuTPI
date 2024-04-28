@@ -14,8 +14,9 @@ import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
 import java.io.Serializable;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import sv.edu.ues.occ.ingenieria.tpi135.documientos.entity.Atributo;
-import sv.edu.ues.occ.ingenieria.tpi135.documientos.entity.TipoDocumento;
 
 /**
  *
@@ -57,15 +58,17 @@ public class AtributoBean extends AbstractDataAccess<Atributo> implements Serial
 
     //aqui hay que hacer un metodo para que busque tipo documento by id
     public Long findTipoDocumentoById(Long idAtributo) {
-
         try {
             Query q = em.createNamedQuery("Atributo.findTipoDocumentobyId");
             q.setParameter("idAtributo", idAtributo);
-            List<Integer> results = q.getResultList();
-
-            return ((Long) Long.valueOf(results.get(0).toString()));
-
+            List<Long> results = q.getResultList();
+            if (!results.isEmpty()) {
+                return results.get(0);
+            } else {
+                return null; // O maneja adecuadamente el caso cuando no se encuentra ningún resultado
+            }
         } catch (Exception ex) {
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);
             return null;
         }
     }

@@ -136,6 +136,7 @@ public class Documento implements Serializable {
         this.comentarios = comentarios;
     }
 
+    @JsonbTransient
     public List<Metadato> getMetadatoList() {
         return metadatoList;
     }

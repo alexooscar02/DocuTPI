@@ -55,31 +55,31 @@ public class Metadato implements Serializable {
     @ManyToOne
     private Documento idDocumento;
 
-<span class="fc" id="L58">    public Metadato() {</span>
-<span class="fc" id="L59">    }</span>
+<span class="nc" id="L58">    public Metadato() {</span>
+<span class="nc" id="L59">    }</span>
 
 <span class="nc" id="L61">    public Metadato(Long idMetadata) {</span>
 <span class="nc" id="L62">        this.idMetadata = idMetadata;</span>
 <span class="nc" id="L63">    }</span>
 
     public Long getIdMetadata() {
-<span class="fc" id="L66">        return idMetadata;</span>
+<span class="nc" id="L66">        return idMetadata;</span>
     }
 
     public void setIdMetadata(Long idMetadata) {
-<span class="fc" id="L70">        this.idMetadata = idMetadata;</span>
-<span class="fc" id="L71">    }</span>
+<span class="nc" id="L70">        this.idMetadata = idMetadata;</span>
+<span class="nc" id="L71">    }</span>
 
     public String getValor() {
-<span class="fc" id="L74">        return valor;</span>
+<span class="nc" id="L74">        return valor;</span>
     }
 
     public void setValor(String valor) {
-<span class="fc" id="L78">        this.valor = valor;</span>
-<span class="fc" id="L79">    }</span>
+<span class="nc" id="L78">        this.valor = valor;</span>
+<span class="nc" id="L79">    }</span>
 
     public Date getFechaCreacion() {
-<span class="fc" id="L82">        return fechaCreacion;</span>
+<span class="nc" id="L82">        return fechaCreacion;</span>
     }
 
     public void setFechaCreacion(Date fechaCreacion) {
@@ -87,7 +87,7 @@ public class Metadato implements Serializable {
 <span class="nc" id="L87">    }</span>
 
     public String getComentarios() {
-<span class="fc" id="L90">        return comentarios;</span>
+<span class="nc" id="L90">        return comentarios;</span>
     }
 
     public void setComentarios(String comentarios) {
@@ -95,20 +95,20 @@ public class Metadato implements Serializable {
 <span class="nc" id="L95">    }</span>
 
     public Atributo getIdAtributo() {
-<span class="fc" id="L98">        return idAtributo;</span>
+<span class="nc" id="L98">        return idAtributo;</span>
     }
 
     public void setIdAtributo(Atributo idAtributo) {
-<span class="fc" id="L102">        this.idAtributo = idAtributo;</span>
-<span class="fc" id="L103">    }</span>
+<span class="nc" id="L102">        this.idAtributo = idAtributo;</span>
+<span class="nc" id="L103">    }</span>
 
     public Documento getIdDocumento() {
-<span class="fc" id="L106">        return idDocumento;</span>
+<span class="nc" id="L106">        return idDocumento;</span>
     }
 
     public void setIdDocumento(Documento idDocumento) {
-<span class="fc" id="L110">        this.idDocumento = idDocumento;</span>
-<span class="fc" id="L111">    }</span>
+<span class="nc" id="L110">        this.idDocumento = idDocumento;</span>
+<span class="nc" id="L111">    }</span>
 
     @Override
     public int hashCode() {

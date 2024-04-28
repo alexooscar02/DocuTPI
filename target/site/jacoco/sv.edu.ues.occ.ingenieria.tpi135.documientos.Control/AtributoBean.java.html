@@ -14,8 +14,9 @@ import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
 import java.io.Serializable;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import sv.edu.ues.occ.ingenieria.tpi135.documientos.entity.Atributo;
-import sv.edu.ues.occ.ingenieria.tpi135.documientos.entity.TipoDocumento;
 
 /**
  *
@@ -29,44 +30,46 @@ public class AtributoBean extends AbstractDataAccess&lt;Atributo&gt; implements 
     EntityManager em;
 
     public AtributoBean() {
-<span class="nc" id="L32">        super(Atributo.class);</span>
-<span class="nc" id="L33">    }</span>
+<span class="nc" id="L33">        super(Atributo.class);</span>
+<span class="nc" id="L34">    }</span>
 
     @Override
     public EntityManager getEntityManager() {
-<span class="nc" id="L37">        return em;</span>
+<span class="nc" id="L38">        return em;</span>
     }
 
     public Long obtenerNuevoId() {
-<span class="nc" id="L41">        Query query = em.createQuery(&quot;SELECT MAX(a.idAtributo) FROM Atributo a&quot;);</span>
-<span class="nc" id="L42">        Long ultimoId = (Long) query.getSingleResult();</span>
-<span class="nc bnc" id="L43" title="All 2 branches missed.">        if (ultimoId == null) {</span>
-<span class="nc" id="L44">            return 1L; // Si no hay ningún ID en la base de datos, empezamos desde 1</span>
+<span class="nc" id="L42">        Query query = em.createQuery(&quot;SELECT MAX(a.idAtributo) FROM Atributo a&quot;);</span>
+<span class="nc" id="L43">        Long ultimoId = (Long) query.getSingleResult();</span>
+<span class="nc bnc" id="L44" title="All 2 branches missed.">        if (ultimoId == null) {</span>
+<span class="nc" id="L45">            return 1L; // Si no hay ningún ID en la base de datos, empezamos desde 1</span>
         } else {
-<span class="nc" id="L46">            return ultimoId + 1; // Generamos un nuevo ID sumando 1 al último ID utilizado</span>
+<span class="nc" id="L47">            return ultimoId + 1; // Generamos un nuevo ID sumando 1 al último ID utilizado</span>
         }
     }
 
     public List&lt;Atributo&gt; findByIdTipoDocumentoIdTipoDocumento(Integer idTipoDocumento) {
-<span class="nc" id="L51">        CriteriaBuilder cb = em.getCriteriaBuilder();</span>
-<span class="nc" id="L52">        CriteriaQuery&lt;Atributo&gt; query = cb.createQuery(Atributo.class);</span>
-<span class="nc" id="L53">        Root&lt;Atributo&gt; root = query.from(Atributo.class);</span>
-<span class="nc" id="L54">        query.where(cb.equal(root.get(&quot;idTipoDocumento&quot;).get(&quot;idTipoDocumento&quot;), idTipoDocumento));</span>
-<span class="nc" id="L55">        return em.createQuery(query).getResultList();</span>
+<span class="nc" id="L52">        CriteriaBuilder cb = em.getCriteriaBuilder();</span>
+<span class="nc" id="L53">        CriteriaQuery&lt;Atributo&gt; query = cb.createQuery(Atributo.class);</span>
+<span class="nc" id="L54">        Root&lt;Atributo&gt; root = query.from(Atributo.class);</span>
+<span class="nc" id="L55">        query.where(cb.equal(root.get(&quot;idTipoDocumento&quot;).get(&quot;idTipoDocumento&quot;), idTipoDocumento));</span>
+<span class="nc" id="L56">        return em.createQuery(query).getResultList();</span>
     }
 
     //aqui hay que hacer un metodo para que busque tipo documento by id
     public Long findTipoDocumentoById(Long idAtributo) {
-
         try {
 <span class="nc" id="L62">            Query q = em.createNamedQuery(&quot;Atributo.findTipoDocumentobyId&quot;);</span>
 <span class="nc" id="L63">            q.setParameter(&quot;idAtributo&quot;, idAtributo);</span>
-<span class="nc" id="L64">            List&lt;Integer&gt; results = q.getResultList();</span>
-
-<span class="nc" id="L66">            return ((Long) Long.valueOf(results.get(0).toString()));</span>
-
-<span class="nc" id="L68">        } catch (Exception ex) {</span>
-<span class="nc" id="L69">            return null;</span>
+<span class="nc" id="L64">            List&lt;Long&gt; results = q.getResultList();</span>
+<span class="nc bnc" id="L65" title="All 2 branches missed.">            if (!results.isEmpty()) {</span>
+<span class="nc" id="L66">                return results.get(0);</span>
+            } else {
+<span class="nc" id="L68">                return null; // O maneja adecuadamente el caso cuando no se encuentra ningún resultado</span>
+            }
+<span class="nc" id="L70">        } catch (Exception ex) {</span>
+<span class="nc" id="L71">            Logger.getLogger(getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);</span>
+<span class="nc" id="L72">            return null;</span>
         }
     }
 }

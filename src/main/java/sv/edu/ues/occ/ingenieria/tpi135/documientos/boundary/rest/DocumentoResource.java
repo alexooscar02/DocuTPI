@@ -54,7 +54,7 @@ public class DocumentoResource implements Serializable {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path("/{id}")
-    public Response findById(@PathParam("id") final Integer idDocumento) {
+    public Response findById(@PathParam("id") final Long idDocumento) {
         if (idDocumento != null) {
             Documento found = dBean.findById(idDocumento);
             if (found != null) {
@@ -74,32 +74,39 @@ public class DocumentoResource implements Serializable {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response createDocumento(Documento documento, @Context UriInfo info) {
-        if (documento == null || documento.getNombre() == null || documento.getCreadoPor() == null || documento.getUbicacionFisica() == null) {
+    public Response createDocumento(Documento nuevoDocumento, @Context UriInfo uriInfo) {
+        if (nuevoDocumento == null) {
+            return Response.status(RestResourceHeaderPattern.STATUS_PARAMETRO_EQUIVOCADO)
+                    .header(RestResourceHeaderPattern.DETALLE_PARAMETRO_EQUIVOCADO, "Parámetros nulos")
+                    .build();
+        }
+        if (!isDocumentoValid(nuevoDocumento)) {
             return Response.status(RestResourceHeaderPattern.STATUS_PARAMETRO_EQUIVOCADO)
                     .header(RestResourceHeaderPattern.DETALLE_PARAMETRO_EQUIVOCADO, "Parámetros incorrectos")
                     .build();
         }
+
         try {
+            dBean.create(nuevoDocumento);
 
-//            if (documento.getIdDocumento()== null) {
-//                Long nuevoId = dBean.generarNuevoIdDocumento(); // Método que devuelve un nuevo id único
-//                documento.setIdDocumento(nuevoId);
-//            }
-            dBean.create(documento);
-
-            URI requestUri = info.getRequestUri();
-            String location = requestUri.toString() + "/" + documento.getIdDocumento();
+            URI requestUri = uriInfo.getRequestUri();
+            String location = requestUri.toString() + "/" + nuevoDocumento.getIdDocumento();
 
             return Response.status(Response.Status.CREATED)
                     .header("Location", location)
                     .build();
+
         } catch (Exception ex) {
             Logger.getLogger(getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .entity("Error interno al procesar la solicitud")
+                    .header(RestResourceHeaderPattern.DETALLE_PARAMETRO_EQUIVOCADO, "Error interno del servidor")
                     .build();
         }
     }
 
+    private boolean isDocumentoValid(Documento documento) {
+        return documento.getCreadoPor() != null
+                && documento.getNombre() != null
+                && documento.getUbicacionFisica() != null;
+    }
 }

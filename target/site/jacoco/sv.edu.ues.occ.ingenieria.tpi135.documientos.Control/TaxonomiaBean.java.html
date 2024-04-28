@@ -6,19 +6,19 @@ package sv.edu.ues.occ.ingenieria.tpi135.documientos.Control;
 
 import jakarta.ejb.LocalBean;
 import jakarta.ejb.Stateless;
-import jakarta.ejb.TransactionAttribute;
-import jakarta.ejb.TransactionAttributeType;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Root;
 import java.io.Serializable;
-import java.util.Date;
+import java.util.Collections;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import sv.edu.ues.occ.ingenieria.tpi135.documientos.entity.Taxonomia;
-import sv.edu.ues.occ.ingenieria.tpi135.documientos.entity.TipoDocumento;
 
 /**
  *
@@ -56,17 +56,46 @@ public class TaxonomiaBean extends AbstractDataAccess&lt;Taxonomia&gt; implement
 //    }
     //aqui hace falta un metodo que busque tipoDocumento por documento
     public Long findTipoDocumentoByDocumento(Long idDocumento) {
-
         try {
-<span class="nc" id="L61">            Query query = em.createNamedQuery(&quot;Taxonomia.findTipoDocumentoByDocumento&quot;);</span>
-<span class="nc" id="L62">            query.setParameter(&quot;idDocumento&quot;, idDocumento);</span>
-<span class="nc" id="L63">            List&lt;Integer&gt; results = query.getResultList();</span>
-
-<span class="nc" id="L65">            return ((Long) Long.valueOf(results.get(0).toString()));</span>
-
-<span class="nc" id="L67">        } catch (Exception ex) {</span>
-<span class="nc" id="L68">            return null;</span>
+<span class="nc" id="L60">            Query query = em.createNamedQuery(&quot;Taxonomia.findTipoDocumentoByDocumento&quot;);</span>
+<span class="nc" id="L61">            query.setParameter(&quot;idDocumento&quot;, idDocumento);</span>
+<span class="nc" id="L62">            List&lt;Long&gt; results = query.getResultList();</span>
+<span class="nc bnc" id="L63" title="All 2 branches missed.">            if (!results.isEmpty()) {</span>
+<span class="nc" id="L64">                return results.get(0);</span>
+            } else {
+<span class="nc" id="L66">                return null; // O maneja adecuadamente el caso cuando no se encuentra ningún resultado</span>
+            }
+<span class="nc" id="L68">        } catch (Exception ex) {</span>
+<span class="nc" id="L69">            Logger.getLogger(getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);</span>
+<span class="nc" id="L70">            return null;</span>
         }
     }
+
+    public List&lt;Taxonomia&gt; findByDocumento(Long idDocumento) {
+        try {
+<span class="nc" id="L76">            CriteriaBuilder cb = em.getCriteriaBuilder();</span>
+<span class="nc" id="L77">            CriteriaQuery&lt;Taxonomia&gt; cq = cb.createQuery(Taxonomia.class);</span>
+<span class="nc" id="L78">            Root&lt;Taxonomia&gt; root = cq.from(Taxonomia.class);</span>
+
+<span class="nc" id="L80">            cq.select(root).where(cb.equal(root.get(&quot;idDocumento&quot;), idDocumento));</span>
+
+<span class="nc" id="L82">            return em.createQuery(cq).getResultList();</span>
+<span class="nc" id="L83">        } catch (Exception ex) {</span>
+            // Manejo de excepciones
+<span class="nc" id="L85">            return Collections.emptyList(); // O devuelve null, dependiendo de tu caso de uso</span>
+        }
+    }
+
+    public Taxonomia findByDocumentoAndAtributo(Long idDocumento, Long idAtributo) {
+        try {
+<span class="nc" id="L91">            return em.createNamedQuery(&quot;Taxonomia.findByDocumentoAndAtributo&quot;, Taxonomia.class)</span>
+<span class="nc" id="L92">                    .setParameter(&quot;idDocumento&quot;, idDocumento)</span>
+<span class="nc" id="L93">                    .setParameter(&quot;idAtributo&quot;, idAtributo)</span>
+<span class="nc" id="L94">                    .getSingleResult();</span>
+<span class="nc" id="L95">        } catch (NoResultException e) {</span>
+<span class="nc" id="L96">            return null;</span>
+        }
+    }
+
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

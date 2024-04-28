@@ -113,7 +113,6 @@ public class PrimerParcialIT {
         Assertions.assertTrue(respuesta.getHeaders().containsKey("Location"));
         String[] lex = respuesta.getHeaderString("Location").split("/");
         ID_TIPO_ATRIBUTO_CREADO = Integer.valueOf(lex[lex.length - 1]);
-        System.out.println(ID_TIPO_ATRIBUTO_CREADO);
     }
 
     @Test
@@ -140,8 +139,8 @@ public class PrimerParcialIT {
         Assertions.assertTrue(respuesta.getHeaders().containsKey("Location"));
         String[] lex = respuesta.getHeaderString("Location").split("/");
         ID_TIPO_DOCUMENTO_CREADO = Integer.valueOf(lex[lex.length - 1]);
-        System.out.println(ID_TIPO_DOCUMENTO_CREADO);
     }
+//
 
     @Test
     @Order(3)
@@ -171,8 +170,8 @@ public class PrimerParcialIT {
         Assertions.assertTrue(respuesta.getHeaders().containsKey("Location"));
         String[] lex = respuesta.getHeaderString("Location").split("/");
         ID_ATRIBUTO_CREADO = Long.valueOf(lex[lex.length - 1]);
-        System.out.println(ID_ATRIBUTO_CREADO);
     }
+//
 
     @Test
     @Order(4)
@@ -201,8 +200,8 @@ public class PrimerParcialIT {
         Assertions.assertTrue(respuesta.getHeaders().containsKey("Location"));
         String[] lex = respuesta.getHeaderString("Location").split("/");
         ID_DOCUMENTO_CREADO = Long.valueOf(lex[lex.length - 1]);
-        System.out.println(ID_DOCUMENTO_CREADO);
     }
+//
 
     @Test
     @Order(5)
@@ -233,8 +232,8 @@ public class PrimerParcialIT {
         //System.out.println(payara1.getLogs());
         String[] lex = respuesta.getHeaderString("Location").split("/");
         ID_TAXONOMIA_CREADO = Long.valueOf(lex[lex.length - 1]);
-        System.out.println(ID_TAXONOMIA_CREADO);
     }
+//
 
     @Test
     @Order(6)
@@ -284,7 +283,6 @@ public class PrimerParcialIT {
         nuevoA.setNombrePantalla("algun nombre para atributo equivocado");
         nuevoA.setObligatorio(Boolean.TRUE);
         respuesta = builderA.post(Entity.entity(nuevoA, MediaType.APPLICATION_JSON));
-        System.out.println(payara1.getLogs());
 
         Assertions.assertEquals(201, respuesta.getStatus());
         Assertions.assertTrue(respuesta.getHeaders().containsKey("Location"));
@@ -299,6 +297,7 @@ public class PrimerParcialIT {
         nuevo.setValor("algun valor");
 
         respuesta = builder.post(Entity.entity(nuevo, MediaType.APPLICATION_JSON));
+
         Assertions.assertEquals(405, respuesta.getStatus());
 
         // crear atributo valido
@@ -306,16 +305,15 @@ public class PrimerParcialIT {
         nuevo.setIdAtributo(new Atributo(ID_ATRIBUTO_CREADO));
         nuevo.setIdDocumento(new Documento(ID_DOCUMENTO_CREADO));
         nuevo.setValor("valor valido");
-        System.out.println(ID_ATRIBUTO_CREADO + ID_DOCUMENTO_CREADO);
+        System.out.println(ID_ATRIBUTO_CREADO);
+        System.out.println(ID_DOCUMENTO_CREADO);
         respuesta = builder.post(Entity.entity(nuevo, MediaType.APPLICATION_JSON));
         Assertions.assertEquals(201, respuesta.getStatus());
-
         Assertions.assertTrue(respuesta.getHeaders().containsKey("Location"));
         lex = respuesta.getHeaderString("Location").split("/");
         ID_METADATO_CREADO = Long.valueOf(lex[lex.length - 1]);
         System.out.println(ID_METADATO_CREADO);
     }
-
 //
 //    @Test
 //    @Order(7)

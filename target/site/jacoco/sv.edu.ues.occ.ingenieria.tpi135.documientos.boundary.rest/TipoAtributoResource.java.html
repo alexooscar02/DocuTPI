@@ -36,10 +36,7 @@ import sv.edu.ues.occ.ingenieria.tpi135.documientos.entity.TipoAtributo;
  * @author home
  */
 @Path(&quot;tipoatributo&quot;)
-@Produces(MediaType.APPLICATION_JSON)
-@Consumes(MediaType.APPLICATION_JSON)
-@Stateless
-<span class="nc" id="L42">public class TipoAtributoResource implements Serializable {</span>
+<span class="nc" id="L39">public class TipoAtributoResource implements Serializable {</span>
 
     @Inject
     TipoAtributoBean taBean;
@@ -52,143 +49,74 @@ import sv.edu.ues.occ.ingenieria.tpi135.documientos.entity.TipoAtributo;
             @QueryParam(value = &quot;pagesize&quot;)
             @DefaultValue(value = &quot;50&quot;) int pageSize
     ) {
-<span class="nc bnc" id="L55" title="All 4 branches missed.">        if (first &gt;= 0 &amp;&amp; pageSize &gt; 0) {</span>
-<span class="nc" id="L56">            return taBean.findRange(first, pageSize);</span>
+<span class="nc bnc" id="L52" title="All 4 branches missed.">        if (first &gt;= 0 &amp;&amp; pageSize &gt; 0) {</span>
+<span class="nc" id="L53">            return taBean.findRange(first, pageSize);</span>
         }
-<span class="nc" id="L58">        return Collections.EMPTY_LIST;</span>
+<span class="nc" id="L55">        return Collections.EMPTY_LIST;</span>
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Path(&quot;/{id}&quot;)
     public Response findById(@PathParam(&quot;id&quot;) final Integer idTipoAtributo) {
-<span class="nc bnc" id="L65" title="All 2 branches missed.">        if (idTipoAtributo != null) {</span>
-<span class="nc" id="L66">            TipoAtributo found = taBean.findById(idTipoAtributo);</span>
-<span class="nc bnc" id="L67" title="All 2 branches missed.">            if (found != null) {</span>
-<span class="nc" id="L68">                return Response.status(Response.Status.OK)</span>
-<span class="nc" id="L69">                        .entity(found)</span>
-<span class="nc" id="L70">                        .build();</span>
+<span class="nc bnc" id="L62" title="All 2 branches missed.">        if (idTipoAtributo != null) {</span>
+<span class="nc" id="L63">            TipoAtributo found = taBean.findById(idTipoAtributo);</span>
+<span class="nc bnc" id="L64" title="All 2 branches missed.">            if (found != null) {</span>
+<span class="nc" id="L65">                return Response.status(Response.Status.OK)</span>
+<span class="nc" id="L66">                        .entity(found)</span>
+<span class="nc" id="L67">                        .build();</span>
             }
-<span class="nc" id="L72">            return Response.status(Response.Status.NOT_FOUND)</span>
-<span class="nc" id="L73">                    .header(&quot;not-found&quot;, &quot;id&quot;)</span>
-<span class="nc" id="L74">                    .build();</span>
+<span class="nc" id="L69">            return Response.status(Response.Status.NOT_FOUND)</span>
+<span class="nc" id="L70">                    .header(&quot;not-found&quot;, &quot;id&quot;)</span>
+<span class="nc" id="L71">                    .build();</span>
         }
-<span class="nc" id="L76">        return Response.status(422)</span>
-<span class="nc" id="L77">                .header(&quot;missing-parameter&quot;, &quot;id&quot;)</span>
-<span class="nc" id="L78">                .build();</span>
+<span class="nc" id="L73">        return Response.status(422)</span>
+<span class="nc" id="L74">                .header(&quot;missing-parameter&quot;, &quot;id&quot;)</span>
+<span class="nc" id="L75">                .build();</span>
     }
 
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response createTipoAtributo(TipoAtributo tipoAtributo, @Context UriInfo info) {
-<span class="nc bnc" id="L85" title="All 6 branches missed.">        if (tipoAtributo == null || tipoAtributo.getExpresionRegular() == null || tipoAtributo.getIndicacionesScreen() == null</span>
-<span class="nc bnc" id="L86" title="All 6 branches missed.">                || tipoAtributo.getNombre() == null || tipoAtributo.getNombreScreen() == null || tipoAtributo.getObservaciones() == null) {</span>
-<span class="nc" id="L87">            return Response.status(RestResourceHeaderPattern.STATUS_PARAMETRO_EQUIVOCADO)</span>
-<span class="nc" id="L88">                    .header(RestResourceHeaderPattern.DETALLE_PARAMETRO_EQUIVOCADO, &quot;Parámetros incorrectos&quot;)</span>
-<span class="nc" id="L89">                    .build();</span>
+    public Response createTipoAtributo(TipoAtributo nuevoTipoAtributo, @Context UriInfo uriInfo) {
+<span class="nc bnc" id="L82" title="All 2 branches missed.">        if (nuevoTipoAtributo == null) {</span>
+<span class="nc" id="L83">            return Response.status(RestResourceHeaderPattern.STATUS_PARAMETRO_EQUIVOCADO)</span>
+<span class="nc" id="L84">                    .header(RestResourceHeaderPattern.DETALLE_PARAMETRO_EQUIVOCADO, &quot;Parámetros nulos&quot;)</span>
+<span class="nc" id="L85">                    .build();</span>
         }
+<span class="nc bnc" id="L87" title="All 2 branches missed.">        if (!isTipoAtributoValid(nuevoTipoAtributo)) {</span>
+<span class="nc" id="L88">            return Response.status(RestResourceHeaderPattern.STATUS_PARAMETRO_EQUIVOCADO)</span>
+<span class="nc" id="L89">                    .header(RestResourceHeaderPattern.DETALLE_PARAMETRO_EQUIVOCADO, &quot;Parámetros incorrectos&quot;)</span>
+<span class="nc" id="L90">                    .build();</span>
+        }
+
         try {
-<span class="nc bnc" id="L92" title="All 2 branches missed.">            if (tipoAtributo.getIdTipoAtributo() == null) {</span>
-<span class="nc" id="L93">                Integer nuevoId = taBean.obtenerNuevoId(); // Método que devuelve un nuevo id único</span>
-<span class="nc" id="L94">                tipoAtributo.setIdTipoAtributo(nuevoId);</span>
-            }
+<span class="nc" id="L94">            taBean.create(nuevoTipoAtributo);</span>
 
-<span class="nc" id="L97">            taBean.create(tipoAtributo);</span>
+<span class="nc" id="L96">            URI requestUri = uriInfo.getRequestUri();</span>
+<span class="nc" id="L97">            String location = requestUri.toString() + &quot;/&quot; + nuevoTipoAtributo.getIdTipoAtributo();</span>
 
-<span class="nc" id="L99">            URI requestUri = info.getRequestUri();</span>
-<span class="nc" id="L100">            String location = requestUri.toString() + &quot;/&quot; + tipoAtributo.getIdTipoAtributo();</span>
+<span class="nc" id="L99">            return Response.status(Response.Status.CREATED)</span>
+<span class="nc" id="L100">                    .header(&quot;Location&quot;, location)</span>
+<span class="nc" id="L101">                    .build();</span>
 
-<span class="nc" id="L102">            return Response.status(Response.Status.CREATED)</span>
-<span class="nc" id="L103">                    .header(&quot;Location&quot;, location)</span>
-<span class="nc" id="L104">                    .build();</span>
-<span class="nc" id="L105">        } catch (Exception ex) {</span>
-<span class="nc" id="L106">            Logger.getLogger(getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);</span>
-<span class="nc" id="L107">            return Response.serverError().build();</span>
+<span class="nc" id="L103">        } catch (Exception ex) {</span>
+<span class="nc" id="L104">            Logger.getLogger(getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);</span>
+<span class="nc" id="L105">            URI location = URI.create(&quot;/tipoatributo/&quot; + nuevoTipoAtributo.getIdTipoAtributo());</span>
+<span class="nc" id="L106">            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)</span>
+<span class="nc" id="L107">                    .header(RestResourceHeaderPattern.DETALLE_PARAMETRO_EQUIVOCADO, &quot;Error interno del servidor&quot;)</span>
+<span class="nc" id="L108">                    .build();</span>
         }
+
     }
 
-//    public Integer obtenerNuevoId() {
-//       Integer random= new Random().nextInt(9999);
-//        // Generar un entero aleatorio en el rango de Integer.MIN_VALUE a Integer.MAX_VALUE
-//        return random;
-//    }
+    private boolean isTipoAtributoValid(TipoAtributo tipoAtributo) {
+<span class="nc bnc" id="L114" title="All 2 branches missed.">        return tipoAtributo.getNombre() != null</span>
+<span class="nc bnc" id="L115" title="All 2 branches missed.">                &amp;&amp; tipoAtributo.getExpresionRegular() != null</span>
+<span class="nc bnc" id="L116" title="All 2 branches missed.">                &amp;&amp; tipoAtributo.getIndicacionesScreen() != null</span>
+<span class="nc bnc" id="L117" title="All 2 branches missed.">                &amp;&amp; tipoAtributo.getNombreScreen() != null</span>
+<span class="nc bnc" id="L118" title="All 2 branches missed.">                &amp;&amp; tipoAtributo.getObservaciones() != null;</span>
+    }
+
 }
-
-//    @PUT
-//    @Produces(MediaType.APPLICATION_JSON)
-//    @Consumes(MediaType.APPLICATION_JSON)
-//    @Path(&quot;/{id}&quot;)
-//    public Response update(@PathParam(&quot;id&quot;) Integer idTipoAtributo, TipoAtributo updatedTipoAtributo) {
-//        if (idTipoAtributo != null &amp;&amp; updatedTipoAtributo != null) {
-//            TipoAtributo existingTipoAtributo = taBean.findById(idTipoAtributo);
-//            if (existingTipoAtributo != null) {
-//                try {
-//                    existingTipoAtributo.setNombre(updatedTipoAtributo.getNombre());
-//                    // Actualizar otros campos si es necesario
-//                    TipoAtributo modifiedTipoAtributo = taBean.modify(existingTipoAtributo);
-//                    return Response.status(Response.Status.OK)
-//                            .entity(modifiedTipoAtributo)
-//                            .build();
-//                } catch (Exception ex) {
-//                    Logger.getLogger(getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);
-//                    return Response.status(500)
-//                            .header(&quot;update-exception&quot;, updatedTipoAtributo.toString())
-//                            .build();
-//                }
-//            } else {
-//                return Response.status(Response.Status.NOT_FOUND)
-//                        .header(&quot;not-found&quot;, &quot;id&quot;)
-//                        .build();
-//            }
-//        }
-//        return Response.status(422)
-//                .header(&quot;missing-parameter&quot;, &quot;id or updated data&quot;)
-//                .build();
-//    }
-//
-//    @DELETE
-//    @Path(&quot;/{id}&quot;)
-//    @Produces(MediaType.APPLICATION_JSON)
-//    public Response delete(@PathParam(&quot;id&quot;) Integer idTipoAtributo) {
-//        if (idTipoAtributo != null) {
-//            TipoAtributo tipoAtributoToDelete = taBean.findById(idTipoAtributo);
-//            if (tipoAtributoToDelete != null) {
-//                try {
-//                    taBean.delete(tipoAtributoToDelete);
-//                    return Response.status(Response.Status.NO_CONTENT).build();
-//                } catch (Exception ex) {
-//                    Logger.getLogger(getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);
-//                    return Response.status(500)
-//                            .header(&quot;delete-exception&quot;, tipoAtributoToDelete.toString())
-//                            .build();
-//                }
-//            } else {
-//                return Response.status(Response.Status.NOT_FOUND)
-//                        .header(&quot;not-found&quot;, &quot;id&quot;)
-//                        .build();
-//            }
-//        }
-//        return Response.status(422)
-//                .header(&quot;missing-parameter&quot;, &quot;id&quot;)
-//                .build();
-//    }
-//
-//    @GET
-//    @Path(&quot;/count&quot;)
-//    @Produces(MediaType.APPLICATION_JSON)
-//    public Response count() {
-//        try {
-//            Long total = taBean.count();
-//            return Response.status(Response.Status.OK)
-//                    .entity(total)
-//                    .build();
-//        } catch (Exception ex) {
-//            Logger.getLogger(getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);
-//            return Response.status(500)
-//                    .header(&quot;count-exception&quot;, ex.getMessage())
-//                    .build();
-//        }
-//    }
-
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

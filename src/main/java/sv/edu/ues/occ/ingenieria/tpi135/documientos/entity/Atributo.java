@@ -121,6 +121,7 @@ public class Atributo implements Serializable {
         this.metadatoList = metadatoList;
     }
 
+   
     public TipoAtributo getIdTipoAtributo() {
         return idTipoAtributo;
     }

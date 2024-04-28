@@ -31,7 +31,9 @@ import jakarta.persistence.TemporalType;
     @NamedQuery(name = &quot;Taxonomia.findAll&quot;, query = &quot;SELECT t FROM Taxonomia t&quot;),
     @NamedQuery(name = &quot;Taxonomia.findByIdTaxonomia&quot;, query = &quot;SELECT t FROM Taxonomia t WHERE t.idTaxonomia = :idTaxonomia&quot;),
     @NamedQuery(name = &quot;Taxonomia.findByFechaCreacion&quot;, query = &quot;SELECT t FROM Taxonomia t WHERE t.fechaCreacion = :fechaCreacion&quot;),
-    @NamedQuery(name = &quot;Taxonomia.findTipoDocumentoByDocumento&quot;, query = &quot;SELECT t.idTipoDocumento.idTipoDocumento FROM Taxonomia t WHERE t.idDocumento = :idDocumento&quot;)})
+    @NamedQuery(name = &quot;Taxonomia.findTipoDocumentoByDocumento&quot;, query = &quot;SELECT t.idTipoDocumento.idTipoDocumento FROM Taxonomia t WHERE t.idDocumento = :idDocumento&quot;),
+    @NamedQuery(name = &quot;Taxonomia.findByDocumento&quot;, query = &quot;SELECT t FROM Taxonomia t WHERE t.idDocumento.idDocumento = :idDocumento&quot;)
+})
 public class Taxonomia implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -50,70 +52,70 @@ public class Taxonomia implements Serializable {
     @ManyToOne
     private TipoDocumento idTipoDocumento;
 
-<span class="fc" id="L53">    public Taxonomia() {</span>
-<span class="fc" id="L54">    }</span>
+<span class="nc" id="L55">    public Taxonomia() {</span>
+<span class="nc" id="L56">    }</span>
 
-<span class="nc" id="L56">    public Taxonomia(Long idTaxonomia) {</span>
-<span class="nc" id="L57">        this.idTaxonomia = idTaxonomia;</span>
-<span class="nc" id="L58">    }</span>
+<span class="nc" id="L58">    public Taxonomia(Long idTaxonomia) {</span>
+<span class="nc" id="L59">        this.idTaxonomia = idTaxonomia;</span>
+<span class="nc" id="L60">    }</span>
 
     public Long getIdTaxonomia() {
-<span class="fc" id="L61">        return idTaxonomia;</span>
+<span class="nc" id="L63">        return idTaxonomia;</span>
     }
 
     public void setIdTaxonomia(Long idTaxonomia) {
-<span class="fc" id="L65">        this.idTaxonomia = idTaxonomia;</span>
-<span class="fc" id="L66">    }</span>
+<span class="nc" id="L67">        this.idTaxonomia = idTaxonomia;</span>
+<span class="nc" id="L68">    }</span>
 
     public Date getFechaCreacion() {
-<span class="fc" id="L69">        return fechaCreacion;</span>
+<span class="nc" id="L71">        return fechaCreacion;</span>
     }
 
     public void setFechaCreacion(Date fechaCreacion) {
-<span class="nc" id="L73">        this.fechaCreacion = fechaCreacion;</span>
-<span class="nc" id="L74">    }</span>
+<span class="nc" id="L75">        this.fechaCreacion = fechaCreacion;</span>
+<span class="nc" id="L76">    }</span>
 
     @JsonbTransient
     public Documento getIdDocumento() {
-<span class="fc" id="L78">        return idDocumento;</span>
+<span class="nc" id="L80">        return idDocumento;</span>
     }
 
     public void setIdDocumento(Documento idDocumento) {
-<span class="fc" id="L82">        this.idDocumento = idDocumento;</span>
-<span class="fc" id="L83">    }</span>
+<span class="nc" id="L84">        this.idDocumento = idDocumento;</span>
+<span class="nc" id="L85">    }</span>
 
     @JsonbTransient
     public TipoDocumento getIdTipoDocumento() {
-<span class="fc" id="L87">        return idTipoDocumento;</span>
+<span class="nc" id="L89">        return idTipoDocumento;</span>
     }
 
     public void setIdTipoDocumento(TipoDocumento idTipoDocumento) {
-<span class="fc" id="L91">        this.idTipoDocumento = idTipoDocumento;</span>
-<span class="fc" id="L92">    }</span>
+<span class="nc" id="L93">        this.idTipoDocumento = idTipoDocumento;</span>
+<span class="nc" id="L94">    }</span>
 
     @Override
     public int hashCode() {
-<span class="nc" id="L96">        int hash = 0;</span>
-<span class="nc bnc" id="L97" title="All 2 branches missed.">        hash += (idTaxonomia != null ? idTaxonomia.hashCode() : 0);</span>
-<span class="nc" id="L98">        return hash;</span>
+<span class="nc" id="L98">        int hash = 0;</span>
+<span class="nc bnc" id="L99" title="All 2 branches missed.">        hash += (idTaxonomia != null ? idTaxonomia.hashCode() : 0);</span>
+<span class="nc" id="L100">        return hash;</span>
     }
 
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-<span class="nc bnc" id="L104" title="All 2 branches missed.">        if (!(object instanceof Taxonomia)) {</span>
-<span class="nc" id="L105">            return false;</span>
+<span class="nc bnc" id="L106" title="All 2 branches missed.">        if (!(object instanceof Taxonomia)) {</span>
+<span class="nc" id="L107">            return false;</span>
         }
-<span class="nc" id="L107">        Taxonomia other = (Taxonomia) object;</span>
-<span class="nc bnc" id="L108" title="All 8 branches missed.">        if ((this.idTaxonomia == null &amp;&amp; other.idTaxonomia != null) || (this.idTaxonomia != null &amp;&amp; !this.idTaxonomia.equals(other.idTaxonomia))) {</span>
-<span class="nc" id="L109">            return false;</span>
+<span class="nc" id="L109">        Taxonomia other = (Taxonomia) object;</span>
+<span class="nc bnc" id="L110" title="All 8 branches missed.">        if ((this.idTaxonomia == null &amp;&amp; other.idTaxonomia != null) || (this.idTaxonomia != null &amp;&amp; !this.idTaxonomia.equals(other.idTaxonomia))) {</span>
+<span class="nc" id="L111">            return false;</span>
         }
-<span class="nc" id="L111">        return true;</span>
+<span class="nc" id="L113">        return true;</span>
     }
 
     @Override
     public String toString() {
-<span class="nc" id="L116">        return &quot;entity.Taxonomia[ idTaxonomia=&quot; + idTaxonomia + &quot; ]&quot;;</span>
+<span class="nc" id="L118">        return &quot;entity.Taxonomia[ idTaxonomia=&quot; + idTaxonomia + &quot; ]&quot;;</span>
     }
 
 }

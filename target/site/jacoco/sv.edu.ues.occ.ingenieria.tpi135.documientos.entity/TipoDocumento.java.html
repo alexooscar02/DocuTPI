@@ -49,48 +49,48 @@ public class TipoDocumento implements Serializable {
     @OneToMany(mappedBy = &quot;idTipoDocumento&quot;)
     private List&lt;Taxonomia&gt; taxonomiaList;
 
-<span class="fc" id="L52">    public TipoDocumento() {</span>
-<span class="fc" id="L53">    }</span>
+<span class="nc" id="L52">    public TipoDocumento() {</span>
+<span class="nc" id="L53">    }</span>
 
-<span class="fc" id="L55">    public TipoDocumento(Integer idTipoDocumento) {</span>
-<span class="fc" id="L56">        this.idTipoDocumento = idTipoDocumento;</span>
-<span class="fc" id="L57">    }</span>
+<span class="nc" id="L55">    public TipoDocumento(Integer idTipoDocumento) {</span>
+<span class="nc" id="L56">        this.idTipoDocumento = idTipoDocumento;</span>
+<span class="nc" id="L57">    }</span>
 
     public Integer getIdTipoDocumento() {
-<span class="fc" id="L60">        return idTipoDocumento;</span>
+<span class="nc" id="L60">        return idTipoDocumento;</span>
     }
 
     public void setIdTipoDocumento(Integer idTipoDocumento) {
-<span class="fc" id="L64">        this.idTipoDocumento = idTipoDocumento;</span>
-<span class="fc" id="L65">    }</span>
+<span class="nc" id="L64">        this.idTipoDocumento = idTipoDocumento;</span>
+<span class="nc" id="L65">    }</span>
 
     public String getNombre() {
-<span class="fc" id="L68">        return nombre;</span>
+<span class="nc" id="L68">        return nombre;</span>
     }
 
     public void setNombre(String nombre) {
-<span class="fc" id="L72">        this.nombre = nombre;</span>
-<span class="fc" id="L73">    }</span>
+<span class="nc" id="L72">        this.nombre = nombre;</span>
+<span class="nc" id="L73">    }</span>
 
     public Boolean getActivo() {
-<span class="fc" id="L76">        return activo;</span>
+<span class="nc" id="L76">        return activo;</span>
     }
 
     public void setActivo(Boolean activo) {
-<span class="fc" id="L80">        this.activo = activo;</span>
-<span class="fc" id="L81">    }</span>
+<span class="nc" id="L80">        this.activo = activo;</span>
+<span class="nc" id="L81">    }</span>
 
     public String getObservaciones() {
-<span class="fc" id="L84">        return observaciones;</span>
+<span class="nc" id="L84">        return observaciones;</span>
     }
 
     public void setObservaciones(String observaciones) {
-<span class="fc" id="L88">        this.observaciones = observaciones;</span>
-<span class="fc" id="L89">    }</span>
+<span class="nc" id="L88">        this.observaciones = observaciones;</span>
+<span class="nc" id="L89">    }</span>
 
     @JsonbTransient
     public List&lt;Atributo&gt; getAtributoList() {
-<span class="fc" id="L93">        return atributoList;</span>
+<span class="nc" id="L93">        return atributoList;</span>
     }
 
     public void setAtributoList(List&lt;Atributo&gt; atributoList) {
@@ -99,7 +99,7 @@ public class TipoDocumento implements Serializable {
 
     @JsonbTransient
     public List&lt;Taxonomia&gt; getTaxonomiaList() {
-<span class="fc" id="L102">        return taxonomiaList;</span>
+<span class="nc" id="L102">        return taxonomiaList;</span>
     }
 
     public void setTaxonomiaList(List&lt;Taxonomia&gt; taxonomiaList) {
