@@ -75,7 +75,6 @@ public class Taxonomia implements Serializable {
         this.fechaCreacion = fechaCreacion;
     }
 
-    @JsonbTransient
     public Documento getIdDocumento() {
         return idDocumento;
     }
@@ -84,7 +83,6 @@ public class Taxonomia implements Serializable {
         this.idDocumento = idDocumento;
     }
 
-    @JsonbTransient
     public TipoDocumento getIdTipoDocumento() {
         return idTipoDocumento;
     }
