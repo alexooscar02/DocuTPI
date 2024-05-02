@@ -25,6 +25,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import sv.edu.ues.occ.ingenieria.tpi135.documientos.Control.AtributoBean;
 import sv.edu.ues.occ.ingenieria.tpi135.documientos.entity.Atributo;
+import sv.edu.ues.occ.ingenieria.tpi135.documientos.entity.TipoAtributo;
 import sv.edu.ues.occ.ingenieria.tpi135.documientos.entity.TipoDocumento;
 
 /**
@@ -74,7 +75,7 @@ public class AtributoResource implements Serializable {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response createAtributo(@PathParam("idTipoDocumento") int idTipoDocumento, Atributo nuevoAtributo, @Context UriInfo uriInfo) {
+    public Response createAtributo(@PathParam("idTipoDocumento") Integer idTipoDocumento, Atributo nuevoAtributo, @Context UriInfo uriInfo) {
         if (nuevoAtributo == null) {
             return Response.status(RestResourceHeaderPattern.STATUS_PARAMETRO_EQUIVOCADO)
                     .header(RestResourceHeaderPattern.DETALLE_PARAMETRO_EQUIVOCADO, "Parámetros nulos")
@@ -87,6 +88,7 @@ public class AtributoResource implements Serializable {
         }
 
         try {
+
             nuevoAtributo.setIdTipoDocumento(new TipoDocumento(idTipoDocumento));
             aBean.create(nuevoAtributo);
 
