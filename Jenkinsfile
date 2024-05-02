@@ -1,19 +1,19 @@
-pipeline{
+pipeline {
     agent any
-    stages{
-        stage('Build'){
-            step{
-                echo "Etapa no disponible"
+    stages {
+        stage('Build') {
+            steps {
+                echo "Etapa de construcción"
             }
         }
-        stage('Tests'){
-            step{
-                echo "Etapa de TESTS"
+        stage('Tests') {
+            steps {
+                echo "Etapa de pruebas"
             }
         }
-        stage('Deploy'){
-            step{
-                echo "Etapa de Despliegue"
+        stage('Deploy') {
+            steps {
+                echo "Etapa de despliegue"
             }
         }
     }
