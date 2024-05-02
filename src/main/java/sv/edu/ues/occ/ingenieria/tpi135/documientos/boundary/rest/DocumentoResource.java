@@ -85,17 +85,14 @@ public class DocumentoResource implements Serializable {
                     .header(RestResourceHeaderPattern.DETALLE_PARAMETRO_EQUIVOCADO, "Parámetros incorrectos")
                     .build();
         }
-
         try {
             dBean.create(nuevoDocumento);
-
             URI requestUri = uriInfo.getRequestUri();
             String location = requestUri.toString() + "/" + nuevoDocumento.getIdDocumento();
 
             return Response.status(Response.Status.CREATED)
                     .header("Location", location)
                     .build();
-
         } catch (Exception ex) {
             Logger.getLogger(getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
