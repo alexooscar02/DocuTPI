@@ -4,20 +4,8 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                // Paso para clonar el repositorio
+                // Paso para clonar el repositorio desde GitHub
                 git 'https://github.com/alexooscar02/DocuTPI.git'
-            }
-        }
-        
-        stage('Build') {
-            steps {
-                // Paso para compilar el proyecto
-            }
-        }
-        
-        stage('Test') {
-            steps {
-                // Paso para ejecutar las pruebas de unidad
             }
         }
         
