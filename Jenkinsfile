@@ -8,7 +8,7 @@ pipeline {
         }
         stage('Integration Test') {
             steps {
-                sh 'mvn verify -P integracion'
+                bat 'mvn verify -P integracion'
             }
         }
         stage('Deploy') {
