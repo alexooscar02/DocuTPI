@@ -1,19 +1,37 @@
 pipeline {
     agent any
+
     stages {
+        stage('Checkout') {
+            steps {
+                // Paso para clonar el repositorio
+                git 'https://github.com/alexooscar02/DocuTPI.git'
+            }
+        }
+        
         stage('Build') {
             steps {
-                echo "Etapa de construcción"
+                // Paso para compilar el proyecto
             }
         }
-        stage('Tests') {
+        
+        stage('Test') {
             steps {
-                echo "Etapa de pruebas"
+                // Paso para ejecutar las pruebas de unidad
             }
         }
+        
+        stage('Integration Test') {
+            steps {
+                // Paso para ejecutar las pruebas de integración
+                sh 'mvn verify -P integracion'
+            }
+        }
+        
         stage('Deploy') {
             steps {
-                echo "Etapa de despliegue"
+                // Paso opcional para desplegar la aplicación
+                // Puedes añadir aquí los comandos necesarios para desplegar tu aplicación si es necesario
             }
         }
     }
