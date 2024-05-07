@@ -16,6 +16,7 @@ import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.core.UriBuilder;
 import jakarta.ws.rs.core.UriInfo;
 import java.io.Serializable;
 import java.net.URI;
@@ -74,36 +75,28 @@ public class DocumentoResource implements Serializable {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response createDocumento(Documento nuevoDocumento, @Context UriInfo uriInfo) {
-        if (nuevoDocumento == null) {
+    public Response createDocumento(Documento nuevo) {
+        if (nuevo == null || nuevo.getNombre() == null || nuevo.getUbicacionFisica() == null || nuevo.getCreadoPor() == null) {
             return Response.status(RestResourceHeaderPattern.STATUS_PARAMETRO_EQUIVOCADO)
-                    .header(RestResourceHeaderPattern.DETALLE_PARAMETRO_EQUIVOCADO, "Parámetros nulos")
-                    .build();
-        }
-        if (!isDocumentoValid(nuevoDocumento)) {
-            return Response.status(RestResourceHeaderPattern.STATUS_PARAMETRO_EQUIVOCADO)
-                    .header(RestResourceHeaderPattern.DETALLE_PARAMETRO_EQUIVOCADO, "Parámetros incorrectos")
+                    .header(RestResourceHeaderPattern.DETALLE_PARAMETRO_EQUIVOCADO, "Payload nulo o datos de documento incompletos")
                     .build();
         }
         try {
-            dBean.create(nuevoDocumento);
-            URI requestUri = uriInfo.getRequestUri();
-            String location = requestUri.toString() + "/" + nuevoDocumento.getIdDocumento();
+            dBean.create(nuevo);
+
+            URI location = UriBuilder.fromResource(DocumentoResource.class)
+                    .path("/{id}")
+                    .resolveTemplate("id", nuevo.getIdDocumento())
+                    .build();
 
             return Response.status(Response.Status.CREATED)
-                    .header("Location", location)
+                    .header("Location", location.toString())
                     .build();
         } catch (Exception ex) {
-            Logger.getLogger(getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .header(RestResourceHeaderPattern.DETALLE_PARAMETRO_EQUIVOCADO, "Error interno del servidor")
+                    .header(RestResourceHeaderPattern.DETALLE_ERROR, "Error al crear el documento: " + ex.getMessage())
                     .build();
         }
     }
 
-    private boolean isDocumentoValid(Documento documento) {
-        return documento.getCreadoPor() != null
-                && documento.getNombre() != null
-                && documento.getUbicacionFisica() != null;
-    }
 }

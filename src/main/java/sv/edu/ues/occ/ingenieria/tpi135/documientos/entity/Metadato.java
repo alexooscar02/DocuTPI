@@ -32,6 +32,12 @@ import jakarta.persistence.TemporalType;
     @NamedQuery(name = "Metadato.findByIdMetadata", query = "SELECT m FROM Metadato m WHERE m.idMetadata = :idMetadata"),
     @NamedQuery(name = "Metadato.findByValor", query = "SELECT m FROM Metadato m WHERE m.valor = :valor"),
     @NamedQuery(name = "Metadato.findByFechaCreacion", query = "SELECT m FROM Metadato m WHERE m.fechaCreacion = :fechaCreacion"),
+    @NamedQuery(name = "Metadato.findCountByDocumentoAndMetadata",
+            query = "SELECT COUNT(m) FROM Metadato m "
+            + "JOIN m.idDocumento d "
+            + "JOIN Taxonomia t ON t.idDocumento = d.idDocumento "
+            + "WHERE d.idDocumento = :idDocumento "
+            + "AND m.idMetadata = :idMetadata"),
     @NamedQuery(name = "Metadato.findByComentarios", query = "SELECT m FROM Metadato m WHERE m.comentarios = :comentarios")})
 public class Metadato implements Serializable {
 

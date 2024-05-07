@@ -31,5 +31,14 @@ public class MetadatoBean extends AbstractDataAccess&lt;Metadato&gt; implements 
 <span class="nc" id="L31">        return em;</span>
     }
 
+        public boolean verificarMetadatoPerteneceTaxonomia(Long idDocumento, Long idMetadata) {
+<span class="nc" id="L35">        Long count = (Long) em.createNamedQuery(&quot;Metadato.findCountByDocumentoAndMetadata&quot;)</span>
+<span class="nc" id="L36">                .setParameter(&quot;idDocumento&quot;, idDocumento)</span>
+<span class="nc" id="L37">                .setParameter(&quot;idMetadata&quot;, idMetadata)</span>
+<span class="nc" id="L38">                .getSingleResult();</span>
+
+<span class="nc bnc" id="L40" title="All 2 branches missed.">        return count &gt; 0;</span>
+    }
+
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

@@ -74,14 +74,9 @@ public class TaxonomiaResource implements Serializable {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response createTaxonomia(@PathParam("idDocumento") Long idDocumento, Taxonomia taxonomia, @Context UriInfo info) {
-        if (idDocumento == null || taxonomia == null) {
-            return Response.status(RestResourceHeaderPattern.STATUS_PARAMETRO_EQUIVOCADO)
-                    .header(RestResourceHeaderPattern.DETALLE_PARAMETRO_EQUIVOCADO, "idTipoDocumento or nuevo is null")
-                    .build();
-        }
-        if (taxonomia.getIdDocumento() == null || taxonomia.getIdTipoDocumento() == null) {
-            return Response.status(RestResourceHeaderPattern.STATUS_PARAMETRO_EQUIVOCADO)
+    public Response createTaxonomia(@PathParam("idDocumento") Long idDocumento, Taxonomia taxonomia) {
+        if (idDocumento == null || taxonomia == null || taxonomia.getIdDocumento() == null || taxonomia.getIdTipoDocumento() == null) {
+            return Response.status(Response.Status.BAD_REQUEST)
                     .header(RestResourceHeaderPattern.DETALLE_PARAMETRO_EQUIVOCADO, "Parámetros incorrectos")
                     .build();
         }
@@ -89,15 +84,13 @@ public class TaxonomiaResource implements Serializable {
             taxonomia.setIdDocumento(new Documento(idDocumento));
             tBean.create(taxonomia);
 
-            URI requestUri = info.getRequestUri();
-            String location = requestUri.toString() + "/" + taxonomia.getIdTaxonomia();
+            String location = String.format("/documento/%d/taxonomia/%d", idDocumento, taxonomia.getIdTaxonomia());
 
             return Response.status(Response.Status.CREATED)
                     .header("Location", location)
                     .build();
         } catch (Exception ex) {
             Logger.getLogger(getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);
-            ex.printStackTrace();
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                     .header(RestResourceHeaderPattern.DETALLE_PARAMETRO_EQUIVOCADO, "Error interno del servidor: " + ex.getMessage())
                     .build();

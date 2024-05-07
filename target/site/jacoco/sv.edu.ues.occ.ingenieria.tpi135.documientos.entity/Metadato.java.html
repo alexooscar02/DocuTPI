@@ -32,6 +32,12 @@ import jakarta.persistence.TemporalType;
     @NamedQuery(name = &quot;Metadato.findByIdMetadata&quot;, query = &quot;SELECT m FROM Metadato m WHERE m.idMetadata = :idMetadata&quot;),
     @NamedQuery(name = &quot;Metadato.findByValor&quot;, query = &quot;SELECT m FROM Metadato m WHERE m.valor = :valor&quot;),
     @NamedQuery(name = &quot;Metadato.findByFechaCreacion&quot;, query = &quot;SELECT m FROM Metadato m WHERE m.fechaCreacion = :fechaCreacion&quot;),
+    @NamedQuery(name = &quot;Metadato.findCountByDocumentoAndMetadata&quot;,
+            query = &quot;SELECT COUNT(m) FROM Metadato m &quot;
+            + &quot;JOIN m.idDocumento d &quot;
+            + &quot;JOIN Taxonomia t ON t.idDocumento = d.idDocumento &quot;
+            + &quot;WHERE d.idDocumento = :idDocumento &quot;
+            + &quot;AND m.idMetadata = :idMetadata&quot;),
     @NamedQuery(name = &quot;Metadato.findByComentarios&quot;, query = &quot;SELECT m FROM Metadato m WHERE m.comentarios = :comentarios&quot;)})
 public class Metadato implements Serializable {
 
@@ -55,84 +61,84 @@ public class Metadato implements Serializable {
     @ManyToOne
     private Documento idDocumento;
 
-<span class="nc" id="L58">    public Metadato() {</span>
-<span class="nc" id="L59">    }</span>
+<span class="fc" id="L64">    public Metadato() {</span>
+<span class="fc" id="L65">    }</span>
 
-<span class="nc" id="L61">    public Metadato(Long idMetadata) {</span>
-<span class="nc" id="L62">        this.idMetadata = idMetadata;</span>
-<span class="nc" id="L63">    }</span>
+<span class="nc" id="L67">    public Metadato(Long idMetadata) {</span>
+<span class="nc" id="L68">        this.idMetadata = idMetadata;</span>
+<span class="nc" id="L69">    }</span>
 
     public Long getIdMetadata() {
-<span class="nc" id="L66">        return idMetadata;</span>
+<span class="fc" id="L72">        return idMetadata;</span>
     }
 
     public void setIdMetadata(Long idMetadata) {
-<span class="nc" id="L70">        this.idMetadata = idMetadata;</span>
-<span class="nc" id="L71">    }</span>
+<span class="fc" id="L76">        this.idMetadata = idMetadata;</span>
+<span class="fc" id="L77">    }</span>
 
     public String getValor() {
-<span class="nc" id="L74">        return valor;</span>
+<span class="fc" id="L80">        return valor;</span>
     }
 
     public void setValor(String valor) {
-<span class="nc" id="L78">        this.valor = valor;</span>
-<span class="nc" id="L79">    }</span>
+<span class="fc" id="L84">        this.valor = valor;</span>
+<span class="fc" id="L85">    }</span>
 
     public Date getFechaCreacion() {
-<span class="nc" id="L82">        return fechaCreacion;</span>
+<span class="fc" id="L88">        return fechaCreacion;</span>
     }
 
     public void setFechaCreacion(Date fechaCreacion) {
-<span class="nc" id="L86">        this.fechaCreacion = fechaCreacion;</span>
-<span class="nc" id="L87">    }</span>
+<span class="nc" id="L92">        this.fechaCreacion = fechaCreacion;</span>
+<span class="nc" id="L93">    }</span>
 
     public String getComentarios() {
-<span class="nc" id="L90">        return comentarios;</span>
+<span class="fc" id="L96">        return comentarios;</span>
     }
 
     public void setComentarios(String comentarios) {
-<span class="nc" id="L94">        this.comentarios = comentarios;</span>
-<span class="nc" id="L95">    }</span>
+<span class="nc" id="L100">        this.comentarios = comentarios;</span>
+<span class="nc" id="L101">    }</span>
 
     public Atributo getIdAtributo() {
-<span class="nc" id="L98">        return idAtributo;</span>
+<span class="fc" id="L104">        return idAtributo;</span>
     }
 
     public void setIdAtributo(Atributo idAtributo) {
-<span class="nc" id="L102">        this.idAtributo = idAtributo;</span>
-<span class="nc" id="L103">    }</span>
+<span class="fc" id="L108">        this.idAtributo = idAtributo;</span>
+<span class="fc" id="L109">    }</span>
 
     public Documento getIdDocumento() {
-<span class="nc" id="L106">        return idDocumento;</span>
+<span class="fc" id="L112">        return idDocumento;</span>
     }
 
     public void setIdDocumento(Documento idDocumento) {
-<span class="nc" id="L110">        this.idDocumento = idDocumento;</span>
-<span class="nc" id="L111">    }</span>
+<span class="fc" id="L116">        this.idDocumento = idDocumento;</span>
+<span class="fc" id="L117">    }</span>
 
     @Override
     public int hashCode() {
-<span class="nc" id="L115">        int hash = 0;</span>
-<span class="nc bnc" id="L116" title="All 2 branches missed.">        hash += (idMetadata != null ? idMetadata.hashCode() : 0);</span>
-<span class="nc" id="L117">        return hash;</span>
+<span class="nc" id="L121">        int hash = 0;</span>
+<span class="nc bnc" id="L122" title="All 2 branches missed.">        hash += (idMetadata != null ? idMetadata.hashCode() : 0);</span>
+<span class="nc" id="L123">        return hash;</span>
     }
 
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-<span class="nc bnc" id="L123" title="All 2 branches missed.">        if (!(object instanceof Metadato)) {</span>
-<span class="nc" id="L124">            return false;</span>
+<span class="nc bnc" id="L129" title="All 2 branches missed.">        if (!(object instanceof Metadato)) {</span>
+<span class="nc" id="L130">            return false;</span>
         }
-<span class="nc" id="L126">        Metadato other = (Metadato) object;</span>
-<span class="nc bnc" id="L127" title="All 8 branches missed.">        if ((this.idMetadata == null &amp;&amp; other.idMetadata != null) || (this.idMetadata != null &amp;&amp; !this.idMetadata.equals(other.idMetadata))) {</span>
-<span class="nc" id="L128">            return false;</span>
+<span class="nc" id="L132">        Metadato other = (Metadato) object;</span>
+<span class="nc bnc" id="L133" title="All 8 branches missed.">        if ((this.idMetadata == null &amp;&amp; other.idMetadata != null) || (this.idMetadata != null &amp;&amp; !this.idMetadata.equals(other.idMetadata))) {</span>
+<span class="nc" id="L134">            return false;</span>
         }
-<span class="nc" id="L130">        return true;</span>
+<span class="nc" id="L136">        return true;</span>
     }
 
     @Override
     public String toString() {
-<span class="nc" id="L135">        return &quot;entity.Metadato[ idMetadata=&quot; + idMetadata + &quot; ]&quot;;</span>
+<span class="nc" id="L141">        return &quot;entity.Metadato[ idMetadata=&quot; + idMetadata + &quot; ]&quot;;</span>
     }
 
 }

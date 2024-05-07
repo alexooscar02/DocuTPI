@@ -75,41 +75,36 @@ public class AtributoResource implements Serializable {
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response createAtributo(@PathParam("idTipoDocumento") Integer idTipoDocumento, Atributo nuevoAtributo, @Context UriInfo uriInfo) {
-        if (nuevoAtributo == null) {
-            return Response.status(RestResourceHeaderPattern.STATUS_PARAMETRO_EQUIVOCADO)
-                    .header(RestResourceHeaderPattern.DETALLE_PARAMETRO_EQUIVOCADO, "Parámetros nulos")
-                    .build();
-        }
-        if (!isAtributoValid(nuevoAtributo)) {
-            return Response.status(RestResourceHeaderPattern.STATUS_PARAMETRO_EQUIVOCADO)
+    public Response createAtributo(@PathParam("idTipoDocumento") Integer idTipoDocumento, Atributo atributo) {
+        if (atributo == null || idTipoDocumento == null) {
+            return Response.status(Response.Status.BAD_REQUEST)
                     .header(RestResourceHeaderPattern.DETALLE_PARAMETRO_EQUIVOCADO, "Parámetros incorrectos")
                     .build();
         }
-
+        if (atributo.getNombre() == null || atributo.getNombre().isEmpty()) {
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .header(RestResourceHeaderPattern.DETALLE_PARAMETRO_EQUIVOCADO, "El nombre del atributo es requerido")
+                    .build();
+        }
+        if (atributo.getIdTipoAtributo() == null || atributo.getIdTipoDocumento() == null) {
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .header(RestResourceHeaderPattern.DETALLE_PARAMETRO_EQUIVOCADO, "ID de tipo de atributo o tipo de documento faltante en el atributo")
+                    .build();
+        }
         try {
+            atributo.setIdTipoDocumento(new TipoDocumento(idTipoDocumento));
+            aBean.create(atributo);
 
-            nuevoAtributo.setIdTipoDocumento(new TipoDocumento(idTipoDocumento));
-            aBean.create(nuevoAtributo);
-
-            URI requestUri = uriInfo.getRequestUri();
-            String location = requestUri.toString() + "/" + nuevoAtributo.getIdAtributo();
+            String location = String.format("/tipodocumento/%d/atributo/%d", idTipoDocumento, atributo.getIdAtributo());
 
             return Response.status(Response.Status.CREATED)
                     .header("Location", location)
                     .build();
-
         } catch (Exception ex) {
             Logger.getLogger(getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .header(RestResourceHeaderPattern.DETALLE_PARAMETRO_EQUIVOCADO, "Error interno del servidor")
+                    .header(RestResourceHeaderPattern.DETALLE_PARAMETRO_EQUIVOCADO, "Error interno del servidor: " + ex.getMessage())
                     .build();
         }
-    }
-
-    private boolean isAtributoValid(Atributo atributo) {
-        return atributo.getNombre() != null
-                && atributo.getNombrePantalla() != null
-                && atributo.getObligatorio() != null;
     }
 }

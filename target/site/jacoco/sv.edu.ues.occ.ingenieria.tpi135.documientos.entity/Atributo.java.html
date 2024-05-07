@@ -33,7 +33,8 @@ import jakarta.persistence.Table;
     @NamedQuery(name = &quot;Atributo.findByNombrePantalla&quot;, query = &quot;SELECT a FROM Atributo a WHERE a.nombrePantalla = :nombrePantalla&quot;),
     @NamedQuery(name = &quot;Atributo.findByIndicacionesPantalla&quot;, query = &quot;SELECT a FROM Atributo a WHERE a.indicacionesPantalla = :indicacionesPantalla&quot;),
     @NamedQuery(name = &quot;Atributo.findByObligatorio&quot;, query = &quot;SELECT a FROM Atributo a WHERE a.obligatorio = :obligatorio&quot;),
-    @NamedQuery(name = &quot;Atributo.findTipoDocumentobyId&quot;, query = &quot;SELECT a.idTipoDocumento.idTipoDocumento FROM Atributo a WHERE a.idAtributo = :idAtributo&quot;),})
+    @NamedQuery(name = &quot;Atributo.findTipoDocumentobyId&quot;, query = &quot;SELECT a.idTipoDocumento.idTipoDocumento FROM Atributo a WHERE a.idAtributo = :idAtributo&quot;)
+})
 public class Atributo implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -60,83 +61,82 @@ public class Atributo implements Serializable {
     @ManyToOne
     private TipoDocumento idTipoDocumento;
 
-<span class="nc" id="L63">    public Atributo() {</span>
-<span class="nc" id="L64">    }</span>
+<span class="fc" id="L64">    public Atributo() {</span>
+<span class="fc" id="L65">    }</span>
 
-<span class="nc" id="L66">    public Atributo(Long idAtributo) {</span>
-<span class="nc" id="L67">        this.idAtributo = idAtributo;</span>
-<span class="nc" id="L68">    }</span>
+<span class="nc" id="L67">    public Atributo(Long idAtributo) {</span>
+<span class="nc" id="L68">        this.idAtributo = idAtributo;</span>
+<span class="nc" id="L69">    }</span>
 
-<span class="nc" id="L70">    public Atributo(Long idAtributo, String nombre) {</span>
-<span class="nc" id="L71">        this.idAtributo = idAtributo;</span>
-<span class="nc" id="L72">        this.nombre = nombre;</span>
-<span class="nc" id="L73">    }</span>
+<span class="nc" id="L71">    public Atributo(Long idAtributo, String nombre) {</span>
+<span class="nc" id="L72">        this.idAtributo = idAtributo;</span>
+<span class="nc" id="L73">        this.nombre = nombre;</span>
+<span class="nc" id="L74">    }</span>
 
     public Long getIdAtributo() {
-<span class="nc" id="L76">        return idAtributo;</span>
+<span class="fc" id="L77">        return idAtributo;</span>
     }
 
     public void setIdAtributo(Long idAtributo) {
-<span class="nc" id="L80">        this.idAtributo = idAtributo;</span>
-<span class="nc" id="L81">    }</span>
+<span class="fc" id="L81">        this.idAtributo = idAtributo;</span>
+<span class="fc" id="L82">    }</span>
 
     public String getNombre() {
-<span class="nc" id="L84">        return nombre;</span>
+<span class="fc" id="L85">        return nombre;</span>
     }
 
     public void setNombre(String nombre) {
-<span class="nc" id="L88">        this.nombre = nombre;</span>
-<span class="nc" id="L89">    }</span>
+<span class="fc" id="L89">        this.nombre = nombre;</span>
+<span class="fc" id="L90">    }</span>
 
     public String getNombrePantalla() {
-<span class="nc" id="L92">        return nombrePantalla;</span>
+<span class="fc" id="L93">        return nombrePantalla;</span>
     }
 
     public void setNombrePantalla(String nombrePantalla) {
-<span class="nc" id="L96">        this.nombrePantalla = nombrePantalla;</span>
-<span class="nc" id="L97">    }</span>
+<span class="fc" id="L97">        this.nombrePantalla = nombrePantalla;</span>
+<span class="fc" id="L98">    }</span>
 
     public String getIndicacionesPantalla() {
-<span class="nc" id="L100">        return indicacionesPantalla;</span>
+<span class="fc" id="L101">        return indicacionesPantalla;</span>
     }
 
     public void setIndicacionesPantalla(String indicacionesPantalla) {
-<span class="nc" id="L104">        this.indicacionesPantalla = indicacionesPantalla;</span>
-<span class="nc" id="L105">    }</span>
+<span class="nc" id="L105">        this.indicacionesPantalla = indicacionesPantalla;</span>
+<span class="nc" id="L106">    }</span>
 
     public Boolean getObligatorio() {
-<span class="nc" id="L108">        return obligatorio;</span>
+<span class="fc" id="L109">        return obligatorio;</span>
     }
 
     public void setObligatorio(Boolean obligatorio) {
-<span class="nc" id="L112">        this.obligatorio = obligatorio;</span>
-<span class="nc" id="L113">    }</span>
+<span class="fc" id="L113">        this.obligatorio = obligatorio;</span>
+<span class="fc" id="L114">    }</span>
 
     @JsonbTransient
     public List&lt;Metadato&gt; getMetadatoList() {
-<span class="nc" id="L117">        return metadatoList;</span>
+<span class="fc" id="L118">        return metadatoList;</span>
     }
 
     public void setMetadatoList(List&lt;Metadato&gt; metadatoList) {
-<span class="nc" id="L121">        this.metadatoList = metadatoList;</span>
-<span class="nc" id="L122">    }</span>
+<span class="nc" id="L122">        this.metadatoList = metadatoList;</span>
+<span class="nc" id="L123">    }</span>
 
-   
     public TipoAtributo getIdTipoAtributo() {
-<span class="nc" id="L126">        return idTipoAtributo;</span>
+<span class="fc" id="L126">        return idTipoAtributo;</span>
     }
 
     public void setIdTipoAtributo(TipoAtributo idTipoAtributo) {
-<span class="nc" id="L130">        this.idTipoAtributo = idTipoAtributo;</span>
-<span class="nc" id="L131">    }</span>
+<span class="fc" id="L130">        this.idTipoAtributo = idTipoAtributo;</span>
+<span class="fc" id="L131">    }</span>
 
     public TipoDocumento getIdTipoDocumento() {
-<span class="nc" id="L134">        return idTipoDocumento;</span>
+<span class="fc" id="L134">        return idTipoDocumento;</span>
     }
 
     public void setIdTipoDocumento(TipoDocumento idTipoDocumento) {
-<span class="nc" id="L138">        this.idTipoDocumento = idTipoDocumento;</span>
-<span class="nc" id="L139">    }</span>
+<span class="fc" id="L138">        this.idTipoDocumento = idTipoDocumento;</span>
+<span class="fc" id="L139">    }</span>
 
     @Override
     public int hashCode() {

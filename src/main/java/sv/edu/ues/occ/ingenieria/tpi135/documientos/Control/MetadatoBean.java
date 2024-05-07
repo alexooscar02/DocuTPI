@@ -31,4 +31,13 @@ public class MetadatoBean extends AbstractDataAccess<Metadato> implements Serial
         return em;
     }
 
+        public boolean verificarMetadatoPerteneceTaxonomia(Long idDocumento, Long idMetadata) {
+        Long count = (Long) em.createNamedQuery("Metadato.findCountByDocumentoAndMetadata")
+                .setParameter("idDocumento", idDocumento)
+                .setParameter("idMetadata", idMetadata)
+                .getSingleResult();
+
+        return count > 0;
+    }
+
 }
