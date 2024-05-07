@@ -16,6 +16,7 @@ import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.core.UriBuilder;
 import jakarta.ws.rs.core.UriInfo;
 import static java.awt.SystemColor.info;
 import java.io.Serializable;
@@ -45,78 +46,80 @@ import sv.edu.ues.occ.ingenieria.tpi135.documientos.entity.TipoDocumento;
 public class MetadatoResource {
 
     @Inject
-    MetadatoBean metadatoBean;
+    MetadatoBean mBean;
 
     @Inject
     DocumentoBean documentoBean;
 
     @Inject
-    AtributoBean atributoBean;
+    AtributoBean aBean;
 
     @Inject
-    TaxonomiaBean taxonomiaBean;
+    TaxonomiaBean tBean;
+
+    @GET
+    @Produces({MediaType.APPLICATION_JSON})
+    public List<Metadato> findRange(
+            @QueryParam(value = "first")
+            @DefaultValue(value = "0") int first,
+            @QueryParam(value = "pagesize")
+            @DefaultValue(value = "50") int pageSize
+    ) {
+        if (first >= 0 && pageSize > 0) {
+            return mBean.findRange(first, pageSize);
+        }
+        return Collections.EMPTY_LIST;
+    }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("/{id}")
+    public Response findById(@PathParam("id") final Long idMetadata) {
+        if (idMetadata != null) {
+            Metadato found = mBean.findById(idMetadata);
+            if (found != null) {
+                return Response.status(Response.Status.OK)
+                        .entity(found)
+                        .build();
+            }
+            return Response.status(Response.Status.NOT_FOUND)
+                    .header("not-found", "id")
+                    .build();
+        }
+        return Response.status(422)
+                .header("missing-parameter", "id")
+                .build();
+    }
 
     @POST
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response createMetadato(@PathParam("idDocumento") Long idDocumento, Metadato metadato, @Context UriInfo info) {
-        // Verificar si el ID del documento y el objeto metadato son nulos
-        // Verificar que se proporcionó un documento válido
-        if (idDocumento == null) {
+    public Response createMetadato(@PathParam("idDocumento") Long idDocumento, Metadato nuevoMetadato) {
+        if (idDocumento == null || nuevoMetadato == null) {
             return Response.status(Response.Status.BAD_REQUEST)
-                    .entity("ID de documento inválido")
+                    .header(RestResourceHeaderPattern.DETALLE_PARAMETRO_EQUIVOCADO, "El ID del documento está nulo")
                     .build();
         }
 
-        // Verificar que se proporcionó un metadato válido
-        if (metadato == null) {
+        if (nuevoMetadato.getIdDocumento() == null || nuevoMetadato.getIdAtributo() == null) {
             return Response.status(Response.Status.BAD_REQUEST)
-                    .entity("Metadato inválido")
+                    .header(RestResourceHeaderPattern.DETALLE_PARAMETRO_EQUIVOCADO, "El ID del documento está nulo")
                     .build();
         }
 
-        // Verificar que el documento existe
-        Documento documento = documentoBean.findById(idDocumento);
-        if (documento == null) {
-            return Response.status(Response.Status.NOT_FOUND)
-                    .entity("Documento no encontrado")
+        //boolean metadatoPertenece = mBean.verificarMetadatoPerteneceTaxonomia(idDocumento, nuevoMetadato.getIdMetadata());
+        if (!Objects.equals(tBean.findByDocumento(Long.valueOf(nuevoMetadato.getIdDocumento().getIdDocumento().toString())), aBean.findTipoDocumentoById(Long.valueOf(nuevoMetadato.getIdAtributo().getIdAtributo().toString())))) {
+            return Response.status(405)
+                    .header("METODO-NO-POSIBLE", nuevoMetadato.toString())
                     .build();
         }
 
-        // Verificar que el atributo del metadato existe
-        Atributo atributo = atributoBean.findById(metadato.getIdAtributo());
-        if (atributo == null) {
-            return Response.status(Response.Status.NOT_FOUND)
-                    .entity("Atributo no encontrado")
-                    .build();
-        }
+        mBean.create(nuevoMetadato);
 
-        // Verificar que el atributo pertenece al documento
-        Taxonomia taxonomia = taxonomiaBean.findByDocumentoAndAtributo(idDocumento, metadato.getIdAtributo().getIdAtributo());
-        if (taxonomia == null) {
-            return Response.status(Response.Status.BAD_REQUEST)
-                    .entity("El atributo no pertenece al documento")
-                    .build();
-        }
-        try {
-            metadato.setIdDocumento(documento);
-            metadatoBean.create(metadato);
+        String location = String.format("/documento/%d/metadato/%d", idDocumento, nuevoMetadato.getIdMetadata());
+        return Response.status(Response.Status.CREATED)
+                .header("Location", location)
+                .build();
 
-            // Construir la URI de la respuesta y devolver la respuesta
-            URI requestUri = info.getRequestUri();
-            String location = requestUri.toString() + "/" + metadato.getIdMetadata();
-            return Response.status(Response.Status.CREATED)
-                    .header("Location", location)
-                    .entity("Metadato creado exitosamente")
-                    .build();
-        } catch (Exception ex) {
-            Logger.getLogger(getClass().getName()).log(Level.SEVERE, ex.getMessage(), ex);
-            // En caso de error interno del servidor, devolver una respuesta con el estado 500
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .header(RestResourceHeaderPattern.DETALLE_PARAMETRO_EQUIVOCADO, "Error interno del servidor")
-                    .build();
-        }
-
-        // Crear el metadato
     }
 }
